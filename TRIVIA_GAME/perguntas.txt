@@ -1,0 +1,55 @@
+9
+Qual o valor de x em: x + 2 = 4?
+A. 1
+B. 2
+C. 3
+D. 4
+B
+Qual desses não é um animal?
+A. Cachorro
+B. Gato
+C. Rato
+D. Pikachu
+D
+Quais elementos fazem parte da fórmula da água?
+A. Hidrogênio e Oxigênio
+B. Carbono e Ferro
+C. Hélio e Thório
+D. Rádio e Argônio
+A
+Qual o nome do componente eletrônico cuja principal função é dissipar energia na forma de calor?
+A. Diodo
+B. Capacitor
+C. Resistor
+D. Indultor
+C
+Em que ano foi fundada a cidade de Salvador?
+A. 1549
+B. 1550
+C. 1649
+D. 1650
+A
+Quais países da América do Sul não fazem fronteira com o Brasil?
+A. Argentina e Bolívia
+B. Uruguai e Paraguai
+C. Chile e Equador
+D. México e Canadá
+C
+Qual o escritor de Memórias postumas de Brás Cubas?
+A. Jorge Amado
+B. José de Alencar
+C. Carlos Drummond de Andrade
+D. Machado de Assis
+D
+Qual desses esportes não utiliza bola?
+A. Futebol
+B. Vôlei
+C. Natação
+D. Basquete
+C
+Qual é a frequência da corrente alternada utilizada no Brasil?
+A. 60 Hz
+B. 50 Hz
+C. 55 Hz
+D. 144 Hz
+A
