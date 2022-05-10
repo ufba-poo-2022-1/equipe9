@@ -7,6 +7,17 @@ import java.util.Scanner;
 public class jogo {
 
 	 public static void main(String[] args) throws FileNotFoundException {
+			 Scanner read = new Scanner(System.in);
+		     Usuario admin = new Usuario();
+		     System.out.println("Qual seu nome?");
+		     admin.setNome(read.nextLine());
+		     System.out.println("Login: ");
+		     admin.setLogin(read.nextLine());
+		     System.out.println("Senha: ");
+			 admin.setSenha(read.nextLine());
+
+		     System.out.println("Seja bem-vindo ao TRIVIA " + admin.getNome());
+
 		       Scanner ler = new Scanner(new File("perguntas.txt"));
 		        ArrayList<Pergunta> perguntas = new ArrayList<>();
 		        int pontosPlayerUm = 0;
@@ -27,28 +38,28 @@ public class jogo {
 		            
 		            if(i % 2 == 0) {
 		                System.out.println("Player 1, por favor responda a seguinte"
-		                        + " questão:\n");
+		                        + " questï¿½o:\n");
 		                printPergunta(perguntas.get(i));
 		                String resposta = teclado.next();
 		                if(resposta.equalsIgnoreCase(perguntas.get(i).respostaCerta)) {
 		                    pontosPlayerUm++;
-		                    System.out.println("Certo! Você tem "
+		                    System.out.println("Certo! Vocï¿½ tem "
 		                            + pontosPlayerUm + " pontos.\n");
 		                } else {
-		                    System.out.println("Errooou! Você tem "
+		                    System.out.println("Errooou! Vocï¿½ tem "
 		                            + pontosPlayerUm + " pontos.\n");
 		                }
 		            } else{ 
 		                System.out.println("Player 2, por favor responda a seguinte"
-		                        + " questão:\n");
+		                        + " questï¿½o:\n");
 		                printPergunta(perguntas.get(i));
 		                String resposta = teclado.next();
 		                if(resposta.equalsIgnoreCase(perguntas.get(i).respostaCerta)) {
 		                    pontosPlayerDois++;
-		                    System.out.println("Certo! Você tem "
+		                    System.out.println("Certo! Vocï¿½ tem "
 		                            + pontosPlayerDois + " pontos.\n");
 		                } else {
-		                    System.out.println("Errooou! Você tem "
+		                    System.out.println("Errooou! Vocï¿½ tem "
 		                            + pontosPlayerDois + " pontos.\n");
 		                }
 		            }
