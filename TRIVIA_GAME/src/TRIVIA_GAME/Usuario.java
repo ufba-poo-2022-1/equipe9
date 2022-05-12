@@ -1,8 +1,13 @@
+package TRIVIA_GAME;
+
 public class Usuario {
     private String nome, login, tipo;
-    int senha;
+    String senha;
 
-    public Usuario (String nome, String login, int senha, String tipo){
+    public Usuario(){
+    }
+
+    public Usuario (String nome, String login, String senha, String tipo){
         this.nome = nome;
         this.login = login;
         this.senha = senha;
@@ -33,7 +38,7 @@ public class Usuario {
         this.login = login;
     }
 
-    public void setSenha(int senha) {
+    public void setSenha(String senha) {
         this.senha = senha;
     }
 

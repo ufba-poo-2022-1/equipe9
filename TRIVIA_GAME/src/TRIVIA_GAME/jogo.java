@@ -1,4 +1,5 @@
 package TRIVIA_GAME;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -7,6 +8,8 @@ import java.util.Scanner;
 public class jogo {
 
 	 public static void main(String[] args) throws FileNotFoundException {
+		 
+		 //Cadastro de um novo usuário
 			 Scanner read = new Scanner(System.in);
 		     Usuario admin = new Usuario();
 		     System.out.println("Qual seu nome?");
@@ -17,22 +20,27 @@ public class jogo {
 			 admin.setSenha(read.nextLine());
 
 		     System.out.println("Seja bem-vindo ao TRIVIA " + admin.getNome());
+			 read.close();
 
-		       Scanner ler = new Scanner(new File("perguntas.txt"));
+			 	//Cadastro das perguntas
+				
+		        //Scanner ler = new Scanner(new File("perguntas.txt"));
 		        ArrayList<Pergunta> perguntas = new ArrayList<>();
 		        int pontosPlayerUm = 0;
 		        int pontosPlayerDois = 0;
 
 		        Scanner teclado = new Scanner(System.in);
 		        
-		        
-		        int numeroPerguntas = Integer.parseInt(ler.nextLine());
-		        for(int i = 0; i < numeroPerguntas; i++) {
-		           perguntas.add(new Pergunta(ler.nextLine(), ler.nextLine(),
-		                   ler.nextLine(), ler.nextLine(), ler.nextLine(),
-		                   ler.nextLine())); 
-		        }
-		        
+		        /**
+				 * 
+				 int numeroPerguntas = Integer.parseInt(ler.nextLine());
+				 for(int i = 0; i < numeroPerguntas; i++) {
+					 perguntas.add(new Pergunta(ler.nextLine(), ler.nextLine(),
+					 ler.nextLine(), ler.nextLine(), ler.nextLine(),
+					 ler.nextLine())); 
+					}
+					
+				*/
 		        
 		        for(int i = 0; i < perguntas.size(); i ++) {
 		            
