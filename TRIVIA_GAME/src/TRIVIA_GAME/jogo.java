@@ -41,10 +41,11 @@ public class jogo {
 		System.out.println();
 		System.out.println("Qual das alternativas é a correta? Digite um número de 1 a " + alternativas.size());
 		int correta = teclado.nextInt();
-		if (correta < 1 || correta > alternativas.size())
+		if (correta < 1 || correta > alternativas.size()){
+			teclado.close();
 			throw new OpcaoInvalidaExeption();
-		Pergunta pergunta = new Pergunta(p, alternativas.get(0), alternativas.get(1), alternativas.get(2),
-				alternativas.get(3), alternativas.get(correta - 1));
+		}
+		Pergunta pergunta = new Pergunta(p, alternativas, correta);
 		teclado.nextLine();
 		teclado.close();
 		printPerguntaCadastrada(pergunta);
@@ -56,9 +57,9 @@ public class jogo {
 		System.out.println("----------------------------------");
 		System.out.println("A pergunta cadastrada foi:");
 		System.out.println();
-		printPergunta(pergunta);
+		pergunta.PrintPergunta();
 		System.out.println();
-		System.out.println("A Resposta correta é: " + pergunta.getRespostaCerta());
+		System.out.println("A Resposta correta é a alternativa: " + pergunta.getResposta());
 
 	}
 
@@ -75,59 +76,48 @@ public class jogo {
 			admin.setSenha(read.nextLine());
 
 			System.out.println("Seja bem-vindo ao TRIVIA " + admin.getNome());
-			//read.close();
+		
 
 			//Leitura das perguntas
-		
+			
 			File perguntasFile = new File("./ufba_Oop_Project/TRIVIA_GAME/perguntas.txt");
 			Scanner ler = new Scanner(perguntasFile);
 
-			ArrayList<Pergunta> perguntas = new ArrayList<>();
+			int numeroPerguntas = Integer.parseInt(ler.nextLine());
+			ArrayList<Pergunta> bancoQuestoes = new ArrayList<>();
+		
+			for(int i = 0; i < numeroPerguntas; i++) {
+
+				String perg = ler.nextLine();	
+				ArrayList<String> alts = new ArrayList<String>();
+				for (int c=0; c<4; c++)
+					alts.add(ler.nextLine());
+				int resp = Integer.parseInt(ler.nextLine());	
+
+
+				bancoQuestoes.add(new Pergunta(perg,  alts, resp) );
+			}
+
+			ler.close();
+
+			Scanner teclado = new Scanner(System.in);
 			int pontosPlayerUm = 0;
 			int pontosPlayerDois = 0;
 
-			
-			int numeroPerguntas = Integer.parseInt(ler.nextLine());
-			for(int i = 0; i < numeroPerguntas; i++) {
-				perguntas.add(new Pergunta(ler.nextLine(), ler.nextLine(),
-				ler.nextLine(), ler.nextLine(), ler.nextLine(),
-				ler.nextLine()));
-			}
-			
-			ler.close();
-			Scanner teclado = new Scanner(System.in);
+			for (Pergunta questao : bancoQuestoes){
+				questao.PrintPergunta();
+				String resposta = teclado.next();
 
-			for(int i = 0; i < perguntas.size(); i ++) {
-
-				if(i % 2 == 0) {
-					System.out.println("Player 1, por favor responda a seguinte"
-							+ " quest�o:\n");
-					printPergunta(perguntas.get(i));
-					String resposta = teclado.next();
-
-					if(resposta.equalsIgnoreCase(perguntas.get(i).respostaCerta)) {
-						pontosPlayerUm++;
-						System.out.println("Certo! Voc� tem "
-								+ pontosPlayerUm + " pontos.\n");
-					} else {
-						System.out.println("Errooou! Voc� tem "
-								+ pontosPlayerUm + " pontos.\n");
-					}
-				} else{
-					System.out.println("Player 2, por favor responda a seguinte"
-							+ " quest�o:\n");
-					printPergunta(perguntas.get(i));
-					String resposta = teclado.next();
-					if(resposta.equalsIgnoreCase(perguntas.get(i).respostaCerta)) {
-						pontosPlayerDois++;
-						System.out.println("Certo! Voc� tem "
-								+ pontosPlayerDois + " pontos.\n");
-					} else {
-						System.out.println("Errooou! Voc� tem "
-								+ pontosPlayerDois + " pontos.\n");
-					}
+				System.out.println("Player 1");
+				
+				if (resposta.equals(questao.getResposta())){
+					pontosPlayerUm++;
+					System.out.println("Certo! Você tem " + pontosPlayerUm + " pontos.\n");
+				} else {
+					System.out.println("Errooou! Você tem " + pontosPlayerUm + " pontos.\n");
 				}
 			}
+
 			teclado.close();
 
 			if(pontosPlayerUm > pontosPlayerDois) {
@@ -142,11 +132,11 @@ public class jogo {
 
 	}
 
-	public static void printPergunta(Pergunta pergunta) {
-		System.out.println(pergunta.pergunta);
-		System.out.println(pergunta.respostaUm);
-		System.out.println(pergunta.respostaDois);
-		System.out.println(pergunta.respostaTres);
-		System.out.println(pergunta.respostaQuatro);
-	}
+	// public static void printPergunta(Pergunta pergunta) {
+	// 	System.out.println(pergunta.pergunta);
+	// 	System.out.println(pergunta.respostaUm);
+	// 	System.out.println(pergunta.respostaDois);
+	// 	System.out.println(pergunta.respostaTres);
+	// 	System.out.println(pergunta.respostaQuatro);
+	// }
 }
