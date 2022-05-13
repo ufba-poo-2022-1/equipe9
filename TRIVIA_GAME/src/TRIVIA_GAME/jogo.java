@@ -4,6 +4,7 @@ import TRIVIA_GAME.exeptions.OpcaoInvalidaExeption;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -102,13 +103,14 @@ public class jogo {
 				ArrayList<String> alts = new ArrayList<String>();
 				for (int c=0; c<4; c++)
 					alts.add(ler.nextLine());
-					
 				String resp = ler.nextLine();	
 
 				bancoQuestoes.add(new Pergunta(perg, alts, resp) );
 			}
 
 			ler.close();
+
+			Collections.shuffle(bancoQuestoes); // Embaralha ordem de questões
 
 			Scanner teclado = new Scanner(System.in);
 			int pontosPlayerUm = 0;
