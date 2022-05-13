@@ -77,8 +77,11 @@ public class jogo {
 			System.out.println("Seja bem-vindo ao TRIVIA " + admin.getNome());
 			read.close();
 
-			//Cadastro das perguntas
-			Scanner ler = new Scanner(new File("perguntas.txt"));
+			//Leitura das perguntas
+		
+			File perguntasFile = new File("./ufba_Oop_Project/TRIVIA_GAME/perguntas.txt");
+			Scanner ler = new Scanner(perguntasFile);
+
 			ArrayList<Pergunta> perguntas = new ArrayList<>();
 			int pontosPlayerUm = 0;
 			int pontosPlayerDois = 0;
@@ -93,14 +96,14 @@ public class jogo {
 			}
 
 
-
-		for(int i = 0; i < perguntas.size(); i ++) {
+			for(int i = 0; i < perguntas.size(); i ++) {
 
 				if(i % 2 == 0) {
 					System.out.println("Player 1, por favor responda a seguinte"
 							+ " quest�o:\n");
 					printPergunta(perguntas.get(i));
 					String resposta = teclado.next();
+					
 					if(resposta.equalsIgnoreCase(perguntas.get(i).respostaCerta)) {
 						pontosPlayerUm++;
 						System.out.println("Certo! Voc� tem "
