@@ -75,7 +75,7 @@ public class jogo {
 			admin.setSenha(read.nextLine());
 
 			System.out.println("Seja bem-vindo ao TRIVIA " + admin.getNome());
-			read.close();
+			//read.close();
 
 			//Leitura das perguntas
 		
@@ -86,15 +86,16 @@ public class jogo {
 			int pontosPlayerUm = 0;
 			int pontosPlayerDois = 0;
 
-			Scanner teclado = new Scanner(System.in);
-
+			
 			int numeroPerguntas = Integer.parseInt(ler.nextLine());
 			for(int i = 0; i < numeroPerguntas; i++) {
 				perguntas.add(new Pergunta(ler.nextLine(), ler.nextLine(),
-						ler.nextLine(), ler.nextLine(), ler.nextLine(),
-						ler.nextLine()));
+				ler.nextLine(), ler.nextLine(), ler.nextLine(),
+				ler.nextLine()));
 			}
-
+			
+			ler.close();
+			Scanner teclado = new Scanner(System.in);
 
 			for(int i = 0; i < perguntas.size(); i ++) {
 
@@ -103,7 +104,7 @@ public class jogo {
 							+ " quest�o:\n");
 					printPergunta(perguntas.get(i));
 					String resposta = teclado.next();
-					
+
 					if(resposta.equalsIgnoreCase(perguntas.get(i).respostaCerta)) {
 						pontosPlayerUm++;
 						System.out.println("Certo! Voc� tem "
@@ -127,7 +128,7 @@ public class jogo {
 					}
 				}
 			}
-
+			teclado.close();
 
 			if(pontosPlayerUm > pontosPlayerDois) {
 				System.out.print("Player 1 wins!");
