@@ -31,20 +31,30 @@ public class jogo {
 
 	public static void cadastrarPergunta() {
 		Scanner teclado = new Scanner(System.in);
-		System.out.println("Digite a pergunta: ");
+
+		System.out.print("Questão: ");
 		String p = teclado.nextLine();
+
 		ArrayList<String> alternativas = new ArrayList<>();
-		for (int i = 1; i <= 4; i++) {
-			System.out.println("Digite a alternativa " + i + ":");
+		for (int i = 65; i < 65 + 4; i++) {
+			//System.out.println("Digite a alternativa " + i + ":");
+			System.out.print((char) i + ". ");
 			alternativas.add(teclado.nextLine());
-		}
+		} 
+
 		System.out.println();
-		System.out.println("Qual das alternativas é a correta? Digite um número de 1 a " + alternativas.size());
-		int correta = teclado.nextInt();
-		if (correta < 1 || correta > alternativas.size()){
-			teclado.close();
-			throw new OpcaoInvalidaExeption();
-		}
+		System.out.print("Resposta: ");
+		//System.out.println("Qual das alternativas é a correta? Digite um número de 1 a " + alternativas.size());
+		String correta = teclado.nextLine();
+		
+		// ##############################################
+		// [Pendente] Validar opção inválida (Exception) 
+
+		// if (correta < 1 || correta > alternativas.size()){
+		// 	teclado.close();
+		// 	throw new OpcaoInvalidaExeption();
+		// }
+
 		Pergunta pergunta = new Pergunta(p, alternativas, correta);
 		teclado.nextLine();
 		teclado.close();
@@ -92,10 +102,10 @@ public class jogo {
 				ArrayList<String> alts = new ArrayList<String>();
 				for (int c=0; c<4; c++)
 					alts.add(ler.nextLine());
-				int resp = Integer.parseInt(ler.nextLine());	
+					
+				String resp = ler.nextLine();	
 
-
-				bancoQuestoes.add(new Pergunta(perg,  alts, resp) );
+				bancoQuestoes.add(new Pergunta(perg, alts, resp) );
 			}
 
 			ler.close();
@@ -108,9 +118,10 @@ public class jogo {
 				questao.PrintPergunta();
 				String resposta = teclado.next();
 
+				System.out.println("\n==========");
 				System.out.println("Player 1");
 				
-				if (resposta.equals(questao.getResposta())){
+				if (resposta.equalsIgnoreCase(questao.getResposta())){
 					pontosPlayerUm++;
 					System.out.println("Certo! Você tem " + pontosPlayerUm + " pontos.\n");
 				} else {
