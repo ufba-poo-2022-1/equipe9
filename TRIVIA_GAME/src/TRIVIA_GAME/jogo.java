@@ -78,7 +78,7 @@ public class jogo {
 		try {
 			//Cadastro de um novo usuário
 			Scanner read = new Scanner(System.in);
-			Usuario admin = new Usuario();
+			Admin admin = new Admin();
 			System.out.println("Qual seu nome?");
 			admin.setNome(read.nextLine());
 			System.out.println("Login: ");

@@ -1,9 +1,8 @@
 package TRIVIA_GAME;
 
 public class Usuario {
-    private String nome, login, tipo;
-    String senha;
-
+    private String nome;
+    int id;
     /**
      * Construtor sem parametros.
      */
@@ -19,11 +18,9 @@ public class Usuario {
      * @param tipo identifica o tipo de usuário 
      */
 
-    public Usuario (String nome, String login, String senha, String tipo){
+    public Usuario (String nome, int id){
         this.nome = nome;
-        this.login = login;
-        this.senha = senha;
-        this.tipo = tipo;
+        this.id = id;
     }
     
     /**
@@ -39,40 +36,21 @@ public class Usuario {
      * @param login login do usuário
      * @return retorna o login
      */
-    public String getLogin() {
-        return login;
-    }
-     /**
-     * Retorna senha do usuário.
-     * @param senha senha do usuário
-     * @return retorna a senha
-     */
-
-    public String getSenha() {
-        return senha;
-    }
-     /**
-     * Retorna tipo do usuário.
-     * @param tipo tipo do usuário
-     * @return retorna o tipo
-     */
-    public String getTipo() {
-        return tipo;
-    }
 
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public int getId() {
+        return id;
     }
+    /**
+     * Retorna id do usuário.
+     * @param id id do usuário
+     * @return retorna o id
+     */
 
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setId(int id) {
+        this.id = id;
     }
 }
