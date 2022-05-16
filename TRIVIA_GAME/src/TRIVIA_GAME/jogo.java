@@ -113,27 +113,37 @@ public class jogo {
 			Collections.shuffle(bancoQuestoes); // Embaralha ordem de questões
 
 			Scanner teclado = new Scanner(System.in);
-			int pontosPlayerUm = 0;
-			int pontosPlayerDois = 0;
+			Jogador player1 = new Jogador();
+			Jogador player2 = new Jogador();
+			player1.setPontuacao(0);
+			player2.setPontuacao(0);
+			//int pontosPlayerUm = 0;
+			//int pontosPlayerDois = 0;
+
+			System.out.println("Insira o nome do jogador 1: ");
+			player1.setNome(teclado.next());
+			System.out.println("Insira o nome do jogador 2: ");
+			player2.setNome(teclado.next());
 
 			for (Pergunta questao : bancoQuestoes){
 				questao.PrintPergunta();
 				String resposta = teclado.next();
 
 				System.out.println("\n==========");
-				System.out.println("Player 1");
+				System.out.println(player1.getNome());
 				
 				if (resposta.equalsIgnoreCase(questao.getResposta())){
-					pontosPlayerUm++;
-					System.out.println("Certo! Você tem " + pontosPlayerUm + " pontos.\n");
+					player1.adicionarPontuacao(player1.getPontuaca()++);
+
+					System.out.println("Certo! " + player1.getNome() + " tem " + player1.getPontuacao() + " pontos.\n");
 				} else {
-					System.out.println("Errooou! Você tem " + pontosPlayerUm + " pontos.\n");
+					System.out.println("Errooou! " + player1.getNome() + " tem " +  player1.getPontuacao() + " pontos.\n");
 				}
 			}
 
 			teclado.close();
 
-			if(pontosPlayerUm > pontosPlayerDois) {
+			if(player1.getPontuacao() > player2.getPontuacao()) {
 				System.out.print("Player 1 wins!");
 			} else {
 				System.out.print("Player 2 wins!");
