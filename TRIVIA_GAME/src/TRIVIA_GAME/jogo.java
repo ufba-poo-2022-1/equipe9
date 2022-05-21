@@ -12,7 +12,10 @@ public class jogo {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		ArrayList<Opcao> opcoes = new ArrayList<Opcao>();
-
+	 /**
+     * Exibe menu de opções para o usuário.
+     * sendo 1 para cadastrar pergunta ou 2 para jogar
+     */
 		opcoes.add(new Opcao("Cadastrar Pergunta", jogo::cadastrarPergunta));
 		opcoes.add(new Opcao("Jogar", jogo::jogar));
 		System.out.println("Digite o número de uma das opções a seguir:");
@@ -20,7 +23,10 @@ public class jogo {
 		for (int i = 0; i < opcoes.size(); i++) {
 			System.out.println(i + 1 + " - " + opcoes.get(i).getLabel());
 		}
-
+	/**
+     * Faz leitura da opção digitada e verifica se é uma opão válida.
+     * 
+     */	
 		Scanner teclado = new Scanner(System.in);
 		int op = teclado.nextInt();
 		if (op < 1 || op > opcoes.size())
@@ -62,6 +68,10 @@ public class jogo {
 		printPerguntaCadastrada(pergunta);
 
 	}
+	/**
+     * Exibe informações da pergunta cadastrada.
+     * @param pergunta
+     */
 
 	public static void printPerguntaCadastrada(Pergunta pergunta) {
 		System.out.println();
