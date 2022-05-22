@@ -104,7 +104,6 @@ public class jogo {
 			
 			File perguntasFile = new File(fileName);
 			
-			System.out.println(perguntasFile.getAbsolutePath());
 			Scanner ler = new Scanner(perguntasFile);
 
 			int numeroPerguntas = Integer.parseInt(ler.nextLine());
