@@ -76,7 +76,7 @@ public class jogo {
 
 	public static void jogar() {
 		try {
-			//Cadastro de um novo usuário
+			//*Cadastro de um novo usuário
 			Scanner read = new Scanner(System.in);
 			Admin admin = new Admin();
 			System.out.println("Qual seu nome?");
@@ -90,8 +90,11 @@ public class jogo {
 		
 
 			//Leitura das perguntas
+			String fileName = "perguntas.txt";
 			
-			File perguntasFile = new File("./ufba_Oop_Project/TRIVIA_GAME/perguntas.txt");
+			File perguntasFile = new File(fileName);
+			
+			System.out.println(perguntasFile.getAbsolutePath());
 			Scanner ler = new Scanner(perguntasFile);
 
 			int numeroPerguntas = Integer.parseInt(ler.nextLine());
@@ -132,13 +135,13 @@ public class jogo {
 				System.out.println("\n==========");
 				System.out.println(player1.getNome());
 				
-				if (resposta.equalsIgnoreCase(questao.getResposta())){
-					player1.adicionarPontuacao(player1.getPontuaca()++);
-
-					System.out.println("Certo! " + player1.getNome() + " tem " + player1.getPontuacao() + " pontos.\n");
-				} else {
-					System.out.println("Errooou! " + player1.getNome() + " tem " +  player1.getPontuacao() + " pontos.\n");
-				}
+//				if (resposta.equalsIgnoreCase(questao.getResposta())){
+//					player1.adicionarPontuacao(player1.getPontuaca()++);
+//
+//					System.out.println("Certo! " + player1.getNome() + " tem " + player1.getPontuacao() + " pontos.\n");
+//				} else {
+//					System.out.println("Errooou! " + player1.getNome() + " tem " +  player1.getPontuacao() + " pontos.\n");
+//				}
 			}
 
 			teclado.close();
