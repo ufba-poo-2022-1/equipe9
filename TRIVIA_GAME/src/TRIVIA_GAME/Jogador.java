@@ -26,4 +26,8 @@ public class Jogador extends Usuario {
     public void adicionarPontuacao(int pontuacao) {
         this.pontuacao += pontuacao;
     }
+    public boolean equalsNamejogador(Object jogador) {
+        Jogador outroJogador = (Jogador)jogador;
+        return this.getNome().equals(outroJogador.getNome());
+      }
 }

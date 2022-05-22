@@ -46,4 +46,9 @@ public class Usuario {
     public void setId(int id) {
         this.id = id;
     }
+    
+    public boolean notNullString(String string) {
+        return !string.trim().equals("");
+      }
+    
 }

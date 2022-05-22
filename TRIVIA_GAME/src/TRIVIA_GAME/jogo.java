@@ -89,21 +89,33 @@ public class jogo {
 			//*Cadastro de um novo usuário
 			Scanner read = new Scanner(System.in);
 			Admin admin = new Admin();
+			Admin admin2 = new Admin();
+			
+			admin2.setLogin("Exemplo");
+			
 			System.out.println("Qual seu nome?");
 			admin.setNome(read.nextLine());
 			System.out.println("Login: ");
 			admin.setLogin(read.nextLine());
+			do {
+				System.out.println("Usu�rio existente ou nulo! Escolha outro login:");
+				admin.setLogin(read.nextLine());
+			} while (admin.equalsAdmin(admin2) && !admin.notNullString(admin.getLogin()));
 			System.out.println("Senha: ");
 			admin.setSenha(read.nextLine());
+			do {
+				System.out.println("Senha nula! Digite uma senha v�lida:");
+				admin.setSenha(read.nextLine());
+			} while (!admin.notNullString(admin.getSenha()));
 
 			System.out.println("Seja bem-vindo ao TRIVIA " + admin.getNome());
 		
 
 			//Leitura das perguntas
-			String fileName = "perguntas.txt";
+			
+		String fileName = "perguntas.txt";
 			
 			File perguntasFile = new File(fileName);
-			
 			Scanner ler = new Scanner(perguntasFile);
 
 			int numeroPerguntas = Integer.parseInt(ler.nextLine());
@@ -134,8 +146,19 @@ public class jogo {
 
 			System.out.println("Insira o nome do jogador 1: ");
 			player1.setNome(teclado.next());
+			do {
+				System.out.println("Nome nulo!");
+				System.out.println("Insira o nome do jogador 1: ");
+				player1.setNome(teclado.next());
+			} while(!player1.notNullString(player1.getNome()));
 			System.out.println("Insira o nome do jogador 2: ");
 			player2.setNome(teclado.next());
+			do {
+				System.out.println("Nome repetido ou nulo!");
+				System.out.println("Insira o nome do jogador 1: ");
+				player2.setNome(teclado.next());
+			} while (!player2.notNullString(player2.getNome()) && player2.equalsNamejogador(player1));
+			
 
 			for (Pergunta questao : bancoQuestoes){
 				questao.PrintPergunta();
@@ -144,13 +167,13 @@ public class jogo {
 				System.out.println("\n==========");
 				System.out.println(player1.getNome());
 				
-//				if (resposta.equalsIgnoreCase(questao.getResposta())){
-//					player1.adicionarPontuacao(player1.getPontuaca()++);
-//
-//					System.out.println("Certo! " + player1.getNome() + " tem " + player1.getPontuacao() + " pontos.\n");
-//				} else {
-//					System.out.println("Errooou! " + player1.getNome() + " tem " +  player1.getPontuacao() + " pontos.\n");
-//				}
+				// if (resposta.equalsIgnoreCase(questao.getResposta())){
+				// 	player1.adicionarPontuacao(player1.getPontuacao()+1);
+
+				// 	System.out.println("Certo! " + player1.getNome() + " tem " + player1.getPontuacao() + " pontos.\n");
+				// } else {
+				// 	System.out.println("Errooou! " + player1.getNome() + " tem " +  player1.getPontuacao() + " pontos.\n");
+				// }
 			}
 
 			teclado.close();
