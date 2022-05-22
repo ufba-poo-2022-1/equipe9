@@ -6,7 +6,13 @@ public class Pergunta {
     private ArrayList<String> alternativas = new ArrayList<String>();
     private String resposta; //indice maior que 1
 
-    // Construtor
+    /**
+     * Construtor pergunta.
+     *
+     * @param pergunta descrição da pergunda
+     * @param alternativas lista de alternativas para a pergunta
+     * @param resposta identifica resposta correta
+     */
 
     public Pergunta(String pergunta,  ArrayList<String> alternativas , String resposta){
         this.pergunta = pergunta;
@@ -14,7 +20,9 @@ public class Pergunta {
         this.resposta = resposta;
     }
 
-    // Métodos
+    /**
+     * Método para ler a pergunta e as alternativas referentes a pergunta
+     */
 
     public void PrintPergunta(){
 		System.out.println(getPergunta());
@@ -28,20 +36,36 @@ public class Pergunta {
 
     }
 
-
-    // Getters
+    /**
+     * Retorna a pergunta.
+     * @return retorna a pergunta
+     */
 
     public String getPergunta(){
         return pergunta;
     }
 
+    /**
+     * Retorna a resposta.
+     * @return retorna a resposta
+     */
+
     public String getResposta(){
         return resposta;
     }
 
+    /**
+     * Retorna alternativas.
+     * @return retorna todas as alternativas
+     */
     public ArrayList<String> getAlternativas(){ // Para todas as alternativas
         return alternativas;
     }
+    /**
+     * Retorna alternativas especificada.
+     * @param alt
+     * @return retorna uma alternativa especificada pelo indice
+     */
 
     public String getAlternativa(String alt){ // Para uma alternativa específica
 

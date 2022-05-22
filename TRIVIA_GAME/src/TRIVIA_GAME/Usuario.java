@@ -25,30 +25,23 @@ public class Usuario {
     
     /**
      * Retorna nome do usuário.
-     * @param nome nome do usuário
      * @return retorna o nome
      */
     public String getNome() {
         return nome;
     }
-     /**
-     * Retorna login do usuário.
-     * @param login login do usuário
-     * @return retorna o login
-     */
 
     public void setNome(String nome) {
         this.nome = nome;
     }
 
+     /**
+     * Retorna id do usuário.
+     * @return retorna o id
+     */
     public int getId() {
         return id;
     }
-    /**
-     * Retorna id do usuário.
-     * @param id id do usuário
-     * @return retorna o id
-     */
 
     public void setId(int id) {
         this.id = id;
