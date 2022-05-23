@@ -161,14 +161,18 @@ public class jogo {
 				questao.PrintPergunta();
 				String resposta = teclado.next();
 			
+				if (resposta.equalsIgnoreCase(questao.getResposta())){
+					if(verificaJogador % 2 == 0) {
+						player1.adicionarPontuacao(player1.getPontuacao()+1);
+//						System.out.println("Certo! " + player1.getNome() + " tem " + player1.getPontuacao() + " pontos.\n");
+					} else if (verificaJogador % 2 != 0) {
+						player2.adicionarPontuacao(player2.getPontuacao()+1);
+//						System.out.println("Certo! " + player1.getNome() + " tem " + player1.getPontuacao() + " pontos.\n");
+					
+					}
+				}
 				
-//				if (resposta.equalsIgnoreCase(questao.getResposta())){
-//					player1.adicionarPontuacao(player1.getPontuaca()++);
-//
-//					System.out.println("Certo! " + player1.getNome() + " tem " + player1.getPontuacao() + " pontos.\n");
-//				} else {
-//					System.out.println("Errooou! " + player1.getNome() + " tem " +  player1.getPontuacao() + " pontos.\n");
-//				}
+				
 			}
 
 			teclado.close();
