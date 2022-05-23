@@ -89,6 +89,7 @@ public class jogo {
 			//*Cadastro de um novo usuário
 			Scanner read = new Scanner(System.in);
 			Admin admin = new Admin();
+			
 			System.out.println("Qual seu nome?");
 			admin.setNome(read.nextLine());
 			System.out.println("Login: ");
@@ -119,8 +120,11 @@ public class jogo {
 
 				bancoQuestoes.add(new Pergunta(perg, alts, resp) );
 			}
+			
 
 			ler.close();
+			
+			//Add um while
 
 			Collections.shuffle(bancoQuestoes); // Embaralha ordem de questões
 
@@ -137,12 +141,26 @@ public class jogo {
 			System.out.println("Insira o nome do jogador 2: ");
 			player2.setNome(teclado.next());
 
+			int verificaJogador = 1;
+			
 			for (Pergunta questao : bancoQuestoes){
+				
+				
+				if(verificaJogador % 2 == 0) {
+					System.out.println("\n==========");
+					System.out.println(player2.getNome());
+					System.out.println("\n==========");
+					verificaJogador++;
+				} else if (verificaJogador % 2 != 0) {
+					System.out.println("\n==========");
+					System.out.println(player1.getNome());
+					System.out.println("\n==========");
+					verificaJogador++;
+				}
+			
 				questao.PrintPergunta();
 				String resposta = teclado.next();
-
-				System.out.println("\n==========");
-				System.out.println(player1.getNome());
+			
 				
 //				if (resposta.equalsIgnoreCase(questao.getResposta())){
 //					player1.adicionarPontuacao(player1.getPontuaca()++);
@@ -157,8 +175,10 @@ public class jogo {
 
 			if(player1.getPontuacao() > player2.getPontuacao()) {
 				System.out.print("Player 1 wins!");
-			} else {
+			} else if (player1.getPontuacao() < player2.getPontuacao()) {
 				System.out.print("Player 2 wins!");
+			} else {
+				System.out.print("Its a draw!");
 			}
 
 		} catch (FileNotFoundException e) {
