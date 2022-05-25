@@ -15,7 +15,7 @@ public class Admin extends Usuario {
     public String getLogin() {
         return login;
     }
-    /**
+  /**
      * Retorna senha do usuário.
      * @param senha senha do usuário
      * @return retorna a senha
@@ -24,7 +24,7 @@ public class Admin extends Usuario {
     public String getSenha() {
         return senha;
     }
-    /**
+   /**
      * Retorna tipo do usuário.
      * @param tipo tipo do usuário
      * @return retorna o tipo
@@ -37,4 +37,10 @@ public class Admin extends Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+    public boolean equalsAdmin(Object admin) {
+        Admin outroAdmin = (Admin)admin;
+        return login.equals(outroAdmin.login);
+    }
+
 }
