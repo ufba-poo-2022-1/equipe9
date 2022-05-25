@@ -11,6 +11,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
 
+import org.telegram.telegrambots.api.methods.send.SendMessage;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -67,12 +69,41 @@ public class Discordbot extends ListenerAdapter{
      *          An event containing information about a {@link net.dv8tion.jda.api.entities.Message Message} that was
      *          sent in a channel.
      */
+	boolean gameStatus = false;
+	boolean espera = true;
+//   	int i = 0;
+	int quantidadedeperguntas = 0;
+    int pontosPlayerUm = 0;
+    int pontosPlayerDois = 0;
     @Override
     public void onMessageReceived(MessageReceivedEvent event)
     {
     	
-    	boolean gameStatus = false;
+
     	
+        Scanner ler = null;
+		try {
+			ler = new Scanner(new File("perguntas.txt"));
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        ArrayList<Pergunta> perguntas = new ArrayList<>();
+
+
+       // Scanner teclado = new Scanner(System.in);
+        
+        
+
+        int numeroPerguntas = Integer.parseInt(ler.nextLine());
+//        quantidadedeperguntas = perguntas.size();
+
+        for(int i = 0; i < numeroPerguntas; i++) {
+	           perguntas.add(new Pergunta(ler.nextLine(), ler.nextLine(),
+	                   ler.nextLine(), ler.nextLine(), ler.nextLine(),
+	                   ler.nextLine())); 
+	        }
+        
         //These are provided with every event in JDA
         JDA jda = event.getJDA();                       //JDA, the core of the api.
         long responseNumber = event.getResponseNumber();//The amount of discord events that JDA has received since the last reconnect.
@@ -281,7 +312,7 @@ public class Discordbot extends ListenerAdapter{
                 ).queue();
             }
         }
-        else if (msg.equals("!start"))
+        else if (msg.equals("!start") && !gameStatus)
         {
             // This example sends a message wich contains id, display name, nickname and user mention to the text channel
 
@@ -295,30 +326,22 @@ public class Discordbot extends ListenerAdapter{
                     "\nBoa sorte!"
                 ).queue();
                 gameStatus = true;
-                Scanner ler = null;
-    			try {
-    				ler = new Scanner(new File("perguntas.txt"));
-    			} catch (FileNotFoundException e1) {
-    				// TODO Auto-generated catch block
-    				e1.printStackTrace();
-    			}
-    	        ArrayList<Pergunta> perguntas = new ArrayList<>();
-    	        int pontosPlayerUm = 0;
-    	        int pontosPlayerDois = 0;
-
-    	       // Scanner teclado = new Scanner(System.in);
-    	        
-    	
-    	        int numeroPerguntas = Integer.parseInt(ler.nextLine());
-    	        
-    	        for(int i = 0; i < numeroPerguntas; i++) {
-     	           perguntas.add(new Pergunta(ler.nextLine(), ler.nextLine(),
-     	                   ler.nextLine(), ler.nextLine(), ler.nextLine(),
-     	                   ler.nextLine())); 
-     	        }
+          //      i = 0;
             }
         }
-        else if (msg.equals("!stop"))
+        else if (msg.equals("!start") && gameStatus)
+        {
+            // This example sends a message wich contains id, display name, nickname and user mention to the text channel
+
+            Member member = event.getMember(); //This Member that sent the message. Contains Guild specific information about the User!
+            if (member != null) // This member might be null if the message came from a webhook or a DM
+            {
+                channel.sendMessage(
+                    member.getEffectiveName() + " O jogo já foi iniciado."
+                ).queue();
+            }
+        }
+        else if (msg.equals("!stop") && gameStatus)
         {
             // This example sends a message wich contains id, display name, nickname and user mention to the text channel
 
@@ -332,8 +355,25 @@ public class Discordbot extends ListenerAdapter{
                     "\nObrigado por jogar"
                 ).queue();
                 gameStatus = false;
+                quantidadedeperguntas = 0;
+                espera = true;
+                pontosPlayerUm = 0;
+                pontosPlayerDois = 0;
             }
         }
+        else if (msg.equals("!stop") && !gameStatus)
+        {
+            // This example sends a message wich contains id, display name, nickname and user mention to the text channel
+
+            Member member = event.getMember(); //This Member that sent the message. Contains Guild specific information about the User!
+            if (member != null) // This member might be null if the message came from a webhook or a DM
+            {
+                channel.sendMessage(
+                    member.getEffectiveName() + " o jogo ainda não foi iniciado."
+                ).queue();
+            }
+        }
+
         else if (msg.equals("!regras"))
         {
             // This example sends a message wich contains id, display name, nickname and user mention to the text channel
@@ -347,28 +387,90 @@ public class Discordbot extends ListenerAdapter{
                     "\nDigite !stop para encerrar o jogo " + 
                     "\n\nO jogo consiste em um quiz de perguntas e respostas." +
                     " O bot irá fazer uma pergunta e o primeiro jogador do canal a dar a resosta certa ganha ponto."+
-                    " Os jogadores vão somando pontos e ao final do game será exibido o rank."+
-                    "\nPara ver o rank a qualquer momento, digite !rank"
+                //    "\nPara enviar a resposta digite ! antes da alternativa"+
+                    "\nOs jogadores vão somando pontos e ao final do game será exibido o rank."
+                //    "\nPara ver o rank a qualquer momento, digite !rank"
                 ).queue();
             }
         }
-        if (gameStatus) {
-        	if (msg.equals("!start"))
-        	{
-        		// This example sends a message wich contains id, display name, nickname and user mention to the text channel
-
-        		Member member = event.getMember(); //This Member that sent the message. Contains Guild specific information about the User!
-        		if (member != null) // This member might be null if the message came from a webhook or a DM
-        		{
-        			channel.sendMessage(
-        					member.getEffectiveName() + " iniciou o jogo!" +
-        							"\nPara saber as regras digite !regras" +
-        							"\nPara ver o ranking digite !rank " + 
-        							"\nBoa sorte!"
-        					).queue();
-        			gameStatus = true;
-        		}
-        	}
-        }
+//        if (gameStatus && quantidadedeperguntas==0) {
+//        		quantidadedeperguntas=1;
+//
+//        }
+//        System.out.println(quantidadedeperguntas);
+      if (gameStatus && quantidadedeperguntas < perguntas.size() && espera) {
+    	  if(quantidadedeperguntas % 2 == 0) {
+          	channel.sendMessage(
+          			"Player 1, por favor responda a seguinte"
+  	                        + " questão:\n"+
+  	                    perguntas.get(quantidadedeperguntas).pergunta+ "\n"+
+  	                    perguntas.get(quantidadedeperguntas).respostaUm+ "\n"+
+  	                    perguntas.get(quantidadedeperguntas).respostaDois+ "\n"+
+  	                    perguntas.get(quantidadedeperguntas).respostaTres+ "\n"+
+  	                    perguntas.get(quantidadedeperguntas).respostaQuatro
+  	              ).queue();
+             	espera = false;
+    	  }
+    	  if(quantidadedeperguntas % 2 != 0) {
+            	channel.sendMessage(
+              			"Player 2, por favor responda a seguinte"
+      	                        + " questão:\n"+
+      	                    perguntas.get(quantidadedeperguntas).pergunta+ "\n"+
+      	                    perguntas.get(quantidadedeperguntas).respostaUm+ "\n"+
+      	                    perguntas.get(quantidadedeperguntas).respostaDois+ "\n"+
+      	                    perguntas.get(quantidadedeperguntas).respostaTres+ "\n"+
+      	                    perguntas.get(quantidadedeperguntas).respostaQuatro
+      	              ).queue();
+               	espera = false;
+      	  }
+      }
+      if (gameStatus && quantidadedeperguntas < perguntas.size() && !espera) {
+    	  if (msg.equalsIgnoreCase(perguntas.get(quantidadedeperguntas).respostaCerta) && quantidadedeperguntas % 2 == 0) {
+    		  pontosPlayerUm++;
+          	channel.sendMessage(
+          			"Certo! Você tem "
+	                            + pontosPlayerUm + " pontos.\n").queue();
+          	espera = true;
+          	quantidadedeperguntas++;
+    	  }
+    	  else if ((msg.equalsIgnoreCase("A") || msg.equalsIgnoreCase("B") || msg.equalsIgnoreCase("C") || msg.equalsIgnoreCase("D")) && quantidadedeperguntas % 2 == 0) {
+    		  channel.sendMessage(
+          			"Errooou! Você tem "
+	                            + pontosPlayerUm + " pontos.\n").queue();
+          	espera = true;
+          	quantidadedeperguntas++;
+    	  }
+      }
+      if (gameStatus && quantidadedeperguntas < perguntas.size() && !espera) {
+    	  if (msg.equalsIgnoreCase(perguntas.get(quantidadedeperguntas).respostaCerta) && quantidadedeperguntas % 2 != 0) {
+    		  pontosPlayerDois++;
+          	channel.sendMessage(
+          			"Certo! Você tem "
+	                            + pontosPlayerDois + " pontos.\n").queue();
+          	espera = true;
+          	quantidadedeperguntas++;
+    	  }
+    	  else if ((msg.equalsIgnoreCase("A") || msg.equalsIgnoreCase("B") || msg.equalsIgnoreCase("C") || msg.equalsIgnoreCase("D")) && quantidadedeperguntas % 2 != 0) {
+    		  channel.sendMessage(
+          			"Errooou! Você tem "
+                            + pontosPlayerDois + " pontos.\n").queue();
+          	espera = true;
+          	quantidadedeperguntas++;
+    	  }
+      }
+      if (gameStatus && quantidadedeperguntas == perguntas.size() && espera) {
+    	  if(pontosPlayerUm > pontosPlayerDois) {
+    		  channel.sendMessage(
+          			"Player 1 wins!").queue();
+    	  }
+    	  else {
+    		  channel.sendMessage(
+          			"Player 2 wins!").queue();
+      	  }
+    	  gameStatus = false;
+    	  quantidadedeperguntas = 0;
+    	    pontosPlayerUm = 0;
+    	    pontosPlayerDois = 0;
+      }
     }
 }
