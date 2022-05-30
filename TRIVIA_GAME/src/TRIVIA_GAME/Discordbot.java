@@ -11,10 +11,11 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
 
-import org.telegram.telegrambots.api.methods.send.SendMessage;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -75,6 +76,13 @@ public class Discordbot extends ListenerAdapter{
 	int quantidadedeperguntas = 0;
     int pontosPlayerUm = 0;
     int pontosPlayerDois = 0;
+    
+	public static String linha0;
+	public static String linha1;
+	public static String linha2;
+	public static String linha3;
+	public static String linha4;
+	public static String linha5;
     @Override
     public void onMessageReceived(MessageReceivedEvent event)
     {
@@ -98,10 +106,45 @@ public class Discordbot extends ListenerAdapter{
         int numeroPerguntas = Integer.parseInt(ler.nextLine());
 //        quantidadedeperguntas = perguntas.size();
 
-        for(int i = 0; i < numeroPerguntas; i++) {
-	           perguntas.add(new Pergunta(ler.nextLine(), ler.nextLine(),
-	                   ler.nextLine(), ler.nextLine(), ler.nextLine(),
-	                   ler.nextLine())); 
+        for(int i = 0; i < numeroPerguntas; i++) {try {
+			linha0 = new String(ler.nextLine().getBytes(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	try {
+			linha1 = new String(ler.nextLine().getBytes(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	try {
+			linha2 = new String(ler.nextLine().getBytes(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	try {
+			linha3 = new String(ler.nextLine().getBytes(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	try {
+			linha4 = new String(ler.nextLine().getBytes(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	try {
+			linha5 = new String(ler.nextLine().getBytes(), "ISO-8859-1");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+       perguntas.add(new Pergunta(linha0, linha1,
+               linha2, linha3, linha4,
+               linha5));
 	        }
         
         //These are provided with every event in JDA
