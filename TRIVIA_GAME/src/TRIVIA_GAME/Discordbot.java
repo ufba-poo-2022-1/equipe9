@@ -11,12 +11,14 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
 
-
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -24,7 +26,12 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.security.auth.login.LoginException;
 
 public class Discordbot extends ListenerAdapter{
- 
+
+    private static String nomeAdmin = "admin";
+    private static int idAdmin = 1000;
+    public static Admin admin = new Admin(nomeAdmin);
+    public int jogadorId = 0;
+    public boolean statuslog = false;
 	
     public static void main(String[] args)
     {
@@ -32,7 +39,7 @@ public class Discordbot extends ListenerAdapter{
     	//Construtor para o BOT
         try
         {
-            JDA jda = JDABuilder.createDefault("BOT-TOKEN-HERE") // O token da conta para login. Esse token é criado em https://discord.com/developers/applications
+            JDA jda = JDABuilder.createDefault("BOT-TOKE-HERE") // O token da conta para login. Esse token é criado em https://discord.com/developers/applications
                     .addEventListeners(new Discordbot())   // A instancia da classe que vai cuidar dos eventos
                     .build();
             jda.awaitReady(); // Garante que o JDA tenha carregado completamente
@@ -50,9 +57,15 @@ public class Discordbot extends ListenerAdapter{
             e.printStackTrace();
         }
         perguntas = new ArrayList<Pergunta>(LeitorDePerguntas()); //Carregar as perguntas do arquivo TXT na lista perguntas
+        admin.dadosAdmin("admin", "1234");
+        admin.setId(idAdmin);
+    
     }
 
     public static ArrayList<Pergunta> perguntas = new ArrayList<>();
+    public ArrayList<Jogador> jogadores = new ArrayList<>();
+
+    
     
 	//Variáveis usadas para conversão das linhas UTF-8 do TXT e resolver problemas com acentuação
 	public static String linha0;
@@ -116,6 +129,7 @@ public class Discordbot extends ListenerAdapter{
                linha5));
 	        }
 		return perguntas;
+		
 	}
 
 	//Variáveis para controle do jogo
@@ -124,6 +138,15 @@ public class Discordbot extends ListenerAdapter{
 	int quantidadedeperguntas = 0;
     int pontosPlayerUm = 0;
     int pontosPlayerDois = 0;
+    
+    private Comparator<Jogador> comparator = new Rank();
+    
+    
+    
+    public Collection<Jogador> getRanking() {
+        Collections.sort(jogadores, comparator);
+        return Collections.unmodifiableCollection(jogadores);
+    }
 
     	
 	//O parametro event é usado para captar todas as mensagens no chat.
@@ -210,9 +233,22 @@ public class Discordbot extends ListenerAdapter{
         //Comando !Start inicia o jogo caso ainda não tenha sido iniciado
         else if (msg.equals("!start") && !gameStatus)
         {
+        	Jogador jogadorSelecionado = null;
             Member member = event.getMember();
+            Iterator<Jogador> iterator = jogadores.iterator();
+      	  boolean existe = false;
+      	  int index;
+      	    while (iterator.hasNext()) {
+      	        Jogador jogador = iterator.next();
+      	        if (jogador.getNome().equals(member.getEffectiveName())) {
+      	        	existe = true;
+      	        	jogadorSelecionado = jogador;
+      	        }}
             if (member != null)
             {
+            	if(existe && jogadorSelecionado.getIsLogged()) {
+            		
+            	
                 channel.sendMessage(
                     member.getEffectiveName() + " iniciou o jogo!" +
                     "\nPara saber as regras digite !regras" +
@@ -220,6 +256,13 @@ public class Discordbot extends ListenerAdapter{
                     "\nBoa sorte!"
                 ).queue();
                 gameStatus = true;
+            }
+            	else {
+            		channel.sendMessage(
+                            member.getEffectiveName() + " você não está logado!" +
+                            "\ndigite !login para entrar no game"
+                        ).queue();
+            	}	
             }
         }
         
@@ -239,9 +282,20 @@ public class Discordbot extends ListenerAdapter{
         else if (msg.equals("!stop") && gameStatus)
         {
             Member member = event.getMember();
+            Jogador jogadorSelecionado = null;
             if (member != null) 
             {
-                channel.sendMessage(
+            	Iterator<Jogador> iterator = jogadores.iterator();
+          	  boolean existe = false;
+          	  int index;
+          	    while (iterator.hasNext()) {
+          	        Jogador jogador = iterator.next();
+          	        if (jogador.getNome().equals(member.getEffectiveName())) {
+          	        	existe = true;
+          	        	jogadorSelecionado = jogador;
+          	        }}
+          	  if(existe && jogadorSelecionado.getIsLogged()) {
+            	channel.sendMessage(
                     member.getEffectiveName() + " encerrou o jogo!" +
                     "\nCaso queira reiniciar digite !start" +
                     "\nEsperamos vocês nos próximos jogos  " + 
@@ -252,6 +306,13 @@ public class Discordbot extends ListenerAdapter{
                 espera = true;
                 pontosPlayerUm = 0;
                 pontosPlayerDois = 0;
+            }
+          	  else {
+          		channel.sendMessage(
+                        member.getEffectiveName() + " você não está logado!" +
+                        "\ndigite !login para entrar no game"
+                    ).queue();
+          	  }
             }
         }
         
@@ -284,11 +345,11 @@ public class Discordbot extends ListenerAdapter{
             }
         }
 
-        //Lança a questão armezenada em perguntas alternando os jogadores
+        //Lança a questão armezenada em perguntas
       if (gameStatus && quantidadedeperguntas < perguntas.size() && espera) {
-    	  if(quantidadedeperguntas % 2 == 0) {
+    	     	  
           	channel.sendMessage(
-          			"Player 1, por favor responda a seguinte"
+          			"Por favor responda a seguinte"
   	                        + " questão:\n"+
   	                    perguntas.get(quantidadedeperguntas).pergunta+ "\n"+
   	                    perguntas.get(quantidadedeperguntas).respostaUm+ "\n"+
@@ -297,71 +358,199 @@ public class Discordbot extends ListenerAdapter{
   	                    perguntas.get(quantidadedeperguntas).respostaQuatro
   	              ).queue();
              	espera = false;
-    	  }
-    	  if(quantidadedeperguntas % 2 != 0) {
-            	channel.sendMessage(
-              			"Player 2, por favor responda a seguinte"
-      	                        + " questão:\n"+
-      	                    perguntas.get(quantidadedeperguntas).pergunta+ "\n"+
-      	                    perguntas.get(quantidadedeperguntas).respostaUm+ "\n"+
-      	                    perguntas.get(quantidadedeperguntas).respostaDois+ "\n"+
-      	                    perguntas.get(quantidadedeperguntas).respostaTres+ "\n"+
-      	                    perguntas.get(quantidadedeperguntas).respostaQuatro
-      	              ).queue();
-               	espera = false;
-      	  }
+    	     	  
       }
       
       //recebe a resposta dos jogadores e avaliar se é certa ou não, adicionando pontos
       if (gameStatus && quantidadedeperguntas < perguntas.size() && !espera) {
-    	  if (msg.equalsIgnoreCase(perguntas.get(quantidadedeperguntas).respostaCerta) && quantidadedeperguntas % 2 == 0) {
-    		  pontosPlayerUm++;
+    	  
+    	  Member member = event.getMember();
+          Jogador jogadorSelecionado = null;
+          if (member != null) 
+          {
+          	Iterator<Jogador> iterator = jogadores.iterator();
+        	  boolean existe = false;
+        	  int index;
+        	    while (iterator.hasNext()) {
+        	        Jogador jogador = iterator.next();
+        	        if (jogador.getNome().equals(member.getEffectiveName())) {
+        	        	existe = true;
+        	        	jogadorSelecionado = jogador;
+        	        }}
+    	  
+    	  if (existe && jogadorSelecionado.getIsLogged() &&
+    			  msg.equalsIgnoreCase(perguntas.get(quantidadedeperguntas).respostaCerta)) {
+    		  jogadorSelecionado.setPontuacao(jogadorSelecionado.getPontuacao()+1);
           	channel.sendMessage(
-          			"Certo! Você tem "
-	                            + pontosPlayerUm + " pontos.\n").queue();
+          			"Certo! " + member.getEffectiveName()+ ", você tem "
+	                            + jogadorSelecionado.getPontuacao() + " pontos.\n").queue();
           	espera = true;
           	quantidadedeperguntas++;
     	  }
-    	  else if ((msg.equalsIgnoreCase("A") || msg.equalsIgnoreCase("B") || msg.equalsIgnoreCase("C") || msg.equalsIgnoreCase("D")) && quantidadedeperguntas % 2 == 0) {
+    	  else if ((existe && jogadorSelecionado.getIsLogged() && (msg.equalsIgnoreCase("A") || msg.equalsIgnoreCase("B") || 
+    			  msg.equalsIgnoreCase("C") || msg.equalsIgnoreCase("D"))) 
+    			  ) {
     		  channel.sendMessage(
-          			"Errooou! Você tem "
-	                            + pontosPlayerUm + " pontos.\n").queue();
+          			"Errooou! "+ member.getEffectiveName() + ", você tem "
+	                            + jogadorSelecionado.getPontuacao() + " pontos.\n").queue();
           	espera = true;
           	quantidadedeperguntas++;
     	  }
       }
-      if (gameStatus && quantidadedeperguntas < perguntas.size() && !espera) {
-    	  if (msg.equalsIgnoreCase(perguntas.get(quantidadedeperguntas).respostaCerta) && quantidadedeperguntas % 2 != 0) {
-    		  pontosPlayerDois++;
-          	channel.sendMessage(
-          			"Certo! Você tem "
-	                            + pontosPlayerDois + " pontos.\n").queue();
-          	espera = true;
-          	quantidadedeperguntas++;
-    	  }
-    	  else if ((msg.equalsIgnoreCase("A") || msg.equalsIgnoreCase("B") || msg.equalsIgnoreCase("C") || msg.equalsIgnoreCase("D")) && quantidadedeperguntas % 2 != 0) {
-    		  channel.sendMessage(
-          			"Errooou! Você tem "
-                            + pontosPlayerDois + " pontos.\n").queue();
-          	espera = true;
-          	quantidadedeperguntas++;
-    	  }
-      }
+          }
+ 
       
       //Avalia o vencedor e envia mensagem informando o vencedor
       if (gameStatus && quantidadedeperguntas == perguntas.size() && espera) {
-    	  if(pontosPlayerUm > pontosPlayerDois) {
+    	  
+    	  Collections.sort(jogadores, comparator);
+
     		  channel.sendMessage(
-          			"Player 1 wins!").queue();
-    	  }
-    	  else {
-    		  channel.sendMessage(
-          			"Player 2 wins!").queue();
-      	  }
+          			"Acabaram as perguntas! Segue o ranking atual: \n").queue();
+    		  Iterator<Jogador> iterator = jogadores.iterator();
+        	  boolean existe = false;
+        	  int index;
+        	    while (iterator.hasNext()) {
+        	        Jogador jogador = iterator.next();
+        	        channel.sendMessage(
+                  			jogador.getNome() + " - Pontos:"+ jogador.getPontuacao()+"\n").queue();
+        	    }
+        	    channel.sendMessage(
+              			"\nPara iniciar o jogo novamente e somar mais pontos, use !start").queue();
     	  gameStatus = false;
     	  quantidadedeperguntas = 0;
     	    pontosPlayerUm = 0;
     	    pontosPlayerDois = 0;
       }
+      
+   // Comando para se cadastrar no jogo
+      if (msg.equals("!cadastrar"))
+      {
+          Member member = event.getMember();
+          if (member != null)
+          {
+        	  Iterator<Jogador> iterator = jogadores.iterator();
+        	  boolean existe = false;
+        	    while (iterator.hasNext()) {
+        	        Jogador jogador = iterator.next();
+        	        if (jogador.getNome().equals(member.getEffectiveName())) {
+        	        	channel.sendMessage(                      
+                                member.getEffectiveName() + 
+                                " você já está cadastrado. Use o comando !login para entrar"                 
+                            ).queue();
+        	        	existe = true;
+        	        }}
+        	  if(!existe) {
+        		  Jogador jogadorAtual = new Jogador(member.getEffectiveName());
+        		  channel.sendMessage(                      
+                          member.getEffectiveName() + 
+                          " você foi cadastrado com sucesso."                 
+                      ).queue();
+        		  jogadores.add(jogadorAtual);
+        		  jogadorId = jogadores.indexOf(jogadorAtual);
+        		  jogadorAtual.setId(jogadorId);
+        //		  System.out.println(jogadorAtual.getNome() + " "+ jogadorAtual.getId()+ " "+ jogadorAtual.getIsLogged());
+        	  }
+          }
+      }
+      
+      
+   // Comando para fazer login
+      if (msg.equals("!login"))
+      {
+    	  Jogador jogadorSelecionado = null;
+          Member member = event.getMember();
+          if (member != null)
+          {
+        	  Iterator<Jogador> iterator = jogadores.iterator();
+        	  boolean existe = false;
+        	  int index;
+        	    while (iterator.hasNext()) {
+        	        Jogador jogador = iterator.next();
+        	        if (jogador.getNome().equals(member.getEffectiveName())) {
+        	        	existe = true;
+        	        	jogadorSelecionado = jogador;
+        	        }}
+        	  
+        	  
+        	  if(existe && !jogadorSelecionado.getIsLogged()) {
+        		  jogadorSelecionado.setIsLogged(true);
+        		  channel.sendMessage(                      
+                          member.getEffectiveName() + 
+                          " você fez login com sucesso!"                 
+                      ).queue();  
+        	  }
+        	  else if(existe && jogadorSelecionado.getIsLogged()) {
+        		  channel.sendMessage(                      
+                          member.getEffectiveName() + 
+                          " você já está logado"                 
+                      ).queue();
+        	  }
+        	  else {
+        		  channel.sendMessage(                      
+                          member.getEffectiveName() + 
+                          ", não conseguimos encontrar seu usuário. "+
+                          "Use o comando !cadastrar para criar um usuário."                 
+                      ).queue();
+        		  
+        	  }
+          }
+      }
+      
+      // Comando para fazer logout
+      if (msg.equals("!logout"))
+      {
+    	  Jogador jogadorSelecionado = null;
+    	  Member member = event.getMember();
+          if (member != null)
+          {
+        	  Iterator<Jogador> iterator = jogadores.iterator();
+        	  boolean existe = false;
+        	  int index;
+        	    while (iterator.hasNext()) {
+        	        Jogador jogador = iterator.next();
+        	        if (jogador.getNome().equals(member.getEffectiveName())) {
+        	        	existe = true;
+        	        	jogadorSelecionado = jogador;
+        	        }}
+        	  
+        	  if(existe && jogadorSelecionado.getIsLogged()) {
+        		  jogadorSelecionado.setIsLogged(false);
+        		  channel.sendMessage(                      
+                          member.getEffectiveName() + 
+                          " você fez logout com sucesso!"                 
+                      ).queue();  
+        	  }
+        	  else {
+        		  channel.sendMessage(                      
+                          member.getEffectiveName() + 
+                          " você ainda não fez login."+
+                          " use o comando !login para entrar."
+                      ).queue();
+        		  
+        	  }
+          }
+      }
+      
+      if (msg.equals("!rank"))
+      {
+    	  Collections.sort(jogadores, comparator);
+
+		  channel.sendMessage(
+      			"Segue o ranking atual: \n").queue();
+		  Iterator<Jogador> iterator = jogadores.iterator();
+    	  boolean existe = false;
+    	  int index;
+    	    while (iterator.hasNext()) {
+    	        Jogador jogador = iterator.next();
+    	        channel.sendMessage(
+              			jogador.getNome() + " - Pontos:"+ jogador.getPontuacao()+"\n").queue();
+    	    }
+    	    channel.sendMessage(
+          			"\nPara iniciar o jogo novamente e somar mais pontos, use !start").queue();
+      }
+      
     }
+    
+
 }
