@@ -1,54 +1,58 @@
-package TRIVIA_GAME;
+package trivia_bot;
 
 public class Usuario {
-    private String nome;
-    int id;
-    /**
-     * Construtor sem parametros.
-     */
-    public Usuario(){
-    }
+	 
+		protected String nome;
+		boolean logged = false;
+	    int id;
 
-    /**
-     * Construtor usuário.
-     *
-     * @param nome nome do usuário 
-     * @param login login de acesso do usuário 
-     * @param senha senha de acesso do usuário 
-     * @param tipo identifica o tipo de usuário 
-     */
+	    /**
+	     * Construtor usuário.
+	     *
+	     * @param nome nome do usuário 
+	     * @param login login de acesso do usuário 
+	     * @param senha senha de acesso do usuário 
+	     * @param tipo identifica o tipo de usuário 
+	     */
 
-    public Usuario (String nome, int id){
-        this.nome = nome;
-        this.id = id;
-    }
-    
-    /**
-     * Retorna nome do usuário.
-     * @return retorna o nome
-     */
-    public String getNome() {
-        return nome;
-    }
+	    public Usuario (String nome){
+	        this.nome = nome;
+	    }
+	    
+	    /**
+	     * Retorna nome do usuário.
+	     * @return retorna o nome
+	     */
+	    public String getNome() {
+	        return nome;
+	    }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+	    public void setNome(String nome) {
+	        this.nome = nome;
+	    }
 
-     /**
-     * Retorna id do usuário.
-     * @return retorna o id
-     */
-    public int getId() {
-        return id;
-    }
+	     /**
+	     * Retorna id do usuário.
+	     * @return retorna o id
+	     */
+	    public int getId() {
+	        return id;
+	    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-    
-    public boolean notNullString(String string) {
-        return !string.trim().equals("");
-      }
-    
+	    public void setId(int id) {
+	        this.id = id;
+	    }
+	    
+	    public boolean notNullString(String string) {
+	        return !string.trim().equals("");
+	      }
+	    
+	    public void setIsLogged (boolean logged) {
+	    	this.logged = logged;
+	    }
+	    
+	    public boolean getIsLogged () {
+	    	return this.logged;
+	    }
+	    
 }

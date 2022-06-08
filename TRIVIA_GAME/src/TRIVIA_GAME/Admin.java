@@ -1,13 +1,16 @@
-package TRIVIA_GAME;
+package trivia_bot;
 
 public class Admin extends Usuario {
+
     private String login;
     String senha;
 
-    public Admin(){
+    public Admin(String nome){
+    	super(nome);
     }
+    
 
-    public Admin(String login, String senha) {
+    public void dadosAdmin(String login, String senha) {
         this.login = login;
         this.senha = senha;
     }
@@ -42,5 +45,5 @@ public class Admin extends Usuario {
         Admin outroAdmin = (Admin)admin;
         return login.equals(outroAdmin.login);
     }
-
+	
 }
