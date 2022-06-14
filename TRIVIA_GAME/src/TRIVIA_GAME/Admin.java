@@ -5,10 +5,13 @@ public class Admin extends Usuario {
     private String login;
     String senha;
 
+     /**
+     * Construtor Admin.
+     * @param nome nome do usuário admin
+     */
     public Admin(String nome){
     	super(nome);
     }
-    
 
     public void dadosAdmin(String login, String senha) {
         this.login = login;
@@ -40,7 +43,11 @@ public class Admin extends Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
+     /**
+     * compara usuários.
+     * @param  admin 
+     * @return retorna true or false para a comparação 
+     */
     public boolean equalsAdmin(Object admin) {
         Admin outroAdmin = (Admin)admin;
         return login.equals(outroAdmin.login);
