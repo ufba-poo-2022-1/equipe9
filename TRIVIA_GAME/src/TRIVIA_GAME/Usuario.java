@@ -42,7 +42,11 @@ public class Usuario {
 	    public void setId(int id) {
 	        this.id = id;
 	    }
-	    
+	    /**
+	     * Validação para que usuário não seja nulo.
+		 * @param string nome do usuário 
+	     * @return true caso a string não seja nula
+	     */
 	    public boolean notNullString(String string) {
 	        return !string.trim().equals("");
 	      }
@@ -50,7 +54,10 @@ public class Usuario {
 	    public void setIsLogged (boolean logged) {
 	    	this.logged = logged;
 	    }
-	    
+	    /**
+	     * Retorna status do login.
+	     * @return true caso o usuário tenha um login válido.
+	     */
 	    public boolean getIsLogged () {
 	    	return this.logged;
 	    }
