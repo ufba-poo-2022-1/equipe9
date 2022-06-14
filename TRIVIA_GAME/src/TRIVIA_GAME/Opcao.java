@@ -21,7 +21,7 @@ public class Opcao {
         this.metodo = metodo;
     }
     /**
-     * Retorna senha do usuário.
+     * Retorna label
      * @return retorna label
      */
     public String getLabel() {
@@ -32,7 +32,7 @@ public class Opcao {
         this.label = label;
     }
     /**
-     * Retorna senha do usuário.
+     * Retorna método
      * @return retorna metodo
      */
     public Runnable getMetodo() {
