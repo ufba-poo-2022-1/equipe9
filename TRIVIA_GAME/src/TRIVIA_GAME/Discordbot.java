@@ -336,10 +336,13 @@ public class Discordbot extends ListenerAdapter{
             {
                 channel.sendMessage(
                     " Regras do Trivia Game:" +
-                    "\n\nDigite !start para iniciar o jogo" +
+                    "\n\nDigite !cadastrar para se cadastrar no jogo:" +
+                    "\nDigite !login para fazeer login no jogo" +
+                    "\nDigite !start para iniciar o jogo" +
                     "\nDigite !stop para encerrar o jogo " + 
                     "\n\nO jogo consiste em um quiz de perguntas e respostas." +
                     " O bot irá fazer uma pergunta e o primeiro jogador do canal a dar a resosta certa ganha ponto."+
+                    "\nA resposta deve corresponder a uma das opções apresentadas na questão." +
                     "\nOs jogadores vão somando pontos e ao final do game será exibido o rank."
                 ).queue();
             }
