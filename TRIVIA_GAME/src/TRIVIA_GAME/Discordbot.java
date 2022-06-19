@@ -358,18 +358,14 @@ public class Discordbot extends ListenerAdapter{
 
         //Lança a questão armezenada em perguntas
       if (gameStatus && quantidadedeperguntas < perguntas.size() && espera) {
-    	     	  
-          	channel.sendMessage(
-          			"Por favor responda a seguinte"
-  	                        + " questão:\n"+
-  	                    perguntas.get(quantidadedeperguntas).pergunta+ "\n"+
-  	                    perguntas.get(quantidadedeperguntas).respostaUm+ "\n"+
-  	                    perguntas.get(quantidadedeperguntas).respostaDois+ "\n"+
-  	                    perguntas.get(quantidadedeperguntas).respostaTres+ "\n"+
-  	                    perguntas.get(quantidadedeperguntas).respostaQuatro
-  	              ).queue();
-             	espera = false;
-    	     	  
+            channel.sendMessage(
+                "Por favor responda a seguinte questão:\n"+
+                perguntas.get(quantidadedeperguntas).getPergunta() + "\n" +
+                perguntas.get(quantidadedeperguntas).getAlternativas() + "\n" 
+            ).queue();
+
+            espera = false;
+            
       }
       
       //recebe a resposta dos jogadores e avaliar se é certa ou não, adicionando pontos
