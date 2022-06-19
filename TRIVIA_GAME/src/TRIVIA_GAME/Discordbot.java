@@ -86,49 +86,56 @@ public class Discordbot extends ListenerAdapter{
 			e1.printStackTrace();
 		}
         
-
+    
         int numeroPerguntas = Integer.parseInt(ler.nextLine());
 
-        for(int i = 0; i < numeroPerguntas; i++) {try {
-			linha0 = new String(ler.nextLine().getBytes(), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	try {
-			linha1 = new String(ler.nextLine().getBytes(), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	try {
-			linha2 = new String(ler.nextLine().getBytes(), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	try {
-			linha3 = new String(ler.nextLine().getBytes(), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	try {
-			linha4 = new String(ler.nextLine().getBytes(), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	try {
-			linha5 = new String(ler.nextLine().getBytes(), "ISO-8859-1");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-       perguntas.add(new Pergunta(linha0, linha1,
-               linha2, linha3, linha4,
-               linha5));
-	        }
+        for(int i = 0; i < numeroPerguntas; i++) {
+            try {
+                linha0 = new String(ler.nextLine().getBytes(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            try {
+                linha1 = new String(ler.nextLine().getBytes(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            try {
+                linha2 = new String(ler.nextLine().getBytes(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            try {
+                linha3 = new String(ler.nextLine().getBytes(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            try {
+                linha4 = new String(ler.nextLine().getBytes(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            try {
+                linha5 = new String(ler.nextLine().getBytes(), "ISO-8859-1");
+            } catch (UnsupportedEncodingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        
+            ArrayList<String> alternativas = new ArrayList<>();
+            alternativas.add(linha1);
+            alternativas.add(linha2);
+            alternativas.add(linha3);
+            alternativas.add(linha4);
+        
+            perguntas.add(new Pergunta(linha0, alternativas, linha5));
+	    }
+        
 		return perguntas;
 		
 	}
