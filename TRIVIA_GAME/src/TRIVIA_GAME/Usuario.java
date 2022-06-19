@@ -1,4 +1,5 @@
-package trivia_bot;
+package TRIVIA_GAME;
+
 
 public class Usuario {
 	 

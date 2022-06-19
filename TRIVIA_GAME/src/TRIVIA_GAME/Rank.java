@@ -1,7 +1,7 @@
-package trivia_bot;
+package TRIVIA_GAME;
+
 
 import java.util.Comparator;
-import java.util.ArrayList;
 
 /**
  * compara jogadores por pontuação. 

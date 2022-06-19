@@ -1,4 +1,5 @@
-package trivia_bot;
+package TRIVIA_GAME;
+
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
