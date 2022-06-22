@@ -19,13 +19,31 @@ import javax.security.auth.login.LoginException;
 
 public static class Discordbot extends ListenerAdapter{
 
-
     private static String nomeAdmin = "admin";
     private static int idAdmin = 1000;
     public static Admin admin = new Admin(nomeAdmin);
     public int jogadorId = 0;
     public boolean statuslog = false;
 
+    public static ArrayList<Pergunta> perguntas = new ArrayList<>();
+    public ArrayList<Jogador> jogadores = new ArrayList<>();
+
+    //Vari�veis usadas para convers�o das linhas UTF-8 do TXT e resolver problemas com acentua��o
+    public static String linha0;
+    public static String linha1;
+    public static String linha2;
+    public static String linha3;
+    public static String linha4;
+    public static String linha5;
+
+    //Vari�veis para controle do jogo
+    boolean gameStatus = false;
+    boolean espera = true;
+    int quantidadedeperguntas = 0;
+    int pontosPlayerUm = 0;
+    int pontosPlayerDois = 0;
+
+    private Comparator<Jogador> comparator = new Rank();
 
     public static void  main(final String[] args)
     {
@@ -50,27 +68,16 @@ public static class Discordbot extends ListenerAdapter{
             //Essa exce��o ocorre nessa situa��o.
             e.printStackTrace();
         }
-        perguntas = new ArrayList<>(LeitorDePerguntas()); //Carregar as perguntas do arquivo TXT na lista perguntas
+        perguntas = new ArrayList<>(leitorDePerguntas()); //Carregar as perguntas do arquivo TXT na lista perguntas
         admin.dadosAdmin("admin", "1234");
         admin.setId(idAdmin);
     
     }
 
-    public static ArrayList<Pergunta> perguntas = new ArrayList<>();
-    public ArrayList<Jogador> jogadores = new ArrayList<>();
 
-    
-    
-	//Vari�veis usadas para convers�o das linhas UTF-8 do TXT e resolver problemas com acentua��o
-	public static String linha0;
-	public static String linha1;
-	public static String linha2;
-	public static String linha3;
-	public static String linha4;
-	public static String linha5;
 	
 	//M�todo para leitura das perguntas do arquivo.TXT
-	public static ArrayList<Pergunta> LeitorDePerguntas() {
+	public static ArrayList<Pergunta> leitorDePerguntas() {
         //Optamos por usar ArrayList ao invés de interface aqui por ser, no escopo do programa, mais fácil de manipular e de utilizar no momento;
 		Scanner ler = null;
 		try {
@@ -134,15 +141,7 @@ public static class Discordbot extends ListenerAdapter{
 		
 	}
 
-	//Vari�veis para controle do jogo
-	boolean gameStatus = false;
-	boolean espera = true;
-	int quantidadedeperguntas = 0;
-    int pontosPlayerUm = 0;
-    int pontosPlayerDois = 0;
-    
-    private Comparator<Jogador> comparator = new Rank();
-    
+
     
     
     public Collection<Jogador> getRanking() {
@@ -154,7 +153,7 @@ public static class Discordbot extends ListenerAdapter{
 	//O parametro event � usado para captar todas as mensagens no chat.
 	//O m�todo abaixo � atualizado constantemente monitorando as mensagens e tomando as a��es
     @Override
-    public void  onMessageReceived(MessageReceivedEvent event)
+    public void  onMessageReceived(final MessageReceivedEvent event)
     {
 
         JDA jda = event.getJDA();                       //JDA, o n�cleo do API.
@@ -385,9 +384,9 @@ public static class Discordbot extends ListenerAdapter{
           	espera = true;
           	quantidadedeperguntas++;
     	  }
-    	  else if ((existe && jogadorSelecionado.getIsLogged() && (msg.equalsIgnoreCase("A") || msg.equalsIgnoreCase("B") || 
+    	  else if (existe && jogadorSelecionado.getIsLogged() && (msg.equalsIgnoreCase("A") || msg.equalsIgnoreCase("B") ||
     			  msg.equalsIgnoreCase("C") || msg.equalsIgnoreCase("D"))) 
-    			  ) {
+    			   {
     		  channel.sendMessage(
           			"Errooou! "+ member.getEffectiveName() + ", voc� tem "
 	                            + jogadorSelecionado.getPontuacao() + " pontos.\n").queue();
