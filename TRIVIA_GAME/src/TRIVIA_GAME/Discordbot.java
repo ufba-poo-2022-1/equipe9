@@ -73,6 +73,7 @@ public class Discordbot extends ListenerAdapter{
 	
 	//M�todo para leitura das perguntas do arquivo.TXT
 	public static ArrayList<Pergunta> LeitorDePerguntas() {
+        //Optamos por usar ArrayList ao invés de interface aqui por ser, no escopo do programa, mais fácil de manipular e de utilizar no momento;
 		Scanner ler = null;
 		try {
 			ler = new Scanner(new File("perguntas.txt"));
@@ -240,7 +241,6 @@ public class Discordbot extends ListenerAdapter{
             Member member = event.getMember();
             Iterator<Jogador> iterator = jogadores.iterator();
       	  boolean existe = false;
-      	  int index;
       	    while (iterator.hasNext()) {
       	        Jogador jogador = iterator.next();
       	        if (jogador.getNome().equals(member.getEffectiveName())) {
@@ -290,7 +290,6 @@ public class Discordbot extends ListenerAdapter{
             {
             	Iterator<Jogador> iterator = jogadores.iterator();
           	  boolean existe = false;
-          	  int index;
           	    while (iterator.hasNext()) {
           	        Jogador jogador = iterator.next();
           	        if (jogador.getNome().equals(member.getEffectiveName())) {
@@ -372,7 +371,6 @@ public class Discordbot extends ListenerAdapter{
           {
           	Iterator<Jogador> iterator = jogadores.iterator();
         	  boolean existe = false;
-        	  int index;
         	    while (iterator.hasNext()) {
         	        Jogador jogador = iterator.next();
         	        if (jogador.getNome().equals(member.getEffectiveName())) {
@@ -411,7 +409,6 @@ public class Discordbot extends ListenerAdapter{
           			"Acabaram as perguntas! Segue o ranking atual: \n").queue();
     		  Iterator<Jogador> iterator = jogadores.iterator();
         	  boolean existe = false;
-        	  int index;
         	    while (iterator.hasNext()) {
         	        Jogador jogador = iterator.next();
         	        channel.sendMessage(
@@ -465,7 +462,6 @@ public class Discordbot extends ListenerAdapter{
           {
         	  Iterator<Jogador> iterator = jogadores.iterator();
         	  boolean existe = false;
-        	  int index;
         	    while (iterator.hasNext()) {
         	        Jogador jogador = iterator.next();
         	        if (jogador.getNome().equals(member.getEffectiveName())) {
@@ -507,7 +503,6 @@ public class Discordbot extends ListenerAdapter{
           {
         	  Iterator<Jogador> iterator = jogadores.iterator();
         	  boolean existe = false;
-        	  int index;
         	    while (iterator.hasNext()) {
         	        Jogador jogador = iterator.next();
         	        if (jogador.getNome().equals(member.getEffectiveName())) {
@@ -541,7 +536,6 @@ public class Discordbot extends ListenerAdapter{
       			"Segue o ranking atual: \n").queue();
 		  Iterator<Jogador> iterator = jogadores.iterator();
     	  boolean existe = false;
-    	  int index;
     	    while (iterator.hasNext()) {
     	        Jogador jogador = iterator.next();
     	        channel.sendMessage(
