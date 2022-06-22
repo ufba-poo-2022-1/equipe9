@@ -14,20 +14,24 @@ public class Pergunta {
         this.resposta = resposta;
     }
 
-    // Métodos
+    // MÃ©todos
 
+    // Imprime o enunciado da pergunta
     public void PrintPergunta(){
 		System.out.println(getPergunta());
 
-        //char c = 'A'; //primeira alternativa
-
         for(String alt : getAlternativas()){
-            //System.out.print(c++ + ". "); //Prefixo da alternativa
             System.out.println(alt);
         }
 
     }
 
+    //Imprime as alternativas por linha
+    public void PrintAlternativas(){
+        for (String alt : getAlternativas()){
+    		System.out.println(alt);
+        }
+    }
 
     // Getters
 
@@ -39,11 +43,13 @@ public class Pergunta {
         return resposta;
     }
 
-    public ArrayList<String> getAlternativas(){ // Para todas as alternativas
+    // Retorna array com todas as alternativas
+    public ArrayList<String> getAlternativas(){ 
         return alternativas;
     }
 
-    public String getAlternativa(String alt){ // Para uma alternativa especÃ­fica
+    // Retorna alternativa X indicada no parametro
+    public String getAlternativa(String alt){ 
 
         // Converte Char to Int. A = 1, B = 2....
         int indice = (int) alt.toUpperCase().charAt(0) - 64;
@@ -62,7 +68,7 @@ public class Pergunta {
 
     }
 
-    public void setAlternativa(int indice, String alternativa){ // Para uma alternativa específica
+    public void setAlternativa(int indice, String alternativa){ // Para uma alternativa especï¿½fica
         alternativas.set(indice+1, alternativa);
     }
 
