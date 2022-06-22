@@ -113,7 +113,7 @@ public class jogo {
 
 			//Leitura das perguntas
 			
-		String fileName = "perguntas.txt";
+			String fileName = "perguntas.txt";
 			
 			File perguntasFile = new File(fileName);
 			Scanner ler = new Scanner(perguntasFile);
@@ -158,7 +158,9 @@ public class jogo {
 				System.out.println("Insira o nome do jogador 1: ");
 				player2.setNome(teclado.next());
 			} while (!player2.notNullString(player2.getNome()) && player2.equalsNamejogador(player1));
-			
+
+			int verificaJogador = 1;
+
 
 			for (Pergunta questao : bancoQuestoes){
 				questao.PrintPergunta();
@@ -166,6 +168,18 @@ public class jogo {
 
 				System.out.println("\n==========");
 				System.out.println(player1.getNome());
+
+				if(verificaJogador % 2 == 0) {
+					System.out.println("\n==========");
+					System.out.println(player2.getNome());
+					System.out.println("\n==========");
+					verificaJogador++;
+				} else if (verificaJogador % 2 != 0) {
+					System.out.println("\n==========");
+					System.out.println(player1.getNome());
+					System.out.println("\n==========");
+					verificaJogador++;
+				}
 				
 				// if (resposta.equalsIgnoreCase(questao.getResposta())){
 				// 	player1.adicionarPontuacao(player1.getPontuacao()+1);
@@ -180,8 +194,10 @@ public class jogo {
 
 			if(player1.getPontuacao() > player2.getPontuacao()) {
 				System.out.print("Player 1 wins!");
-			} else {
+			} else if (player1.getPontuacao() < player2.getPontuacao()) {
 				System.out.print("Player 2 wins!");
+			} else {
+				System.out.print("Its a draw!");
 			}
 
 		} catch (FileNotFoundException e) {
