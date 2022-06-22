@@ -26,11 +26,13 @@ public class Pergunta {
 
     }
 
-    //Imprime as alternativas por linha
-    public void PrintAlternativas(){
+    //Retorna string com alternativas separadas por linha
+    public String StringAlternativas(){
+        String s = "";
         for (String alt : getAlternativas()){
-    		System.out.println(alt);
+    		s += alt + "/n";
         }
+        return s;
     }
 
     // Getters

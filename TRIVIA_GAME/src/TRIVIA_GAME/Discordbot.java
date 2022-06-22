@@ -327,7 +327,7 @@ public static class Discordbot extends ListenerAdapter{
             channel.sendMessage(
                 "Por favor responda a seguinte quest�o:\n"+
                 perguntas.get(quantidadedeperguntas).getPergunta() + "\n" +
-                perguntas.get(quantidadedeperguntas).getAlternativas() + "\n" 
+                perguntas.get(quantidadedeperguntas).StringAlternativas() + "\n" 
             ).queue();
 
             espera = false;
