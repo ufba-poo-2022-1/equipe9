@@ -100,7 +100,7 @@ A. Marte
 B. Lua
 C. Júpiter
 D. Terra
-C 
+C
 Um anel tem 3 pedras preciosas. Quantas pedras preciosas têm 11 anéis?
 A. 33
 B. 110
@@ -124,7 +124,7 @@ A. Torre Eiffel
 B. Torre de Pisa
 C. Estátua da Liberdade
 D. Cristo Redentor
-B 
+B
 Kryptonita é a fraqueza de qual super-herói?
 A. Batman
 B. Hulk
