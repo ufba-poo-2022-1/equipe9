@@ -8,7 +8,7 @@ public class Admin extends Usuario {
 
      /**
      * Construtor Admin.
-     * @param nome nome do usuÃ¡rio admin
+     * @param nome nome do usuário admin
      */
     public Admin(String nome){
     	super(nome);
@@ -23,8 +23,8 @@ public class Admin extends Usuario {
         return login;
     }
   /**
-     * Retorna senha do usuÃ¡rio.
-     * @param senha senha do usuÃ¡rio
+     * Retorna senha do usuário.
+     * @param senha senha do usuário
      * @return retorna a senha
      */
 
@@ -32,8 +32,8 @@ public class Admin extends Usuario {
         return senha;
     }
    /**
-     * Retorna tipo do usuÃ¡rio.
-     * @param tipo tipo do usuÃ¡rio
+     * Retorna tipo do usuário.
+     * @param tipo tipo do usuário
      * @return retorna o tipo
      */
 
@@ -45,9 +45,9 @@ public class Admin extends Usuario {
         this.senha = senha;
     }
      /**
-     * compara usuÃ¡rios.
+     * compara usuários.
      * @param  admin 
-     * @return retorna true or false para a comparaÃ§Ã£o 
+     * @return retorna true or false para a comparação 
      */
     public boolean equalsAdmin(Object admin) {
         Admin outroAdmin = (Admin)admin;

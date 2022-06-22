@@ -1,4 +1,4 @@
-9
+37
 Qual o valor de x em: x + 2 = 4?
 A. 1
 B. 2

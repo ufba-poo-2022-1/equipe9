@@ -14,7 +14,7 @@ public class Pergunta {
         this.resposta = resposta;
     }
 
-    // MÃ©todos
+    // Métodos
 
     public void PrintPergunta(){
 		System.out.println(getPergunta());
@@ -62,7 +62,7 @@ public class Pergunta {
 
     }
 
-    public void setAlternativa(int indice, String alternativa){ // Para uma alternativa especÃ­fica
+    public void setAlternativa(int indice, String alternativa){ // Para uma alternativa específica
         alternativas.set(indice+1, alternativa);
     }
 

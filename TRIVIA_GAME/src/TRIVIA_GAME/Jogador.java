@@ -13,8 +13,8 @@ public class Jogador extends Usuario{
 	    }
 
 		/**
-	     * Retorna pontuacao do usuÃ¡rio.
-	     * @return retorna a pontuacao
+	     * Retorna pontuação do usuário.
+	     * @return retorna a pontuação
 	     */
 	    public int getPontuacao() {
 	        return this.pontuacao;
@@ -24,17 +24,17 @@ public class Jogador extends Usuario{
 	        this.pontuacao = pontuacao;
 	    }
 		/**
-	     * Incrementa pontuacao do usuÃ¡rio.
-		 * @param pontuacao pontuaÃ§Ã£o por acerto
+	     * Incrementa pontuacao do usuário.
+		 * @param pontuacao pontuação por acerto
 	     */
 
 	    public void adicionarPontuacao(int pontuacao) {
 	        this.pontuacao += pontuacao;
 	    }
 		/**
-		* compara nome do jogador, o nome do jogador deve ser Ãºnico.
+		* compara nome do jogador, o nome do jogador deve ser único.
 		* @param  jogador 
-		* @return retorna true or false para a comparaÃ§Ã£o 
+		* @return retorna true or false para a comparação 
 		*/
 	    public boolean equalsNamejogador(Object jogador) {
 	        Jogador outroJogador = (Jogador)jogador;

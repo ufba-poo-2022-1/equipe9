@@ -8,12 +8,12 @@ public class Usuario {
 	    int id;
 
 	    /**
-	     * Construtor usuÃ¡rio.
+	     * Construtor usuário.
 	     *
-	     * @param nome nome do usuÃ¡rio 
-	     * @param login login de acesso do usuÃ¡rio 
-	     * @param senha senha de acesso do usuÃ¡rio 
-	     * @param tipo identifica o tipo de usuÃ¡rio 
+	     * @param nome nome do usuário 
+	     * @param login login de acesso do usuário 
+	     * @param senha senha de acesso do usuário 
+	     * @param tipo identifica o tipo de usuário 
 	     */
 
 	    public Usuario (String nome){
@@ -21,7 +21,7 @@ public class Usuario {
 	    }
 	    
 	    /**
-	     * Retorna nome do usuÃ¡rio.
+	     * Retorna nome do usuário.
 	     * @return retorna o nome
 	     */
 	    public String getNome() {
@@ -33,7 +33,7 @@ public class Usuario {
 	    }
 
 	     /**
-	     * Retorna id do usuÃ¡rio.
+	     * Retorna id do usuário.
 	     * @return retorna o id
 	     */
 	    public int getId() {
@@ -44,9 +44,9 @@ public class Usuario {
 	        this.id = id;
 	    }
 	    /**
-	     * ValidaÃ§Ã£o para que usuÃ¡rio nÃ£o seja nulo.
-		 * @param string nome do usuÃ¡rio 
-	     * @return true caso a string nÃ£o seja nula
+	     * Validação para que usuário não seja nulo.
+		 * @param string nome do usuário 
+	     * @return true caso a string não seja nula
 	     */
 	    public boolean notNullString(String string) {
 	        return !string.trim().equals("");
@@ -57,7 +57,7 @@ public class Usuario {
 	    }
 	    /**
 	     * Retorna status do login.
-	     * @return true caso o usuÃ¡rio tenha um login vÃ¡lido.
+	     * @return true caso o usuário tenha um login válido.
 	     */
 	    public boolean getIsLogged () {
 	    	return this.logged;
