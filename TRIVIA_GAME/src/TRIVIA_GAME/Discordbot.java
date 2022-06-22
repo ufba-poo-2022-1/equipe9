@@ -1,13 +1,9 @@
 package TRIVIA_GAME;
 
-
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-
-import javax.security.auth.login.LoginException;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
@@ -21,15 +17,17 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.security.auth.login.LoginException;
 
-public class Discordbot extends ListenerAdapter{
+public static class Discordbot extends ListenerAdapter{
+
 
     private static String nomeAdmin = "admin";
     private static int idAdmin = 1000;
     public static Admin admin = new Admin(nomeAdmin);
     public int jogadorId = 0;
     public boolean statuslog = false;
-	
-    public static void main(String[] args)
+
+
+    public static void  main(final String[] args)
     {
   
     	//Construtor para o BOT
@@ -52,7 +50,7 @@ public class Discordbot extends ListenerAdapter{
             //Essa exce��o ocorre nessa situa��o.
             e.printStackTrace();
         }
-        perguntas = new ArrayList<Pergunta>(LeitorDePerguntas()); //Carregar as perguntas do arquivo TXT na lista perguntas
+        perguntas = new ArrayList<>(LeitorDePerguntas()); //Carregar as perguntas do arquivo TXT na lista perguntas
         admin.dadosAdmin("admin", "1234");
         admin.setId(idAdmin);
     
@@ -156,7 +154,7 @@ public class Discordbot extends ListenerAdapter{
 	//O parametro event � usado para captar todas as mensagens no chat.
 	//O m�todo abaixo � atualizado constantemente monitorando as mensagens e tomando as a��es
     @Override
-    public void onMessageReceived(MessageReceivedEvent event)
+    public void  onMessageReceived(MessageReceivedEvent event)
     {
 
         JDA jda = event.getJDA();                       //JDA, o n�cleo do API.
