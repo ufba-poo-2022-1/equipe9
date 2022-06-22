@@ -93,36 +93,11 @@ public static class Discordbot extends ListenerAdapter{
         for(int i = 0; i < numeroPerguntas; i++) {
             try {
                 linha0 = new String(ler.nextLine().getBytes(), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            try {
                 linha1 = new String(ler.nextLine().getBytes(), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            try {
                 linha2 = new String(ler.nextLine().getBytes(), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            try {
                 linha3 = new String(ler.nextLine().getBytes(), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            try {
                 linha4 = new String(ler.nextLine().getBytes(), "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            try {
-                linha5 = new String(ler.nextLine().getBytes(), "ISO-8859-1");
+                linha5 = new String(ler.nextLine().getBytes(), "UTF-8");
             } catch (UnsupportedEncodingException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
