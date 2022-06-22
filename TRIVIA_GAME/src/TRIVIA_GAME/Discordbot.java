@@ -40,7 +40,7 @@ public class Discordbot extends ListenerAdapter{
     	//Construtor para o BOT
         try
         {
-            JDA jda = JDABuilder.createDefault("OTc1MDc3ODAwODk1NzI1NTk5.GnWn9r.8V-QzLMdCA4qcARTmbQ1zeRT7_xmtrC8bzAgTA") // O token da conta para login. Esse token é criado em https://discord.com/developers/applications
+            JDA jda = JDABuilder.createDefault("BOT-TOKEN-AQUI") // O token da conta para login. Esse token é criado em https://discord.com/developers/applications
                     .addEventListeners(new Discordbot())   // A instancia da classe que vai cuidar dos eventos
                     .build();
             jda.awaitReady(); // Garante que o JDA tenha carregado completamente
