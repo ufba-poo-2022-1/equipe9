@@ -313,7 +313,8 @@ public static class Discordbot extends ListenerAdapter{
                     "\n\nDigite !cadastrar para se cadastrar no jogo:" +
                     "\nDigite !login para fazer login no jogo" +
                     "\nDigite !start para iniciar o jogo" +
-                    "\nDigite !stop para encerrar o jogo " + 
+                    "\nDigite !repete para repetir a última pergunta feita no jogo" + 
+                    "\nDigite !stop para encerrar o jogo " +                   
                     "\n\nO jogo consiste em um quiz de perguntas e respostas." +
                     " O bot ir� fazer uma pergunta e o primeiro jogador do canal a dar a resosta certa ganha ponto."+
                     "\nA resposta deve corresponder a uma das op��es apresentadas na quest�o." +
@@ -322,21 +323,21 @@ public static class Discordbot extends ListenerAdapter{
             }
         }
 
-        //Lan�a a quest�o armezenada em perguntas
+        //Lança a questão armezenada em perguntas
       if (gameStatus && quantidadedeperguntas < perguntas.size() && espera) {
             channel.sendMessage(
                 "Por favor responda a seguinte quest�o:\n"+
-                perguntas.get(quantidadedeperguntas).getPergunta() + "\n" +
+                perguntas.get(quantidadedeperguntas).getPergunta() + "\n" +       
                 perguntas.get(quantidadedeperguntas).StringAlternativas() + "\n" 
             ).queue();
 
-            espera = false;
-            
+             espera = false;   
+
       }
       
       //recebe a resposta dos jogadores e avaliar se � certa ou n�o, adicionando pontos
       if (gameStatus && quantidadedeperguntas < perguntas.size() && !espera) {
-    	  
+   	  
     	  Member member = event.getMember();
           Jogador jogadorSelecionado = null;
           if (member != null) 
@@ -349,6 +350,17 @@ public static class Discordbot extends ListenerAdapter{
         	        	existe = true;
         	        	jogadorSelecionado = jogador;
         	        }}
+
+           // Repete a última pergunta que ainda não foi respondida 
+            if (existe && jogadorSelecionado.getIsLogged() && msg.equals("!repete")){
+                espera = true;
+                channel.sendMessage(
+                "Por favor responda a seguinte questão:\n"+
+                perguntas.get(quantidadedeperguntas).getPergunta() + "\n" +
+                perguntas.get(quantidadedeperguntas).StringAlternativas() + "\n" 
+            ).queue();
+                espera = false;
+            } 
     	  
     	  if (existe && jogadorSelecionado.getIsLogged() &&
     			  msg.equalsIgnoreCase(perguntas.get(quantidadedeperguntas).getResposta())) {
