@@ -1,4 +1,4 @@
-package trivia_bot;
+package TRIVIA_GAME;
 import java.util.ArrayList;
 
 public class Pergunta {
@@ -14,7 +14,7 @@ public class Pergunta {
         this.resposta = resposta;
     }
 
-    // Métodos
+    // Mï¿½todos
 
     // Imprime o enunciado da pergunta
     public void PrintPergunta(){
@@ -70,7 +70,7 @@ public class Pergunta {
 
     }
 
-    public void setAlternativa(int indice, String alternativa){ // Para uma alternativa específica
+    public void setAlternativa(int indice, String alternativa){ // Para uma alternativa especï¿½fica
         alternativas.set(indice+1, alternativa);
     }
 
