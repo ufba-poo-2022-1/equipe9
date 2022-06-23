@@ -1,4 +1,4 @@
-package TRIVIA_GAME;
+package trivia_bot;
 import java.util.ArrayList;
 
 public class Pergunta {
@@ -14,7 +14,7 @@ public class Pergunta {
         this.resposta = resposta;
     }
 
-    // MÃ©todos
+    // Métodos
 
     // Imprime o enunciado da pergunta
     public void PrintPergunta(){
@@ -30,7 +30,7 @@ public class Pergunta {
     public String StringAlternativas(){
         String s = "";
         for (String alt : getAlternativas()){
-    		s += alt + "/n";
+        	s += alt + "\n";
         }
         return s;
     }
@@ -51,7 +51,7 @@ public class Pergunta {
     }
 
     // Retorna alternativa X indicada no parametro
-    public String getAlternativa(String alt){ 
+    public String getAlternativa(String alt){
 
         // Converte Char to Int. A = 1, B = 2....
         int indice = (int) alt.toUpperCase().charAt(0) - 64;
@@ -70,7 +70,7 @@ public class Pergunta {
 
     }
 
-    public void setAlternativa(int indice, String alternativa){ // Para uma alternativa especï¿½fica
+    public void setAlternativa(int indice, String alternativa){ // Para uma alternativa específica
         alternativas.set(indice+1, alternativa);
     }
 
