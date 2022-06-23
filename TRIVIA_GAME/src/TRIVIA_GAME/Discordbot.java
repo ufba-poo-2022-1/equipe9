@@ -34,7 +34,7 @@ public class Discordbot extends ListenerAdapter{
     public static ArrayList<Pergunta> perguntas = new ArrayList<>();
     public ArrayList<Jogador> jogadores = new ArrayList<>();
 
-    //Vari�veis usadas para convers�o das linhas UTF-8 do TXT e resolver problemas com acentua��o
+    /** Variaveis usadas para conversao das linhas UTF-8 do TXT e resolver problemas com acentuacao*/
     public static String linha0;
     public static String linha1;
     public static String linha2;
@@ -42,7 +42,7 @@ public class Discordbot extends ListenerAdapter{
     public static String linha4;
     public static String linha5;
 
-    //Vari�veis para controle do jogo
+    /** Variaveis para controle do jogo*/
     boolean gameStatus = false;
     boolean espera = true;
     int quantidadedeperguntas = 0;
@@ -53,27 +53,32 @@ public class Discordbot extends ListenerAdapter{
     public static void main(String[] args)
     {
   
-    	//Construtor para o BOT
+    	/** Construtor para o BOT */
         try
-        {
-            JDA jda = JDABuilder.createDefault("BOT-TOKEN-AQUI") // O token da conta para login. Esse token � criado em https://discord.com/developers/applications
-                    .addEventListeners(new Discordbot())   // A instancia da classe que vai cuidar dos eventos
+        {   /** O token da conta para login. Esse token foi criado em https://discord.com/developers/applications*/
+            JDA jda = JDABuilder.createDefault("BOT-TOKEN-AQUI") 
+            /** A instancia da classe que vai cuidar dos eventos*/ 
+                    .addEventListeners(new Discordbot())   
                     .build();
-            jda.awaitReady(); // Garante que o JDA tenha carregado completamente
+            jda.awaitReady(); /** Garante que o JDA tenha carregado completamente*/ 
             System.out.println("Finished Building JDA!");
         }
+        
+        /** Excecao em que algo da errado com o login*/
         catch (LoginException e)
         {
-            //Exce��o em que algo da errado com o login
+            
             e.printStackTrace();
         }
         catch (InterruptedException e)
         {
-            //como o m�todo awaitRedy � um metodo que faz o bloqueio, a espera pode ser interrompida.
-            //Essa exce��o ocorre nessa situa��o.
+            /** como o metodo awaitRedy e um metodo que faz o bloqueio,
+            * a espera pode ser interrompida.
+            * Essa excecao ocorre nessa situacao. */
             e.printStackTrace();
         }
-        perguntas = new ArrayList<Pergunta>(LeitorDePerguntas()); //Carregar as perguntas do arquivo TXT na lista perguntas
+        /** Carregar as perguntas do arquivo TXT na lista perguntas */
+        perguntas = new ArrayList<Pergunta>(LeitorDePerguntas()); 
         admin.dadosAdmin("admin", "1234");
         admin.setId(idAdmin);
     
@@ -81,16 +86,18 @@ public class Discordbot extends ListenerAdapter{
    
    
 	
-	//M�todo para leitura das perguntas do arquivo.TXT
+	/** Metodo para leitura das perguntas do arquivo.TXT*/ 
 	public static ArrayList<Pergunta> LeitorDePerguntas() {
-	//Optamos por usar ArrayList ao inv�s de interface aqui por ser, no escopo do programa, mais f�cil de manipular e de utilizar no momento;
+
+	/** Optamos por usar ArrayList ao inves de interface aqui por ser, 
+    *no escopo do programa, mais facil de manipular e de utilizar no momento;*/
 		BufferedReader ler = null;
 		FileInputStream fis = null;
 		try {
 			fis = new FileInputStream("perguntas.txt");
 			ler = new BufferedReader(new InputStreamReader(fis));
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
+			/** TODO Auto-generated catch block*/ 
 			e1.printStackTrace();
 		}
         
@@ -99,10 +106,10 @@ public class Discordbot extends ListenerAdapter{
 		try {
 			numeroPerguntas = Integer.parseInt(ler.readLine());
 		} catch (NumberFormatException e1) {
-			// TODO Auto-generated catch block
+			/** TODO Auto-generated catch block*/ 
 			e1.printStackTrace();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+			/** TODO Auto-generated catch block*/
 			e1.printStackTrace();
 		}
 
@@ -115,10 +122,10 @@ public class Discordbot extends ListenerAdapter{
 				linha4 = new String(ler.readLine().getBytes(), "UTF-8");
 				linha5 = new String(ler.readLine().getBytes(), "UTF-8");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				/** TODO Auto-generated catch block */
 				e.printStackTrace();
 			}
-        
+            /** Adiciona as alternativas */
             ArrayList<String> alternativas = new ArrayList<>();
             alternativas.add(linha1);
             alternativas.add(linha2);
@@ -131,30 +138,35 @@ public class Discordbot extends ListenerAdapter{
 		
 	}
 
-    
+    /**acessa o ranking e devolve ordem dos jogadores
+    * @return ordem dos jogadores
+    */
     public Collection<Jogador> getRanking() {
         Collections.sort(jogadores, comparator);
         return Collections.unmodifiableCollection(jogadores);
     }
 
     	
-	//O parametro event � usado para captar todas as mensagens no chat.
-	//O m�todo abaixo � atualizado constantemente monitorando as mensagens e tomando as a��es
+	/** O metodo abaixo e atualizado constantemente monitorando as mensagens e tomando as acoes
+    * @param event O parametro event e usado para captar todas as mensagens no chat.
+	*/
     @Override
     public void onMessageReceived(MessageReceivedEvent event)
     {
+        /*JDA, o nucleo do API.*/
+        JDA jda = event.getJDA(); 
+        /*A quantidade de eventos Discord que o JDA Recebeu desde a ultima conexao.   */                   
+        long responseNumber = event.getResponseNumber();
 
-        JDA jda = event.getJDA();                       //JDA, o n�cleo do API.
-        long responseNumber = event.getResponseNumber();//A quantidade de eventos Discord que o JDA Recebeu desde a �ltima conex�o.
-
-        //informa��es de eventos espec�ficos
-        User author = event.getAuthor();                //Usu�rio que mandou mensagem
+        /**informacoes de eventos especificos*/
+        
+        User author = event.getAuthor();                //Usuario que mandou mensagem
         Message message = event.getMessage();           //A mensagem que foi recebida.
         MessageChannel channel = event.getChannel();    //O canal no qual a mensagem foi enviada
 
         String msg = message.getContentDisplay();       //Retorna a mensagem de uma forma que podemos ler.
 
-        boolean bot = author.isBot();                    //determinar se quem enviou a mensagem � um bot ou n�o
+        boolean bot = author.isBot();                   //determinar se quem enviou a mensagem e um bot ou nao
 
         if (event.isFromType(ChannelType.TEXT))         
         {
@@ -173,8 +185,8 @@ public class Discordbot extends ListenerAdapter{
                 name = member.getEffectiveName();       
             } 
             
-            //Cria a mensagem no terminal atrav�s dos dados coletados do discord. Vai exibir o nome do server
-            //o nome do usu�rio (efetivo ou exibido, no caso de o servidor permitir trocar o nick internamente)
+            /**Cria a mensagem no terminal atraves dos dados coletados do discord. Vai exibir o nome do server
+            *o nome do usuario (efetivo ou exibido, no caso de o servidor permitir trocar o nick internamente)*/
             System.out.printf("(%s)[%s]<%s>: %s\n", guild.getName(), textChannel.getName(), name, msg);
         }
         else if (event.isFromType(ChannelType.PRIVATE)) 
@@ -189,7 +201,7 @@ public class Discordbot extends ListenerAdapter{
 
         if (msg.equals("!ping"))
         {
-            channel.sendMessage("pong!").queue(); //O queue() faz a gest�o do rate limit automaticamente
+            channel.sendMessage("pong!").queue(); //O queue() faz a gestao do rate limit automaticamente
         }
         else if (msg.equals("!roll")) //comando para sortear um numero de 1 a 6 e mostra uma mensagem se for menor de 3
         {
@@ -204,7 +216,7 @@ public class Discordbot extends ListenerAdapter{
         }
         else if (msg.equals("!whoami"))
         {
-            // Mesagem para retornar os dados do usu�rio
+            // Mesagem para retornar os dados do usuario
 
             Member member = event.getMember();
             if (member != null)
@@ -218,8 +230,8 @@ public class Discordbot extends ListenerAdapter{
             }
         }
 
-        //In�cio do jogo
-        //Comando !Start inicia o jogo caso ainda n�o tenha sido iniciado
+        /** Inicio do jogo
+        *Comando !Start inicia o jogo caso ainda nao tenha sido iniciado*/
         else if (msg.equals("!start") && !gameStatus)
         {
         	Jogador jogadorSelecionado = null;
@@ -254,7 +266,7 @@ public class Discordbot extends ListenerAdapter{
             }
         }
         
-        //Envia mensagem dizendo que o jogo j� foi iniciado
+        //Envia mensagem dizendo que o jogo ja foi iniciado
         else if (msg.equals("!start") && gameStatus)
         {
             Member member = event.getMember();
@@ -302,7 +314,7 @@ public class Discordbot extends ListenerAdapter{
             }
         }
         
-        //Caso o jogo ainda n�o tenha sido iniciado, envia a mensagem informando
+        //Caso o jogo ainda nao tenha sido iniciado, envia a mensagem informando
         else if (msg.equals("!stop") && !gameStatus)
         {
             Member member = event.getMember();
@@ -335,7 +347,7 @@ public class Discordbot extends ListenerAdapter{
             }
         }
 
-        //Lan�a a quest�o armezenada em perguntas
+        //Lanca a questao armezenada em perguntas
       if (gameStatus && quantidadedeperguntas < perguntas.size() && espera) {
             channel.sendMessage(
                 "Por favor responda a seguinte quest�o:\n"+
@@ -347,7 +359,7 @@ public class Discordbot extends ListenerAdapter{
             
       }
       
-      //recebe a resposta dos jogadores e avaliar se � certa ou n�o, adicionando pontos
+      //recebe a resposta dos jogadores e avaliar se e certa ou nao, adicionando pontos
       if (gameStatus && quantidadedeperguntas < perguntas.size() && !espera) {
     	  
     	  Member member = event.getMember();
@@ -396,7 +408,7 @@ public class Discordbot extends ListenerAdapter{
         	  while (iterator.hasNext()) {
         	        Jogador jogador = iterator.next();
         	        channel.sendMessage(
-                  			jogador.getNome() + " - Pontos:"+ jogador.getPontuacao()+"\n").queue();
+                  			jogador.getNome() + " - Pontos: "+ jogador.getPontuacao()+"\n").queue();
         	    }
         	    channel.sendMessage(
               			"\nPara iniciar o jogo novamente e somar mais pontos, use !start").queue();
@@ -405,7 +417,7 @@ public class Discordbot extends ListenerAdapter{
 
       }
       
-      // Repete a �ltima pergunta que ainda n�o foi respondida 
+      // Repete a ultima pergunta que ainda nao foi respondida 
       if (msg.equals("!repete")){
           channel.sendMessage(
           "Por favor responda a seguinte quest�o:\n"+
@@ -530,7 +542,7 @@ public class Discordbot extends ListenerAdapter{
     	  while (iterator.hasNext()) {
     	        Jogador jogador = iterator.next();
     	        channel.sendMessage(
-              			jogador.getNome() + " - Pontos:"+ jogador.getPontuacao()+"\n").queue();
+              			jogador.getNome() + " - Pontos: "+ jogador.getPontuacao()+"\n").queue();
     	    }
     
       }
