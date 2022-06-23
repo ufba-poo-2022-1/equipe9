@@ -25,14 +25,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Discordbot extends ListenerAdapter{
 
-    private static String nomeAdmin = "admin";
-    private static int idAdmin = 1000;
-    public static Admin admin = new Admin(nomeAdmin);
     public int jogadorId = 0;
     public boolean statuslog = false;
 	
     public static ArrayList<Pergunta> perguntas = new ArrayList<>();
     public ArrayList<Jogador> jogadores = new ArrayList<>();
+    public ArrayList<Admin> admins = new ArrayList<Admin>();
 
     /** Variaveis usadas para conversao das linhas UTF-8 do TXT e resolver problemas com acentuacao*/
     public static String linha0;
@@ -79,9 +77,6 @@ public class Discordbot extends ListenerAdapter{
         }
         /** Carregar as perguntas do arquivo TXT na lista perguntas */
         perguntas = new ArrayList<Pergunta>(LeitorDePerguntas()); 
-        admin.dadosAdmin("admin", "1234");
-        admin.setId(idAdmin);
-    
     }
    
    
@@ -339,6 +334,8 @@ public class Discordbot extends ListenerAdapter{
                     "\nDigite !start para iniciar o jogo" +
                     "\nDigite !repete para repetir a �ltima pergunta feita no jogo" +
                     "\nDigite !stop para encerrar o jogo " + 
+                    "\nDigite !login-admin <login> <senha> para fazer login como admin " + 
+                    "\nDigite !reset-ranking para zerar a pontuação de todos os jogadores (apenas para admins) " + 
                     "\n\nO jogo consiste em um quiz de perguntas e respostas." +
                     " O bot ir� fazer uma pergunta e o primeiro jogador do canal a dar a resosta certa ganha ponto."+
                     "\nA resposta deve corresponder a uma das op��es apresentadas na quest�o." +
@@ -546,8 +543,50 @@ public class Discordbot extends ListenerAdapter{
     	    }
     
       }
-      
-    }
-    
 
+      if (msg.startsWith("!login-admin")) {
+        Member member = event.getMember();
+
+        if (member != null) {
+          String nome = member.getEffectiveName();
+          if (Admin.ehAdmin(nome, admins)) {
+            channel.sendMessage("Você já está logado como admin.\n").queue();
+          }
+
+          String[] strings = msg.split(" ");
+          if (strings.length == 3) {
+            String login = strings[1];
+            String senha = strings[2];
+
+            if (Admin.adminValido(login, senha)) {
+              admins.add(new Admin(nome));
+              channel.sendMessage("Login de admin efetuado com sucesso!\n").queue();
+            } else {
+              channel.sendMessage("Login e/ou senha inválidos.\n").queue();
+            }
+          } else {
+            channel.sendMessage("Parâmetros inválidos.\n").queue();
+          }
+        }
+      }
+
+      if (msg.equals("!reset-ranking")) {
+        Member member = event.getMember();
+
+        if (member != null) {
+          String nome = member.getEffectiveName();
+
+          if (Admin.ehAdmin(nome, admins)) {
+            Jogador.resetRanking(jogadores);
+            channel.sendMessage("O ranking foi resetado!\n").queue();
+
+          } else {
+            channel.sendMessage("Você não tem permissão para fazer isso.\n" +
+                                "Use !login-admin <login> <senha> e tente novamente.\n")
+                                .queue();
+          }
+        }
+      }
+
+  }
 }

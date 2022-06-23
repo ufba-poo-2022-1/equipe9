@@ -1,5 +1,8 @@
 package TRIVIA_GAME;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class Jogador extends Usuario{
 
 	 private int pontuacao=0;
@@ -13,8 +16,8 @@ public class Jogador extends Usuario{
 	    }
 
 		/**
-	     * Retorna pontuação do usuário.
-	     * @return retorna a pontuação
+	     * Retorna pontuaï¿½ï¿½o do usuï¿½rio.
+	     * @return retorna a pontuaï¿½ï¿½o
 	     */
 	    public int getPontuacao() {
 	        return this.pontuacao;
@@ -24,21 +27,29 @@ public class Jogador extends Usuario{
 	        this.pontuacao = pontuacao;
 	    }
 		/**
-	     * Incrementa pontuacao do usuário.
-		 * @param pontuacao pontuação por acerto
+	     * Incrementa pontuacao do usuï¿½rio.
+		 * @param pontuacao pontuaï¿½ï¿½o por acerto
 	     */
 
 	    public void adicionarPontuacao(int pontuacao) {
 	        this.pontuacao += pontuacao;
 	    }
 		/**
-		* compara nome do jogador, o nome do jogador deve ser único.
+		* compara nome do jogador, o nome do jogador deve ser ï¿½nico.
 		* @param  jogador 
-		* @return retorna true or false para a comparação 
+		* @return retorna true or false para a comparaï¿½ï¿½o 
 		*/
 	    public boolean equalsNamejogador(Object jogador) {
 	        Jogador outroJogador = (Jogador)jogador;
 	        return this.getNome().equals(outroJogador.getNome());
 	      }
-	   
+
+	public static void resetRanking(ArrayList<Jogador> jogadores) {
+		Iterator<Jogador> iterator = jogadores.iterator();
+		while (iterator.hasNext()) {
+			Jogador jogador = iterator.next();
+			jogador.setPontuacao(0);
+		}
+	}
+
 }

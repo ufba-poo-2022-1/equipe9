@@ -1,57 +1,44 @@
 package TRIVIA_GAME;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Admin extends Usuario {
 
-    private String login;
-    String senha;
+  private String nome;
+  private static String loginPadrao = "admin";
+  private static String senhaPadrao = "1234";
 
-     /**
-     * Construtor Admin.
-     * @param nome nome do usuário admin
-     */
-    public Admin(String nome){
-    	super(nome);
-    }
-
-    public void dadosAdmin(String login, String senha) {
-        this.login = login;
-        this.senha = senha;
-    }
-
-    public String getLogin() {
-        return login;
-    }
   /**
-     * Retorna senha do usuário.
-     * @param senha senha do usuário
-     * @return retorna a senha
-     */
+   * Construtor Admin.
+   * 
+   * @param nome nome do usuï¿½rio admin
+   */
+  public Admin(String nome) {
+    super(nome);
+  }
 
-    public String getSenha() {
-        return senha;
-    }
-   /**
-     * Retorna tipo do usuário.
-     * @param tipo tipo do usuário
-     * @return retorna o tipo
-     */
+  public String getNome() {
+    return nome;
+  }
 
-    public void setLogin(String login) {
-        this.login = login;
-    }
+  public void setNome(String nome) {
+    this.nome = nome;
+  }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+  public static boolean adminValido(String login, String senha) {
+    return login.equals(loginPadrao) && senha.equals(senhaPadrao);
+  }
+
+  public static boolean ehAdmin(String nome, ArrayList<Admin> admins) {
+    Iterator<Admin> iterator = admins.iterator();
+    while (iterator.hasNext()) {
+      Admin admin = iterator.next();
+      if (admin.nome.equals(nome)) {
+        return true;
+      }
     }
-     /**
-     * compara usuários.
-     * @param  admin 
-     * @return retorna true or false para a comparação 
-     */
-    public boolean equalsAdmin(Object admin) {
-        Admin outroAdmin = (Admin)admin;
-        return login.equals(outroAdmin.login);
-    }
-	
+    return false;
+  }
+
 }
