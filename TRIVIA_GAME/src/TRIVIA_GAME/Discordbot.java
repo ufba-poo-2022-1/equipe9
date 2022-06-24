@@ -336,6 +336,7 @@ public class Discordbot extends ListenerAdapter{
                     "\nDigite !stop para encerrar o jogo " + 
                     "\nDigite !login-admin <login> <senha> para fazer login como admin " + 
                     "\nDigite !reset-ranking para zerar a pontuação de todos os jogadores (apenas para admins) " + 
+                    "\nDigite !reset-admins para remover todos os admins (apenas para admins) " + 
                     "\n\nO jogo consiste em um quiz de perguntas e respostas." +
                     " O bot ir� fazer uma pergunta e o primeiro jogador do canal a dar a resosta certa ganha ponto."+
                     "\nA resposta deve corresponder a uma das op��es apresentadas na quest�o." +
@@ -566,6 +567,24 @@ public class Discordbot extends ListenerAdapter{
             }
           } else {
             channel.sendMessage("Parâmetros inválidos.\n").queue();
+          }
+        }
+      }
+
+      if (msg.equals("!reset-admins")) {
+        Member member = event.getMember();
+
+        if (member != null) {
+          String nome = member.getEffectiveName();
+
+          if (Admin.ehAdmin(nome, admins)) {
+            admins.clear();
+            channel.sendMessage("Todos os admins foram excluídos!\n").queue();
+
+          } else {
+            channel.sendMessage("Você não tem permissão para fazer isso.\n" +
+                                "Use !login-admin <login> <senha> e tente novamente.\n")
+                                .queue();
           }
         }
       }
