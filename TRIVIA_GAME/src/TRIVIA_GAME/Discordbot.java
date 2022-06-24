@@ -549,12 +549,12 @@ public class Discordbot extends ListenerAdapter{
 
         if (member != null) {
           String nome = member.getEffectiveName();
+          String[] strings = msg.split(" ");
+
           if (Admin.ehAdmin(nome, admins)) {
             channel.sendMessage("Você já está logado como admin.\n").queue();
-          }
 
-          String[] strings = msg.split(" ");
-          if (strings.length == 3) {
+          } else if (strings.length == 3) {
             String login = strings[1];
             String senha = strings[2];
 
