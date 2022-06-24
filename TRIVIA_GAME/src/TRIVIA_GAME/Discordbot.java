@@ -260,12 +260,14 @@ public class Discordbot extends ListenerAdapter{
                     " Regras do Trivia Game:" +
                     "\n\nDigite !cadastrar para se cadastrar no jogo:" +
                     "\nDigite !login para fazer login no jogo" +
+                    "\nDigite !logout para fazer logout no jogo" +
                     "\nDigite !start para iniciar o jogo" +
                     "\nDigite !repete para repetir a �ltima pergunta feita no jogo" +
                     "\nDigite !stop para encerrar o jogo " +
+                    "\nDigite !rank para ver o ranking do jogo" +
                     "\nDigite !login-admin <login> <senha> para fazer login como admin " + 
                     "\nDigite !reset-ranking para zerar a pontua��o de todos os jogadores (apenas para admins) " +
-                    "\nDigite !reset-admins para remover todos os admins (apenas para admins) " + 
+                    "\nDigite !logout-admin para fazer logout como admin (apenas para admins) " +
                     "\n\nO jogo consiste em um quiz de perguntas e respostas." +
                     " O bot ir� fazer uma pergunta e o primeiro jogador do canal a dar a resosta certa ganha ponto."+
                     "\nA resposta deve corresponder a uma das op��es apresentadas na quest�o." +
@@ -418,7 +420,7 @@ public class Discordbot extends ListenerAdapter{
         		  jogadorSelecionado.setIsLogged(false);
         		  channel.sendMessage(                      
                           member.getEffectiveName() + 
-                          " voc� fez logout com sucesso!"                 
+                          ", voc� fez logout com sucesso!"
                       ).queue();  
         	  }
         	  else {
@@ -474,15 +476,17 @@ public class Discordbot extends ListenerAdapter{
           }
         }
 
-      if (msg.equals("!reset-admins")) {
+      if (msg.equals("!logout-admin")) {
           Member member = event.getMember();
 
           if (member != null) {
             String nome = member.getEffectiveName();
 
-            if (Admin.existe(nome, admins) != null) {
-              admins.clear();
-              channel.sendMessage("Todos os admins foram exclu�dos!\n").queue();
+            Admin admin = (Admin) Admin.existe(nome, admins);
+
+            if (admin != null) {
+              admins.remove(admin);
+              channel.sendMessage(nome + ", voc� fez logout como admin com sucesso!\n").queue();
 
             } else {
               channel.sendMessage("Voc� n�o tem permiss�o para fazer isso.\n" +
