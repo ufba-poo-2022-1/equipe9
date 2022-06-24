@@ -10,7 +10,7 @@ public class Admin extends Usuario {
 	  /**
 	   * Construtor Admin.
 	   * 
-	   * @param nome nome do usu�rio admin
+	   * @param nome nome do usuario admin
 	   */
 	  public Admin(String nome) {
 	    super(nome);
