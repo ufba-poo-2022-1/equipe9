@@ -229,21 +229,13 @@ public class Discordbot extends ListenerAdapter{
         *Comando !Start inicia o jogo caso ainda nao tenha sido iniciado*/
         else if (msg.equals("!start") && !gameStatus)
         {
-        	Jogador jogadorSelecionado = null;
             Member member = event.getMember();
-            Iterator<Jogador> iterator = jogadores.iterator();
-      	  boolean existe = false;
-      	  while (iterator.hasNext()) {
-      	        Jogador jogador = iterator.next();
-      	        if (jogador.getNome().equals(member.getEffectiveName())) {
-      	        	existe = true;
-      	        	jogadorSelecionado = jogador;
-      	        }}
+            
             if (member != null)
             {
-            	if(existe && jogadorSelecionado.getIsLogged()) {
-            		
-            	
+              Jogador jogadorSelecionado = Jogador.existe(member.getEffectiveName(), jogadores);
+
+              if(jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
                 channel.sendMessage(
                     member.getEffectiveName() + " iniciou o jogo!" +
                     "\nPara saber as regras digite !regras" +
@@ -277,18 +269,12 @@ public class Discordbot extends ListenerAdapter{
         else if (msg.equals("!stop") && gameStatus)
         {
             Member member = event.getMember();
-            Jogador jogadorSelecionado = null;
+
             if (member != null) 
             {
-            	Iterator<Jogador> iterator = jogadores.iterator();
-          	  boolean existe = false;
-          	  while (iterator.hasNext()) {
-          	        Jogador jogador = iterator.next();
-          	        if (jogador.getNome().equals(member.getEffectiveName())) {
-          	        	existe = true;
-          	        	jogadorSelecionado = jogador;
-          	        }}
-          	  if(existe && jogadorSelecionado.getIsLogged()) {
+              Jogador jogadorSelecionado = Jogador.existe(member.getEffectiveName(), jogadores);
+
+          	  if(jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
             	channel.sendMessage(
                     member.getEffectiveName() + " encerrou o jogo!" +
                     "\nCaso queira reiniciar digite !start" +
@@ -361,19 +347,14 @@ public class Discordbot extends ListenerAdapter{
       if (gameStatus && quantidadedeperguntas < perguntas.size() && !espera) {
     	  
     	  Member member = event.getMember();
-          Jogador jogadorSelecionado = null;
+
           if (member != null) 
           {
-          	Iterator<Jogador> iterator = jogadores.iterator();
-        	  boolean existe = false;
-        	  while (iterator.hasNext()) {
-        	        Jogador jogador = iterator.next();
-        	        if (jogador.getNome().equals(member.getEffectiveName())) {
-        	        	existe = true;
-        	        	jogadorSelecionado = jogador;
-        	        }}
-    	  
-    	  if (existe && jogadorSelecionado.getIsLogged() &&
+          Jogador jogadorSelecionado = Jogador.existe(member.getEffectiveName(), jogadores);
+
+          boolean isLogged = jogadorSelecionado != null && jogadorSelecionado.getIsLogged();
+
+    	  if (isLogged &&
     			  msg.equalsIgnoreCase(perguntas.get(quantidadedeperguntas).getResposta())) {
     		  jogadorSelecionado.setPontuacao(jogadorSelecionado.getPontuacao()+1);
           	channel.sendMessage(
@@ -382,8 +363,8 @@ public class Discordbot extends ListenerAdapter{
           	espera = true;
           	quantidadedeperguntas++;
     	  }
-    	  else if ((existe && jogadorSelecionado.getIsLogged() && (msg.equalsIgnoreCase("A") || msg.equalsIgnoreCase("B") || 
-    			  msg.equalsIgnoreCase("C") || msg.equalsIgnoreCase("D"))) 
+    	  else if (isLogged && (msg.equalsIgnoreCase("A") || msg.equalsIgnoreCase("B") || 
+    			  msg.equalsIgnoreCase("C") || msg.equalsIgnoreCase("D")) 
     			  ) {
     		  channel.sendMessage(
           			"Errooou! "+ member.getEffectiveName() + ", voc� tem "
@@ -430,18 +411,14 @@ public class Discordbot extends ListenerAdapter{
           Member member = event.getMember();
           if (member != null)
           {
-        	  Iterator<Jogador> iterator = jogadores.iterator();
-        	  boolean existe = false;
-        	    while (iterator.hasNext()) {
-        	        Jogador jogador = iterator.next();
-        	        if (jogador.getNome().equals(member.getEffectiveName())) {
+            Jogador jogadorSelecionado = Jogador.existe(member.getEffectiveName(), jogadores);
+        	  
+            if(jogadorSelecionado != null) {
         	        	channel.sendMessage(                      
                                 member.getEffectiveName() + 
                                 " voc� j� est� cadastrado. Use o comando !login para entrar"                 
                             ).queue();
-        	        	existe = true;
-        	        }}
-        	  if(!existe) {
+            } else {
         		  Jogador jogadorAtual = new Jogador(member.getEffectiveName());
         		  channel.sendMessage(                      
                           member.getEffectiveName() + 
@@ -458,28 +435,19 @@ public class Discordbot extends ListenerAdapter{
    // Comando para fazer login
       if (msg.equals("!login"))
       {
-    	  Jogador jogadorSelecionado = null;
           Member member = event.getMember();
           if (member != null)
           {
-        	  Iterator<Jogador> iterator = jogadores.iterator();
-        	  boolean existe = false;
-        	  while (iterator.hasNext()) {
-        	        Jogador jogador = iterator.next();
-        	        if (jogador.getNome().equals(member.getEffectiveName())) {
-        	        	existe = true;
-        	        	jogadorSelecionado = jogador;
-        	        }}
-        	  
-        	  
-        	  if(existe && !jogadorSelecionado.getIsLogged()) {
+              Jogador jogadorSelecionado = Jogador.existe(member.getEffectiveName(), jogadores);
+
+        	  if(jogadorSelecionado != null && !jogadorSelecionado.getIsLogged()) {
         		  jogadorSelecionado.setIsLogged(true);
         		  channel.sendMessage(                      
                           member.getEffectiveName() + 
                           " voc� fez login com sucesso!"                 
                       ).queue();  
         	  }
-        	  else if(existe && jogadorSelecionado.getIsLogged()) {
+        	  else if(jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
         		  channel.sendMessage(                      
                           member.getEffectiveName() + 
                           " voc� j� est� logado"                 
@@ -499,20 +467,12 @@ public class Discordbot extends ListenerAdapter{
       // Comando para fazer logout
       if (msg.equals("!logout"))
       {
-    	  Jogador jogadorSelecionado = null;
     	  Member member = event.getMember();
           if (member != null)
           {
-        	  Iterator<Jogador> iterator = jogadores.iterator();
-        	  boolean existe = false;
-        	  while (iterator.hasNext()) {
-        	        Jogador jogador = iterator.next();
-        	        if (jogador.getNome().equals(member.getEffectiveName())) {
-        	        	existe = true;
-        	        	jogadorSelecionado = jogador;
-        	        }}
-        	  
-        	  if(existe && jogadorSelecionado.getIsLogged()) {
+              Jogador jogadorSelecionado = Jogador.existe(member.getEffectiveName(), jogadores);
+
+        	  if(jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
         		  jogadorSelecionado.setIsLogged(false);
         		  channel.sendMessage(                      
                           member.getEffectiveName() + 
@@ -552,7 +512,7 @@ public class Discordbot extends ListenerAdapter{
           String nome = member.getEffectiveName();
           String[] strings = msg.split(" ");
 
-          if (Admin.ehAdmin(nome, admins)) {
+          if (Admin.existe(nome, admins) != null) {
             channel.sendMessage("Você já está logado como admin.\n").queue();
 
           } else if (strings.length == 3) {
@@ -577,7 +537,7 @@ public class Discordbot extends ListenerAdapter{
         if (member != null) {
           String nome = member.getEffectiveName();
 
-          if (Admin.ehAdmin(nome, admins)) {
+          if (Admin.existe(nome, admins) != null) {
             admins.clear();
             channel.sendMessage("Todos os admins foram excluídos!\n").queue();
 
@@ -595,7 +555,7 @@ public class Discordbot extends ListenerAdapter{
         if (member != null) {
           String nome = member.getEffectiveName();
 
-          if (Admin.ehAdmin(nome, admins)) {
+          if (Admin.existe(nome, admins) != null) {
             Jogador.resetRanking(jogadores);
             channel.sendMessage("O ranking foi resetado!\n").queue();
 

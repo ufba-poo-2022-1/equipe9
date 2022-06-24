@@ -1,8 +1,5 @@
 package TRIVIA_GAME;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 public class Admin extends Usuario {
 
   private static String loginPadrao = "admin";
@@ -19,17 +16,6 @@ public class Admin extends Usuario {
 
   public static boolean adminValido(String login, String senha) {
     return login.equals(loginPadrao) && senha.equals(senhaPadrao);
-  }
-
-  public static boolean ehAdmin(String nome, ArrayList<Admin> admins) {
-    Iterator<Admin> iterator = admins.iterator();
-    while (iterator.hasNext()) {
-      Admin admin = iterator.next();
-      if (admin.nome.equals(nome)) {
-        return true;
-      }
-    }
-    return false;
   }
 
 }

@@ -1,5 +1,7 @@
 package TRIVIA_GAME;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Usuario {
 	 
@@ -8,12 +10,12 @@ public class Usuario {
 	    int id;
 
 	    /**
-	     * Construtor usuário.
+	     * Construtor usuï¿½rio.
 	     *
-	     * @param nome nome do usuário 
-	     * @param login login de acesso do usuário 
-	     * @param senha senha de acesso do usuário 
-	     * @param tipo identifica o tipo de usuário 
+	     * @param nome nome do usuï¿½rio 
+	     * @param login login de acesso do usuï¿½rio 
+	     * @param senha senha de acesso do usuï¿½rio 
+	     * @param tipo identifica o tipo de usuï¿½rio 
 	     */
 
 	    public Usuario (String nome){
@@ -21,7 +23,7 @@ public class Usuario {
 	    }
 	    
 	    /**
-	     * Retorna nome do usuário.
+	     * Retorna nome do usuï¿½rio.
 	     * @return retorna o nome
 	     */
 	    public String getNome() {
@@ -33,7 +35,7 @@ public class Usuario {
 	    }
 
 	     /**
-	     * Retorna id do usuário.
+	     * Retorna id do usuï¿½rio.
 	     * @return retorna o id
 	     */
 	    public int getId() {
@@ -44,9 +46,9 @@ public class Usuario {
 	        this.id = id;
 	    }
 	    /**
-	     * Validação para que usuário não seja nulo.
-		 * @param string nome do usuário 
-	     * @return true caso a string não seja nula
+	     * Validaï¿½ï¿½o para que usuï¿½rio nï¿½o seja nulo.
+		 * @param string nome do usuï¿½rio 
+	     * @return true caso a string nï¿½o seja nula
 	     */
 	    public boolean notNullString(String string) {
 	        return !string.trim().equals("");
@@ -57,10 +59,21 @@ public class Usuario {
 	    }
 	    /**
 	     * Retorna status do login.
-	     * @return true caso o usuário tenha um login válido.
+	     * @return true caso o usuï¿½rio tenha um login vï¿½lido.
 	     */
 	    public boolean getIsLogged () {
 	    	return this.logged;
 	    }
-	    
+
+			public static Usuario existe(String nome, ArrayList<? extends Usuario> usuarios) {
+				Iterator<? extends Usuario> iterator = usuarios.iterator();
+				while (iterator.hasNext()) {
+					Usuario usuario = iterator.next();
+					if (usuario.nome.equals(nome)) {
+						return usuario;
+					}
+				}
+				return null;
+			}
+
 }
