@@ -32,7 +32,7 @@ public class Opcao {
         this.label = label;
     }
     /**
-     * Retorna método
+     * Retorna mï¿½todo
      * @return retorna metodo
      */
     public Runnable getMetodo() {

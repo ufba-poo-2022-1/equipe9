@@ -4,7 +4,7 @@ package TRIVIA_GAME;
 import java.util.Comparator;
 
 /**
- * compara jogadores por pontuação. 
+ * compara jogadores por pontuaï¿½ï¿½o. 
  * @param o1 primeiro jogador
  * @param o2 segundo jogador
  * @return  ordem que o jogador ocupa no rank 
