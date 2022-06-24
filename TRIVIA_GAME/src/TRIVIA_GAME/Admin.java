@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 public class Admin extends Usuario {
 
-  private String nome;
   private static String loginPadrao = "admin";
   private static String senhaPadrao = "1234";
 
@@ -16,14 +15,6 @@ public class Admin extends Usuario {
    */
   public Admin(String nome) {
     super(nome);
-  }
-
-  public String getNome() {
-    return nome;
-  }
-
-  public void setNome(String nome) {
-    this.nome = nome;
   }
 
   public static boolean adminValido(String login, String senha) {
