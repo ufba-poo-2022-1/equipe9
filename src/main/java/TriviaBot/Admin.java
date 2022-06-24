@@ -1,4 +1,4 @@
-package TRIVIA_GAME;
+package TriviaBot;
 
 
 public class Admin extends Usuario {

@@ -1,2 +1,0 @@
-module TRIVIA_GAME {
-}
