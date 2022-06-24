@@ -1,11 +1,9 @@
 package TRIVIA_GAME;
 
-
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
@@ -23,7 +21,7 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Discordbot extends ListenerAdapter{
+public static class Discordbot extends ListenerAdapter{
 
     public int jogadorId = 0;
     public boolean statuslog = false;
@@ -76,62 +74,8 @@ public class Discordbot extends ListenerAdapter{
             e.printStackTrace();
         }
         /** Carregar as perguntas do arquivo TXT na lista perguntas */
-        perguntas = new ArrayList<Pergunta>(LeitorDePerguntas()); 
+        ListaPerguntas perguntas = new ListaPerguntas();
     }
-   
-   
-	
-	/** Metodo para leitura das perguntas do arquivo.TXT*/ 
-	public static ArrayList<Pergunta> LeitorDePerguntas() {
-
-	/** Optamos por usar ArrayList ao inves de interface aqui por ser, 
-    *no escopo do programa, mais facil de manipular e de utilizar no momento;*/
-		BufferedReader ler = null;
-		FileInputStream fis = null;
-		try {
-			fis = new FileInputStream("perguntas.txt");
-			ler = new BufferedReader(new InputStreamReader(fis));
-		} catch (FileNotFoundException e1) {
-			/** TODO Auto-generated catch block*/ 
-			e1.printStackTrace();
-		}
-        
-    
-        int numeroPerguntas = 0;
-		try {
-			numeroPerguntas = Integer.parseInt(ler.readLine());
-		} catch (NumberFormatException e1) {
-			/** TODO Auto-generated catch block*/ 
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			/** TODO Auto-generated catch block*/
-			e1.printStackTrace();
-		}
-
-        for(int i = 0; i < numeroPerguntas; i++) {
-            try {
-				linha0 = new String(ler.readLine().getBytes(), "UTF-8");
-				linha1 = new String(ler.readLine().getBytes(), "UTF-8");
-				linha2 = new String(ler.readLine().getBytes(), "UTF-8");
-				linha3 = new String(ler.readLine().getBytes(), "UTF-8");
-				linha4 = new String(ler.readLine().getBytes(), "UTF-8");
-				linha5 = new String(ler.readLine().getBytes(), "UTF-8");
-			} catch (IOException e) {
-				/** TODO Auto-generated catch block */
-				e.printStackTrace();
-			}
-            /** Adiciona as alternativas */
-            ArrayList<String> alternativas = new ArrayList<>();
-            alternativas.add(linha1);
-            alternativas.add(linha2);
-            alternativas.add(linha3);
-            alternativas.add(linha4);
-        
-            perguntas.add(new Pergunta(linha0, alternativas, linha5));
-	    }
-		return perguntas;
-		
-	}
 
     /**acessa o ranking e devolve ordem dos jogadores
     * @return ordem dos jogadores
@@ -146,7 +90,7 @@ public class Discordbot extends ListenerAdapter{
     * @param event O parametro event e usado para captar todas as mensagens no chat.
 	*/
     @Override
-    public void onMessageReceived(MessageReceivedEvent event)
+    public void  onMessageReceived(final MessageReceivedEvent event)
     {
         /*JDA, o nucleo do API.*/
         JDA jda = event.getJDA(); 
@@ -229,6 +173,8 @@ public class Discordbot extends ListenerAdapter{
         *Comando !Start inicia o jogo caso ainda nao tenha sido iniciado*/
         else if (msg.equals("!start") && !gameStatus)
         {
+            perguntas = perguntas.ListaPerguntas();
+
             Member member = event.getMember();
             
             if (member != null)
@@ -256,6 +202,8 @@ public class Discordbot extends ListenerAdapter{
         //Envia mensagem dizendo que o jogo ja foi iniciado
         else if (msg.equals("!start") && gameStatus)
         {
+            perguntas = perguntas.ListaPerguntas();
+
             Member member = event.getMember();
             if (member != null)
             {
@@ -339,13 +287,13 @@ public class Discordbot extends ListenerAdapter{
                 perguntas.get(quantidadedeperguntas).StringAlternativas() + "\n" 
             ).queue();
 
-            espera = false;
-            
+             espera = false;   
+
       }
       
       //recebe a resposta dos jogadores e avaliar se e certa ou nao, adicionando pontos
       if (gameStatus && quantidadedeperguntas < perguntas.size() && !espera) {
-    	  
+   	  
     	  Member member = event.getMember();
 
           if (member != null) 
