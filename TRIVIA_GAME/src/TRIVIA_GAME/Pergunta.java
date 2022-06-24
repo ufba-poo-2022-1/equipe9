@@ -14,7 +14,7 @@ public class Pergunta {
         this.resposta = resposta;
     }
 
-    // M�todos
+    // Metodos
 
     // Imprime o enunciado da pergunta
     public void PrintPergunta(){
@@ -70,7 +70,7 @@ public class Pergunta {
 
     }
 
-    public void setAlternativa(int indice, String alternativa){ // Para uma alternativa espec�fica
+    public void setAlternativa(int indice, String alternativa){ // Para uma alternativa especifica
         alternativas.set(indice+1, alternativa);
     }
 

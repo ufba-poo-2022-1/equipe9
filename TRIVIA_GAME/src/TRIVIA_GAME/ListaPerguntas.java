@@ -1,14 +1,22 @@
 package TRIVIA_GAME;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class ListaPerguntas {
 
-	private Collection perguntas;
+	private static ArrayList<Pergunta> perguntas = new ArrayList<>();
 
  	public ListaPerguntas (){
 		perguntas = new ArrayList<Pergunta>(LeitorDePerguntas()); 
 	}
 
-  	public static ArrayList<Pergunta> LeitorDePerguntas() {
+  	public ArrayList<Pergunta> LeitorDePerguntas() {
 		BufferedReader ler = null;
 		FileInputStream fis = null;
 		try {
@@ -32,7 +40,13 @@ public class ListaPerguntas {
 		}
 
         for(int i = 0; i < numeroPerguntas; i++) {
-            try {
+            String linha0 = null;
+			String linha1 = null;
+			String linha2 = null;
+			String linha3 = null;
+			String linha4 = null;
+			String linha5 = null;
+			try {
 				linha0 = new String(ler.readLine().getBytes(), "UTF-8");
 				linha1 = new String(ler.readLine().getBytes(), "UTF-8");
 				linha2 = new String(ler.readLine().getBytes(), "UTF-8");
@@ -50,9 +64,14 @@ public class ListaPerguntas {
             alternativas.add(linha3);
             alternativas.add(linha4);
         
-            this.perguntas.add(new Pergunta(linha0, alternativas, linha5));
+            perguntas.add(new Pergunta(linha0, alternativas, linha5));
 	    }
-		return Collections.shuffle(this.perguntas);
+        Collections.shuffle(perguntas);
+		return perguntas;
 	}
+  	
+  	public ArrayList<Pergunta> getPerguntas() {
+  		return perguntas;
+  	}
 
 }

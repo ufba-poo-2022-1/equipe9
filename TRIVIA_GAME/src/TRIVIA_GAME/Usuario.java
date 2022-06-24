@@ -10,12 +10,12 @@ public class Usuario {
 	    int id;
 
 	    /**
-	     * Construtor usu�rio.
+	     * Construtor usuario.
 	     *
-	     * @param nome nome do usu�rio 
-	     * @param login login de acesso do usu�rio 
-	     * @param senha senha de acesso do usu�rio 
-	     * @param tipo identifica o tipo de usu�rio 
+	     * @param nome nome do usuario 
+	     * @param login login de acesso do usuario 
+	     * @param senha senha de acesso do usuario 
+	     * @param tipo identifica o tipo de usuario 
 	     */
 
 	    public Usuario (String nome){
@@ -23,7 +23,7 @@ public class Usuario {
 	    }
 	    
 	    /**
-	     * Retorna nome do usu�rio.
+	     * Retorna nome do usuario.
 	     * @return retorna o nome
 	     */
 	    public String getNome() {
@@ -35,7 +35,7 @@ public class Usuario {
 	    }
 
 	     /**
-	     * Retorna id do usu�rio.
+	     * Retorna id do usuario.
 	     * @return retorna o id
 	     */
 	    public int getId() {
@@ -46,9 +46,9 @@ public class Usuario {
 	        this.id = id;
 	    }
 	    /**
-	     * Valida��o para que usu�rio n�o seja nulo.
-		 * @param string nome do usu�rio 
-	     * @return true caso a string n�o seja nula
+	     * Validacao para que usuario nao seja nulo.
+		 * @param string nome do usuario 
+	     * @return true caso a string nao seja nula
 	     */
 	    public boolean notNullString(String string) {
 	        return !string.trim().equals("");
@@ -59,21 +59,21 @@ public class Usuario {
 	    }
 	    /**
 	     * Retorna status do login.
-	     * @return true caso o usu�rio tenha um login v�lido.
+	     * @return true caso o usuario tenha um login valido.
 	     */
 	    public boolean getIsLogged () {
 	    	return this.logged;
 	    }
-
-			public static Usuario existe(String nome, ArrayList<? extends Usuario> usuarios) {
-				Iterator<? extends Usuario> iterator = usuarios.iterator();
-				while (iterator.hasNext()) {
-					Usuario usuario = iterator.next();
-					if (usuario.nome.equals(nome)) {
-						return usuario;
-					}
+	    
+		public static Usuario existe(String nome, ArrayList<? extends Usuario> usuarios) {
+			Iterator<? extends Usuario> iterator = usuarios.iterator();
+			while (iterator.hasNext()) {
+				Usuario usuario = iterator.next();
+				if (usuario.nome.equals(nome)) {
+					return usuario;
 				}
-				return null;
 			}
-
+			return null;
+		}
+	    
 }
