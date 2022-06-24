@@ -22,9 +22,12 @@ public class Discordbot extends ListenerAdapter{
 
     public int jogadorId = 0;
     public boolean statuslog = false;
+    public String s;
 	
     /** Carregar as perguntas do arquivo TXT na lista perguntas */
     ListaPerguntas Perguntas = new ListaPerguntas();
+    
+    Comandos Comandos = new Comandos();
     
     public static ArrayList<Pergunta> perguntas = new ArrayList<>();
     public ArrayList<Jogador> jogadores = new ArrayList<>();
@@ -98,13 +101,13 @@ public class Discordbot extends ListenerAdapter{
         long responseNumber = event.getResponseNumber();
 
         /**informacoes de eventos especificos*/
-        User author = event.getAuthor();                //Usuï¿½rio que mandou mensagem
+        User author = event.getAuthor();                //Usuário que mandou mensagem
         Message message = event.getMessage();           //A mensagem que foi recebida.
         MessageChannel channel = event.getChannel();    //O canal no qual a mensagem foi enviada
 
         String msg = message.getContentDisplay();       //Retorna a mensagem de uma forma que podemos ler.
 
-        boolean bot = author.isBot();                    //determinar se quem enviou a mensagem ï¿½ um bot ou nï¿½o
+        boolean bot = author.isBot();                    //determinar se quem enviou a mensagem é um bot ou não
 
         if (event.isFromType(ChannelType.TEXT))         
         {
@@ -136,27 +139,34 @@ public class Discordbot extends ListenerAdapter{
             System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
         }
 
-
-        if (msg.equals("!ping"))
-        {
-            channel.sendMessage("pong!").queue(); //O queue() faz a gestï¿½o do rate limit automaticamente
+        Member member = event.getMember();
+        String[] comandoCompleto = msg.split(" ");
+        String comandoExecutar; //tratamento da string de entada para o caso do comando !login-admin que recebe mais de uma palavra
+        if(comandoCompleto[0].equalsIgnoreCase("!login-admin")) {
+        	comandoExecutar = "!login-admin";
         }
-        else if (msg.equals("!roll")) //comando para sortear um numero de 1 a 6 e mostra uma mensagem se for menor de 3
-        {
-            Random rand = ThreadLocalRandom.current();
-            int roll = rand.nextInt(6) + 1; 
-            channel.sendMessage("Your roll: " + roll)
-                   .flatMap(
-                       (v) -> roll < 3,
-                       sentMessage -> channel.sendMessage("The roll for messageId: " + sentMessage.getId() + " wasn't very good... Must be bad luck!\n")
-                   )
-                   .queue();
+        else {
+        	comandoExecutar = msg;
         }
-        else if (msg.equals("!whoami"))
-        {
-            // Mesagem para retornar os dados do usuï¿½rio
-
-            Member member = event.getMember();
+        switch (Comandos.codigoDoComando(comandoExecutar)) {
+        
+        case 0: //comando !ping
+        	channel.sendMessage("pong!").queue(); //O queue() faz a gestão do rate limit automaticamente
+        	break;
+        
+        case 1:	//comando !roll
+        	 Random rand = ThreadLocalRandom.current();
+             int roll = rand.nextInt(6) + 1; 
+             channel.sendMessage("Your roll: " + roll)
+                    .flatMap(
+                        (v) -> roll < 3,
+                        sentMessage -> channel.sendMessage("The roll for messageId: " + sentMessage.getId() + " wasn't very good... Must be bad luck!\n")
+                    )
+                    .queue();
+        	break;
+        	
+        case 2: //comando !whoami
+        	// Mesagem para retornar os dados do usuário
             if (member != null)
             {
                 channel.sendMessage(
@@ -166,357 +176,347 @@ public class Discordbot extends ListenerAdapter{
                     "\n As Mention" + member.getAsMention()                 
                 ).queue();
             }
-        }
-
-        /** Inicio do jogo
-         *Comando !Start inicia o jogo caso ainda nao tenha sido iniciado*/
-        else if (msg.equals("!start") && !gameStatus)
-        {
-        	Perguntas = new ListaPerguntas();
-        	perguntas = Perguntas.getPerguntas();
-        	Member member = event.getMember();
-        	if (member != null)
+        	break;
+        	
+        case 3: //comando !start
+        	/** Inicio do jogo
+             *Comando !Start inicia o jogo caso ainda nao tenha sido iniciado*/
+        	if (!gameStatus)
             {
-        		Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
+            	Perguntas = new ListaPerguntas();
+            	perguntas = Perguntas.getPerguntas();
+            	if (member != null)
+                {
+            		Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
 
-                if(jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
-                channel.sendMessage(
-                    member.getEffectiveName() + " iniciou o jogo!" +
-                    "\nPara saber as regras digite !regras" +
-                    "\nPara ver o ranking digite !rank " + 
-                    "\nBoa sorte!"
-                ).queue();
-                gameStatus = true;
+                    if(jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
+                    channel.sendMessage(
+                        member.getEffectiveName() + " iniciou o jogo!" +
+                        "\nPara saber as regras digite !regras" +
+                        "\nPara ver o ranking digite !rank " + 
+                        "\nBoa sorte!"
+                    ).queue();
+                    gameStatus = true;
+                }
+                	else {
+                		channel.sendMessage(
+                                member.getEffectiveName() + " você não está logado!" +
+                                "\ndigite !login para entrar no game"
+                            ).queue();
+                	}	
+                }
             }
-            	else {
-            		channel.sendMessage(
-                            member.getEffectiveName() + " vocï¿½ nï¿½o estï¿½ logado!" +
+            
+            //Envia mensagem dizendo que o jogo já foi iniciado
+            else if (gameStatus)
+            {
+                if (member != null)
+                {
+                    channel.sendMessage(
+                        member.getEffectiveName() + " O jogo já foi iniciado."
+                    ).queue();
+                }
+            }
+        	break;
+        	
+        case 4: //comando !stop
+        	//O Comando !Stop encerra o jogo e retorna as variaveis de controle aos valores iniciais
+        	if (gameStatus)
+            {
+                if (member != null) 
+                {
+                	Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
+
+                	  if(jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
+                	channel.sendMessage(
+                        member.getEffectiveName() + " encerrou o jogo!" +
+                        "\nCaso queira reiniciar digite !start" +
+                        "\nEsperamos vocês nos próximos jogos  " + 
+                        "\nObrigado por jogar"
+                    ).queue();
+                    gameStatus = false;
+                    quantidadedeperguntas = 0;
+                    espera = true;
+
+                }
+              	  else {
+              		channel.sendMessage(
+                            member.getEffectiveName() + " você não está logado!" +
                             "\ndigite !login para entrar no game"
                         ).queue();
-            	}	
+              	  }
+                }
             }
-        }
-        
-        //Envia mensagem dizendo que o jogo jï¿½ foi iniciado
-        else if (msg.equals("!start") && gameStatus)
-        {
-            Member member = event.getMember();
-            if (member != null)
+            
+            //Caso o jogo ainda não tenha sido iniciado, envia a mensagem informando
+        	else if (!gameStatus)
             {
-                channel.sendMessage(
-                    member.getEffectiveName() + " O jogo jï¿½ foi iniciado."
-                ).queue();
-            }
-        }
-        
-        //O Comando !Stop encerra o jogo e retorna as variaveis de controle aos valores iniciais
-        else if (msg.equals("!stop") && gameStatus)
-        {
-            Member member = event.getMember();
-            if (member != null) 
-            {
-            	Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
-
-            	  if(jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
-            	channel.sendMessage(
-                    member.getEffectiveName() + " encerrou o jogo!" +
-                    "\nCaso queira reiniciar digite !start" +
-                    "\nEsperamos vocï¿½s nos prï¿½ximos jogos  " + 
-                    "\nObrigado por jogar"
-                ).queue();
-                gameStatus = false;
-                quantidadedeperguntas = 0;
-                espera = true;
-
-            }
-          	  else {
-          		channel.sendMessage(
-                        member.getEffectiveName() + " vocï¿½ nï¿½o estï¿½ logado!" +
-                        "\ndigite !login para entrar no game"
+                if (member != null)
+                {
+                    channel.sendMessage(
+                        member.getEffectiveName() + " o jogo ainda não foi iniciado."
                     ).queue();
-          	  }
+                }
             }
-        }
-        
-        //Caso o jogo ainda nï¿½o tenha sido iniciado, envia a mensagem informando
-        else if (msg.equals("!stop") && !gameStatus)
-        {
-            Member member = event.getMember();
-            if (member != null)
-            {
-                channel.sendMessage(
-                    member.getEffectiveName() + " o jogo ainda nï¿½o foi iniciado."
-                ).queue();
-            }
-        }
-
-        //Comando para exibir as regras do jogo
-        else if (msg.equals("!regras"))
-        {
-            Member member = event.getMember();
-            if (member != null)
+        	
+        	break;
+        	
+        case 5: //comando !regras
+        	//Comando para exibir as regras do jogo
+        	if (member != null)
             {
                 channel.sendMessage(
                     " Regras do Trivia Game:" +
                     "\n\nDigite !cadastrar para se cadastrar no jogo:" +
                     "\nDigite !login para fazer login no jogo" +
-                    "\nDigite !logout para fazer logout no jogo" +
                     "\nDigite !start para iniciar o jogo" +
-                    "\nDigite !repete para repetir a ï¿½ltima pergunta feita no jogo" +
+                    "\nDigite !repete para repetir a última pergunta feita no jogo" +
                     "\nDigite !stop para encerrar o jogo " +
-                    "\nDigite !rank para ver o ranking do jogo" +
                     "\nDigite !login-admin <login> <senha> para fazer login como admin " + 
-                    "\nDigite !reset-ranking para zerar a pontuaï¿½ï¿½o de todos os jogadores (apenas para admins) " +
-                    "\nDigite !logout-admin para fazer logout como admin (apenas para admins) " +
+                    "\nDigite !reset-ranking para zerar a pontuação de todos os jogadores (apenas para admins) " +
+                    "\nDigite !logout-admin para deslogar de admin (apenas para admins) " + 
                     "\n\nO jogo consiste em um quiz de perguntas e respostas." +
-                    " O bot irï¿½ fazer uma pergunta e o primeiro jogador do canal a dar a resosta certa ganha ponto."+
-                    "\nA resposta deve corresponder a uma das opï¿½ï¿½es apresentadas na questï¿½o." +
-                    "\nOs jogadores vï¿½o somando pontos e ao final do game serï¿½ exibido o rank."
+                    " O bot irá fazer uma pergunta e o primeiro jogador do canal a dar a resosta certa ganha ponto."+
+                    "\nA resposta deve corresponder a uma das opções apresentadas na questão." +
+                    "\nOs jogadores vão somando pontos e ao final do game será exibido o rank."
                 ).queue();
             }
-        }
-
-        //Lanï¿½a a questï¿½o armezenada em perguntas
-      if (gameStatus && quantidadedeperguntas < perguntas.size() && espera) {
-            channel.sendMessage(
-                "Por favor responda a seguinte questï¿½o:\n"+
+        	break;
+        	
+        case 6: //comando !repete
+        	if (gameStatus){
+                channel.sendMessage(
+                "Por favor responda a seguinte questão:\n"+
                 perguntas.get(quantidadedeperguntas).getPergunta() + "\n" +
                 perguntas.get(quantidadedeperguntas).StringAlternativas() + "\n" 
             ).queue();
+                      }
+        	break;
+        	
+        case 7: //comando !cadastrar
+        	// Comando para se cadastrar no jogo
 
-            espera = false;
-            
-      }
-      
-      //recebe a resposta dos jogadores e avaliar se ï¿½ certa ou nï¿½o, adicionando pontos
-      if (gameStatus && quantidadedeperguntas < perguntas.size() && !espera) {
-    	  
-    	  Member member = event.getMember();
-          if (member != null) 
-          {
-        	  Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
-
-              boolean isLogged = jogadorSelecionado != null && jogadorSelecionado.getIsLogged();
-
-        	  if (isLogged &&
-    			  msg.equalsIgnoreCase(perguntas.get(quantidadedeperguntas).getResposta())) {
-    		  jogadorSelecionado.setPontuacao(jogadorSelecionado.getPontuacao()+1);
-          	channel.sendMessage(
-          			"Certo! " + member.getEffectiveName()+ ", vocï¿½ tem "
-	                            + jogadorSelecionado.getPontuacao() + " pontos.\n").queue();
-          	espera = true;
-          	quantidadedeperguntas++;
-    	  }
-    	  else if ((isLogged && (msg.equalsIgnoreCase("A") || msg.equalsIgnoreCase("B") || 
-    			  msg.equalsIgnoreCase("C") || msg.equalsIgnoreCase("D"))) 
-    			  ) {
-    		  channel.sendMessage(
-          			"Errooou! "+ member.getEffectiveName() + ", vocï¿½ tem "
-	                            + jogadorSelecionado.getPontuacao() + " pontos.\n").queue();
-          	espera = true;
-          	quantidadedeperguntas++;
-    	  }
-      }
-          }
- 
-      
-      //Avalia o vencedor e envia mensagem informando o vencedor
-      if (gameStatus && quantidadedeperguntas == perguntas.size() && espera) {
-    	  
-    	  Collections.sort(jogadores, comparator);
-
-    		  channel.sendMessage(
-          			"Acabaram as perguntas! Segue o ranking atual: \n").queue();
-    		  Iterator<Jogador> iterator = jogadores.iterator();
-        	  while (iterator.hasNext()) {
-        	        Jogador jogador = iterator.next();
-        	        channel.sendMessage(
-                  			jogador.getNome() + " - Pontos:"+ jogador.getPontuacao()+"\n").queue();
-        	    }
-        	    channel.sendMessage(
-              			"\nPara iniciar o jogo novamente e somar mais pontos, use !start").queue();
-    	  gameStatus = false;
-    	  quantidadedeperguntas = 0;
-
-      }
-      
-      // Repete a ï¿½ltima pergunta que ainda nï¿½o foi respondida 
-      if (msg.equals("!repete") && gameStatus){
-          channel.sendMessage(
-          "Por favor responda a seguinte questï¿½o:\n"+
-          perguntas.get(quantidadedeperguntas).getPergunta() + "\n" +
-          perguntas.get(quantidadedeperguntas).StringAlternativas() + "\n" 
-      ).queue();
-                } 
-      
-      // Comando para se cadastrar no jogo
-      if (msg.equals("!cadastrar"))
-      {
-          Member member = event.getMember();
-          if (member != null)
-          {
-        	  Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
-        	  
-              if(jogadorSelecionado != null) {
-        	        	channel.sendMessage(                      
+                if (member != null)
+                {
+              	  Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
+              	  
+                    if(jogadorSelecionado != null) {
+              	        	channel.sendMessage(                      
+                                      member.getEffectiveName() + 
+                                      " você já está cadastrado. Use o comando !login para entrar"                 
+                                  ).queue();
+                    } else {
+              		  Jogador jogadorAtual = new Jogador(member.getEffectiveName());
+              		  channel.sendMessage(                      
                                 member.getEffectiveName() + 
-                                " vocï¿½ jï¿½ estï¿½ cadastrado. Use o comando !login para entrar"                 
+                                " você foi cadastrado com sucesso."                 
                             ).queue();
-              } else {
-        		  Jogador jogadorAtual = new Jogador(member.getEffectiveName());
-        		  channel.sendMessage(                      
-                          member.getEffectiveName() + 
-                          " vocï¿½ foi cadastrado com sucesso."                 
-                      ).queue();
-        		  jogadores.add(jogadorAtual);
-        		  jogadorId = jogadores.indexOf(jogadorAtual);
-        		  jogadorAtual.setId(jogadorId);
-        	  }
-          }
-      }
-      
-      
-   // Comando para fazer login
-      if (msg.equals("!login"))
-      {
-          Member member = event.getMember();
-          if (member != null)
-          {
-        	  Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
+              		  jogadores.add(jogadorAtual);
+              		  jogadorId = jogadores.indexOf(jogadorAtual);
+              		  jogadorAtual.setId(jogadorId);
+              	  }
+                }
+        	break;
+        	
+        case 8: //comando !login
+         // Comando para fazer login
+        	if (member != null)
+            {
+          	  Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
 
-        	  if(jogadorSelecionado != null && !jogadorSelecionado.getIsLogged()) {
-        		  jogadorSelecionado.setIsLogged(true);
-        		  channel.sendMessage(                      
-                          member.getEffectiveName() + 
-                          " vocï¿½ fez login com sucesso!"                 
-                      ).queue();  
-        	  }
-        	  else if(jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
-        		  channel.sendMessage(                      
-                          member.getEffectiveName() + 
-                          " vocï¿½ jï¿½ estï¿½ logado"                 
-                      ).queue();
-        	  }
-        	  else {
-        		  channel.sendMessage(                      
-                          member.getEffectiveName() + 
-                          ", nï¿½o conseguimos encontrar seu usuï¿½rio. "+
-                          "Use o comando !cadastrar para criar um usuï¿½rio."                 
-                      ).queue();
-        		  
-        	  }
-          }
-      }
-      
-      // Comando para fazer logout
-      if (msg.equals("!logout"))
-      {
-    	  Member member = event.getMember();
-          if (member != null)
-          {
-        	  Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
-
-        	  if(jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
-        		  jogadorSelecionado.setIsLogged(false);
-        		  channel.sendMessage(                      
-                          member.getEffectiveName() + 
-                          ", vocï¿½ fez logout com sucesso!"
-                      ).queue();  
-        	  }
-        	  else {
-        		  channel.sendMessage(                      
-                          member.getEffectiveName() + 
-                          " vocï¿½ ainda nï¿½o fez login."+
-                          " use o comando !login para entrar."
-                      ).queue();
-        		  
-        	  }
-          }
-      }
-      
-      if (msg.equals("!rank"))
-      {
-    	  Collections.sort(jogadores, comparator);
-
-		  channel.sendMessage(
-      			"Segue o ranking atual: \n").queue();
-		  Iterator<Jogador> iterator = jogadores.iterator();
-    	  while (iterator.hasNext()) {
-    	        Jogador jogador = iterator.next();
-    	        channel.sendMessage(
-              			jogador.getNome() + " - Pontos:"+ jogador.getPontuacao()+"\n").queue();
-    	    }
-    
-      }
-      
-      if (msg.startsWith("!login-admin")) {
-          Member member = event.getMember();
-
-          if (member != null) {
-            String nome = member.getEffectiveName();
-            String[] strings = msg.split(" ");
-            if (Admin.existe(nome, admins) != null) {
-              channel.sendMessage("Vocï¿½ jï¿½ estï¿½ logado como admin.\n").queue();
+          	  if(jogadorSelecionado != null && !jogadorSelecionado.getIsLogged()) {
+          		  jogadorSelecionado.setIsLogged(true);
+          		  channel.sendMessage(                      
+                            member.getEffectiveName() + 
+                            " você fez login com sucesso!"                 
+                        ).queue();  
+          	  }
+          	  else if(jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
+          		  channel.sendMessage(                      
+                            member.getEffectiveName() + 
+                            " você já está logado"                 
+                        ).queue();
+          	  }
+          	  else {
+          		  channel.sendMessage(                      
+                            member.getEffectiveName() + 
+                            ", não conseguimos encontrar seu usuário. "+
+                            "Use o comando !cadastrar para criar um usuário."                 
+                        ).queue();
+          		  
+          	  }
             }
+        	break;
+        
+        case 9: //comando !logout
+        // Comando para fazer logout	 
+        	if (member != null)
+             {
+           	  Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
 
-            
-            else if (strings.length == 3) {
-              String login = strings[1];
-              String senha = strings[2];
+           	  if(jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
+           		  jogadorSelecionado.setIsLogged(false);
+           		  channel.sendMessage(                      
+                             member.getEffectiveName() + 
+                             " você fez logout com sucesso!"                 
+                         ).queue();  
+           	  }
+           	  else {
+           		  channel.sendMessage(                      
+                             member.getEffectiveName() + 
+                             " você ainda não fez login."+
+                             " use o comando !login para entrar."
+                         ).queue();
+           		  
+           	  }
+             }
+        	break;
+        	
+        case 10: //comando !rank
+        	Collections.sort(jogadores, comparator);
 
-              if (Admin.adminValido(login, senha)) {
-                admins.add(new Admin(nome));
-                channel.sendMessage("Login de admin efetuado com sucesso!\n").queue();
-              } else {
-                channel.sendMessage("Login e/ou senha invï¿½lidos.\n").queue();
+  		  channel.sendMessage(
+        			"Segue o ranking atual: \n").queue();
+  		  Iterator<Jogador> iterator = jogadores.iterator();
+      	  while (iterator.hasNext()) {
+      	        Jogador jogador = iterator.next();
+      	        channel.sendMessage(
+                			jogador.getNome() + " - Pontos:"+ jogador.getPontuacao()+"\n").queue();
+      	    }
+        	break;
+        
+        case 11: //comando !login-admin
+        	if (member != null) {
+                String nome = member.getEffectiveName();
+                String[] strings = msg.split(" ");
+                if (Admin.existe(nome, admins) != null) {
+                  channel.sendMessage("Você já está logado como admin.\n").queue();
+                }
+
+                
+                else if (strings.length == 3) {
+                  String login = strings[1];
+                  String senha = strings[2];
+
+                  if (Admin.adminValido(login, senha)) {
+                    admins.add(new Admin(nome));
+                    channel.sendMessage("Login de admin efetuado com sucesso!\n").queue();
+                  } else {
+                    channel.sendMessage("Login e/ou senha inválidos.\n").queue();
+                  }
+                } else {
+                  channel.sendMessage("Parâmetros inválidos.\n").queue();
+                }
               }
-            } else {
-              channel.sendMessage("Parï¿½metros invï¿½lidos.\n").queue();
-            }
-          }
+        	break;
+        	
+        case 12: //comando !logout-admin
+        	if (member != null) {
+                String nome = member.getEffectiveName();
+
+                Admin admin = (Admin) Admin.existe(nome, admins);
+
+                if (admin != null) {
+                  admins.remove(admin);
+                  channel.sendMessage(nome + ", você fez logout como admin com sucesso!\n").queue();
+
+                } else {
+                  channel.sendMessage("Você não está logado como admin\n" +
+                                      "Use !login-admin <login> <senha> e tente novamente.\n")
+                                      .queue();
+                }
+              }
+        	break;
+        	
+        case 13: //comando !reset-ranking
+            if (member != null) {
+                String nome = member.getEffectiveName();
+
+                if (Admin.existe(nome, admins) != null) {
+                  Jogador.resetRanking(jogadores);
+                  channel.sendMessage("O ranking foi resetado!\n").queue();
+
+                } else {
+                  channel.sendMessage("Você não tem permissão para fazer isso.\n" +
+                                      "Use !login-admin <login> <senha> e tente novamente.\n")
+                                      .queue();
+                }
+              }
+        	break;
+        	
         }
-
-      if (msg.equals("!logout-admin")) {
-          Member member = event.getMember();
-
-          if (member != null) {
-            String nome = member.getEffectiveName();
-
-            Admin admin = (Admin) Admin.existe(nome, admins);
-
-            if (admin != null) {
-              admins.remove(admin);
-              channel.sendMessage(nome + ", vocï¿½ fez logout como admin com sucesso!\n").queue();
-
-            } else {
-              channel.sendMessage("Vocï¿½ nï¿½o tem permissï¿½o para fazer isso.\n" +
-                                  "Use !login-admin <login> <senha> e tente novamente.\n")
-                                  .queue();
-            }
-          }
-        }
-      
-      if (msg.equals("!reset-ranking")) {
-          Member member = event.getMember();
-
-          if (member != null) {
-            String nome = member.getEffectiveName();
-
-            if (Admin.existe(nome, admins) != null) {
-              Jogador.resetRanking(jogadores);
-              channel.sendMessage("O ranking foi resetado!\n").queue();
-
-            } else {
-              channel.sendMessage("Vocï¿½ nï¿½o tem permissï¿½o para fazer isso.\n" +
-                                  "Use !login-admin <login> <senha> e tente novamente.\n")
-                                  .queue();
-            }
-          }
-        }
-
-    
-      
+        Trivia(msg, event);
     }
-    
 
+    
+    
+    
+	private void Trivia(String msg, MessageReceivedEvent event) {
+		MessageChannel channel = event.getChannel();
+		//Lança a questão armezenada em perguntas
+	      if (gameStatus && quantidadedeperguntas < perguntas.size() && espera) {
+	           s =
+	                "Por favor responda a seguinte questão:\n"+
+	                perguntas.get(quantidadedeperguntas).getPergunta() + "\n" +
+	                perguntas.get(quantidadedeperguntas).StringAlternativas() + "\n" 
+	            ;
+
+	            espera = false;
+	            channel.sendMessage(s).queue();
+	            }
+	      
+	      //recebe a resposta dos jogadores e avaliar se é certa ou não, adicionando pontos
+	      if (gameStatus && quantidadedeperguntas < perguntas.size() && !espera) {
+	    	  
+	    	  Member member = event.getMember();
+	          if (member != null) 
+	          {
+	        	  Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
+
+	              boolean isLogged = jogadorSelecionado != null && jogadorSelecionado.getIsLogged();
+
+	        	  if (isLogged &&
+	    			  msg.equalsIgnoreCase(perguntas.get(quantidadedeperguntas).getResposta())) {
+	    		  jogadorSelecionado.setPontuacao(jogadorSelecionado.getPontuacao()+1);
+	          	s =
+	          			"Certo! " + member.getEffectiveName()+ ", você tem "
+		                            + jogadorSelecionado.getPontuacao() + " pontos.\n";
+	          	espera = true;
+	          	quantidadedeperguntas++;
+	          	channel.sendMessage(s).queue();
+	    	  }
+	    	  else if ((isLogged && (msg.equalsIgnoreCase("A") || msg.equalsIgnoreCase("B") || 
+	    			  msg.equalsIgnoreCase("C") || msg.equalsIgnoreCase("D"))) 
+	    			  ) {
+	    		  s = 
+	          			"Errooou! "+ member.getEffectiveName() + ", você tem "
+		                            + jogadorSelecionado.getPontuacao() + " pontos.\n";
+	          	espera = true;
+	          	quantidadedeperguntas++;
+	          	channel.sendMessage(s).queue();
+	    	  }
+	      }
+	          }
+	 
+	      
+	      //Avalia o vencedor e envia mensagem informando o vencedor
+	      if (gameStatus && quantidadedeperguntas == perguntas.size() && espera) {
+	    	  
+	    	  Collections.sort(jogadores, comparator);
+
+	    		  s = 
+	          			"Acabaram as perguntas! Segue o ranking atual: \n";
+	    		  Iterator<Jogador> iterator = jogadores.iterator();
+	        	  while (iterator.hasNext()) {
+	        	        Jogador jogador = iterator.next();
+	        	        s = s+
+	                  			jogador.getNome() + " - Pontos:"+ jogador.getPontuacao()+"\n";
+	        	    }
+	        	    s = s +
+	              			"\nPara iniciar o jogo novamente e somar mais pontos, use !start";
+	    	  gameStatus = false;
+	    	  quantidadedeperguntas = 0;
+	    	  channel.sendMessage(s).queue();
+	      }
+	}    
 }
