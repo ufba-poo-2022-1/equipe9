@@ -1,4 +1,4 @@
-package TRIVIA_GAME;
+package TriviaBot;
 import java.util.ArrayList;
 
 public class Pergunta {

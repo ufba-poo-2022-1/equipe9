@@ -1,4 +1,4 @@
-package TRIVIA_GAME;
+package TriviaBot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ public class Comandos {
 	List<String> listaDeComandos = new ArrayList<String>();
 	
 	
-	//Ao iniciar o contrustor dessa classe ela carrega todos os comandos válidos na lista
+	//Ao iniciar o contrustor dessa classe ela carrega todos os comandos vï¿½lidos na lista
 	public Comandos() {
 		listaDeComandos.add("!ping");
 		listaDeComandos.add("!roll");

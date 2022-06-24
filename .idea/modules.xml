@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ufba_Oop_Project.iml" filepath="$PROJECT_DIR$/.idea/ufba_Oop_Project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TriviaBot2.test.iml" filepath="$PROJECT_DIR$/.idea/modules/TriviaBot2.test.iml" />
     </modules>
   </component>
 </project>
