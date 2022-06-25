@@ -6,6 +6,8 @@
  * User Manual available at https://docs.gradle.org/6.8/userguide/building_java_projects.html
  */
 
+// Eclipse
+
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
@@ -26,8 +28,39 @@ dependencies {
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:29.0-jre'
-    
+
     // https://mvnrepository.com/artifact/net.dv8tion/JDA
-	compile 'net.dv8tion:JDA:5.0.0-alpha.12'
+    compile 'net.dv8tion:JDA:5.0.0-alpha.12'
 
 }
+
+/*
+
+// Intellij
+
+plugins {
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+mainClassName = 'TriviaBot.Discordbot'
+
+version '1.0'
+
+sourceCompatibility = targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { // on kotlin dsl use `maven("https://m2.dv8tion.net/releases")` instead
+        url "https://m2.dv8tion.net/releases"
+    }
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/net.dv8tion/JDA
+    implementation group: 'net.dv8tion', name: 'JDA', version: '5.0.0-alpha.12'
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+*/
