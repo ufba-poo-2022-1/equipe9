@@ -17,9 +17,6 @@ public class Discordbot extends ListenerAdapter {
 
     public static ArrayList<Pergunta> perguntas = new ArrayList<>();
     private final Comparator<Jogador> comparator = new Rank();
-    /**
-     * Variaveis usadas para conversao das linhas UTF-8 do TXT e resolver problemas com acentuacao
-     */
 
     public int jogadorId = 0;
     public String s;
