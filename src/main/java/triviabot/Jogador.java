@@ -1,6 +1,6 @@
 package triviabot;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Jogador extends Usuario {
 
@@ -15,7 +15,7 @@ public class Jogador extends Usuario {
         super(nome);
     }
 
-    public static void resetRanking(ArrayList<Jogador> jogadores) {
+    public static void resetRanking(List<Jogador> jogadores) {
         for (Jogador jogador : jogadores) {
             jogador.setPontuacao(0);
         }

@@ -1,6 +1,6 @@
 package triviabot;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Usuario {
 
@@ -17,7 +17,7 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public static Usuario existe(String nome, ArrayList<? extends Usuario> usuarios) {
+    public static Usuario existe(String nome, List<? extends Usuario> usuarios) {
         for (Usuario usuario : usuarios) {
             if (usuario.nome.equals(nome)) {
                 return usuario;
