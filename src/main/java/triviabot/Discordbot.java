@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -29,7 +30,7 @@ public class Discordbot extends ListenerAdapter {
     /**
      * Carregar as perguntas do arquivo TXT na lista perguntas
      */
-    ListaPerguntas Perguntas = new ListaPerguntas();
+    ListaPerguntas listaDePerguntas = new ListaPerguntas();
     /**
      * Variaveis para controle do jogo
      */
@@ -147,9 +148,9 @@ public class Discordbot extends ListenerAdapter {
                 /* Inicio do jogo
                  Comando !Start inicia o jogo caso ainda nao tenha sido iniciado*/
                 if (!gameStatus) {
-                    Perguntas = new ListaPerguntas();
+                    listaDePerguntas = new ListaPerguntas();
                     perguntas.clear();
-                    perguntas = Perguntas.getPerguntas();
+                    perguntas = listaDePerguntas.getPerguntas();
                     if (member != null) {
                         Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
 
@@ -383,6 +384,20 @@ public class Discordbot extends ListenerAdapter {
                                 .queue();
                     }
                 }
+                break;
+
+            case -1: //comando inválido
+                ArrayList<String> respostas = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e", "A", "B", "C", "D", "E"));
+                if (!author.isBot() && !respostas.contains(msg)) {
+                    assert member != null;
+                    channel.sendMessage(member.getEffectiveName() +
+                                    ", n�o consegui compreender este comando. Se estiver" +
+                                    " com duvidas sobre os comandos, digite !regras.\n")
+                            .queue();
+                }
+                break;
+
+            default:
                 break;
 
         }
