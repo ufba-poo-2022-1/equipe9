@@ -23,7 +23,7 @@ import static triviabot.Usuario.existe;
 
 public class Discordbot extends ListenerAdapter {
 
-    private static final Logger logger = Logger.getLogger(Discordbot.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Discordbot.class.getName());
     private final List<Jogador> jogadores = new ArrayList<>();
     private final List<Admin> admins = new ArrayList<>();
     private final Comandos comandos = new Comandos();
@@ -35,6 +35,10 @@ public class Discordbot extends ListenerAdapter {
     private boolean gameStatus = false;
     private boolean espera = true;
     private int quantidadedeperguntas = 0;
+
+    public static Logger getLogger() {
+        return LOGGER;
+    }
 
     public static void main(String[] args) {
 
@@ -49,15 +53,15 @@ public class Discordbot extends ListenerAdapter {
                     .addEventListeners(new Discordbot())
                     .build();
             jda.awaitReady(); /* Garante que o JDA tenha carregado completamente*/
-            Discordbot.logger.log(Level.INFO, "Finished Building JDA!");
+            Discordbot.LOGGER.log(Level.INFO, "Finished Building JDA!");
         } catch (LoginException | IOException e) {
             /* Excecao em que algo da errado com o login*/
-            e.printStackTrace();
+            Discordbot.LOGGER.log(Level.SEVERE, Arrays.toString(e.getStackTrace()), e);
         } catch (InterruptedException e) {
             /* Como o metodo awaitRedy e um metodo que faz o bloqueio,
               a espera pode ser interrompida.
               Essa excecao ocorre nessa situacao. */
-            e.printStackTrace();
+            Discordbot.LOGGER.log(Level.SEVERE, Arrays.toString(e.getStackTrace()), e);
             Thread.currentThread().interrupt();
         }
     }
@@ -94,12 +98,12 @@ public class Discordbot extends ListenerAdapter {
             /*Cria a mensagem no terminal atraves dos dados coletados do discord. Vai exibir o nome do server
              o nome do usuario (efetivo ou exibido, no caso de o servidor permitir trocar o nick internamente)*/
             String logMsg = "(" + guild.getName() + ")[" + textChannel.getName() + "]<" + name + ">: " + msg + "\n";
-            Discordbot.logger.log(Level.INFO, logMsg);
+            Discordbot.LOGGER.log(Level.INFO, logMsg);
         } else if (event.isFromType(ChannelType.PRIVATE)) {
 
             //idem, mas para canal privado
             String logMsg = "[PRIV]<" + author.getName() + ">: " + msg;
-            Discordbot.logger.log(Level.INFO, logMsg);
+            Discordbot.LOGGER.log(Level.INFO, logMsg);
         }
 
         Member member = event.getMember();

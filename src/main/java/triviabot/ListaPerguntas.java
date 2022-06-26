@@ -7,8 +7,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 
 public class ListaPerguntas {
 
@@ -45,8 +47,8 @@ public class ListaPerguntas {
 
             Collections.shuffle(perguntas);
 
-        } catch (NumberFormatException | NullPointerException | IOException e1) {
-            e1.printStackTrace();
+        } catch (NumberFormatException | NullPointerException | IOException e) {
+            Discordbot.getLogger().log(Level.SEVERE, Arrays.toString(e.getStackTrace()), e);
         }
 
         return perguntas;
