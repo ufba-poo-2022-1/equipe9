@@ -8,6 +8,9 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
+
+import static triviabot.Usuario.existe;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -21,7 +24,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Discordbot extends ListenerAdapter {
 
-    public static ArrayList<Pergunta> perguntas = new ArrayList<>();
+    public ArrayList<Pergunta> perguntas = new ArrayList<>();
     public final ArrayList<Jogador> jogadores = new ArrayList<>();
     public final ArrayList<Admin> admins = new ArrayList<>();
     final Comandos Comandos = new Comandos();
@@ -41,12 +44,9 @@ public class Discordbot extends ListenerAdapter {
     public static void main(String[] args) {
 
         /* Construtor para o BOT */
-        try {
+        try (BufferedReader ler = new BufferedReader(new InputStreamReader(new FileInputStream("token.txt")))) {
             /* O token da conta para login. Esse token foi criado em https://discord.com/developers/applications*/
 
-            FileInputStream fis = new FileInputStream("token.txt");
-
-            BufferedReader ler = new BufferedReader(new InputStreamReader(fis));
             String token = new String(ler.readLine().getBytes(), StandardCharsets.UTF_8);
 
             JDA jda = JDABuilder.createDefault(token)
@@ -100,11 +100,11 @@ public class Discordbot extends ListenerAdapter {
 
             /*Cria a mensagem no terminal atraves dos dados coletados do discord. Vai exibir o nome do server
              o nome do usuario (efetivo ou exibido, no caso de o servidor permitir trocar o nick internamente)*/
-            System.out.printf("(%s)[%s]<%s>: %s\n", guild.getName(), textChannel.getName(), name, msg);
+            System.out.printf("(%s)[%s]<%s>: %s%n", guild.getName(), textChannel.getName(), name, msg);
         } else if (event.isFromType(ChannelType.PRIVATE)) {
 
             //idem, mas para canal privado
-            System.out.printf("[PRIV]<%s>: %s\n", author.getName(), msg);
+            System.out.printf("[PRIV]<%s>: %s%n", author.getName(), msg);
         }
 
         Member member = event.getMember();
@@ -152,7 +152,7 @@ public class Discordbot extends ListenerAdapter {
                     perguntas.clear();
                     perguntas = listaDePerguntas.getPerguntas();
                     if (member != null) {
-                        Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
+                        Jogador jogadorSelecionado = (Jogador) existe(member.getEffectiveName(), jogadores);
 
                         if (jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
                             channel.sendMessage(
@@ -185,7 +185,7 @@ public class Discordbot extends ListenerAdapter {
                 //O Comando !Stop encerra o jogo e retorna as variaveis de controle aos valores iniciais
                 if (gameStatus) {
                     if (member != null) {
-                        Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
+                        Jogador jogadorSelecionado = (Jogador) existe(member.getEffectiveName(), jogadores);
 
                         if (jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
                             channel.sendMessage(
@@ -253,7 +253,7 @@ public class Discordbot extends ListenerAdapter {
                 // Comando para se cadastrar no jogo
 
                 if (member != null) {
-                    Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
+                    Jogador jogadorSelecionado = (Jogador) existe(member.getEffectiveName(), jogadores);
 
                     if (jogadorSelecionado != null) {
                         channel.sendMessage(
@@ -274,7 +274,7 @@ public class Discordbot extends ListenerAdapter {
             case 8: //comando !login
                 // Comando para fazer login
                 if (member != null) {
-                    Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
+                    Jogador jogadorSelecionado = (Jogador) existe(member.getEffectiveName(), jogadores);
 
                     if (jogadorSelecionado != null && !jogadorSelecionado.getIsLogged()) {
                         jogadorSelecionado.setIsLogged(true);
@@ -301,7 +301,7 @@ public class Discordbot extends ListenerAdapter {
             case 9: //comando !logout
                 // Comando para fazer logout
                 if (member != null) {
-                    Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
+                    Jogador jogadorSelecionado = (Jogador) existe(member.getEffectiveName(), jogadores);
 
                     if (jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
                         jogadorSelecionado.setIsLogged(false);
@@ -335,7 +335,7 @@ public class Discordbot extends ListenerAdapter {
                 if (member != null) {
                     String nome = member.getEffectiveName();
                     String[] strings = msg.split(" ");
-                    if (Admin.existe(nome, admins) != null) {
+                    if (existe(nome, admins) != null) {
                         channel.sendMessage("Voc� j� est� logado como admin.\n").queue();
                     } else if (strings.length == 3) {
                         String login = strings[1];
@@ -357,7 +357,7 @@ public class Discordbot extends ListenerAdapter {
                 if (member != null) {
                     String nome = member.getEffectiveName();
 
-                    Admin admin = (Admin) Admin.existe(nome, admins);
+                    Admin admin = (Admin) existe(nome, admins);
 
                     if (admin != null) {
                         admins.remove(admin);
@@ -374,7 +374,7 @@ public class Discordbot extends ListenerAdapter {
                 if (member != null) {
                     String nome = member.getEffectiveName();
 
-                    if (Admin.existe(nome, admins) != null) {
+                    if (existe(nome, admins) != null) {
                         Jogador.resetRanking(jogadores);
                         channel.sendMessage("O ranking foi resetado com sucesso!\n").queue();
 
@@ -421,7 +421,7 @@ public class Discordbot extends ListenerAdapter {
 
             Member member = event.getMember();
             if (member != null) {
-                Jogador jogadorSelecionado = (Jogador) Jogador.existe(member.getEffectiveName(), jogadores);
+                Jogador jogadorSelecionado = (Jogador) existe(member.getEffectiveName(), jogadores);
 
                 boolean isLogged = jogadorSelecionado != null && jogadorSelecionado.getIsLogged();
 
@@ -452,15 +452,15 @@ public class Discordbot extends ListenerAdapter {
 
             jogadores.sort(comparator);
 
-            StringBuilder s = new StringBuilder("Acabaram as perguntas! Segue o ranking atual: \n");
+            StringBuilder str = new StringBuilder("Acabaram as perguntas! Segue o ranking atual: \n");
 
             for (Jogador jogador : jogadores) {
-                s.append(jogador.getNome()).append(" - Pontos:").append(jogador.getPontuacao()).append("\n");
+                str.append(jogador.getNome()).append(" - Pontos:").append(jogador.getPontuacao()).append("\n");
             }
-            s.append("\nPara iniciar o jogo novamente e somar mais pontos, use !start");
+            str.append("\nPara iniciar o jogo novamente e somar mais pontos, use !start");
             gameStatus = false;
             quantidadedeperguntas = 0;
-            channel.sendMessage(s).queue();
+            channel.sendMessage(str).queue();
         }
     }
 }
