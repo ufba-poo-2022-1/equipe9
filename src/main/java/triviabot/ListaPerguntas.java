@@ -1,4 +1,4 @@
-package TriviaBot;
+package triviabot;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -10,7 +10,7 @@ public class ListaPerguntas {
     private static ArrayList<Pergunta> perguntas = new ArrayList<>();
 
     public ListaPerguntas() {
-    	perguntas.clear();
+        perguntas.clear();
         perguntas = new ArrayList<>(LeitorDePerguntas());
     }
 
@@ -63,7 +63,7 @@ public class ListaPerguntas {
     }
 
     public ArrayList<Pergunta> getPerguntas() {
-    	return perguntas;
+        return perguntas;
     }
 
 }

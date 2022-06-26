@@ -1,4 +1,4 @@
-package TriviaBot;
+package triviabot;
 
 
 import net.dv8tion.jda.api.JDA;
@@ -8,7 +8,10 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,17 +21,15 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Discordbot extends ListenerAdapter {
 
     public static ArrayList<Pergunta> perguntas = new ArrayList<>();
+    public final ArrayList<Jogador> jogadores = new ArrayList<>();
+    public final ArrayList<Admin> admins = new ArrayList<>();
+    final Comandos Comandos = new Comandos();
     private final Comparator<Jogador> comparator = new Rank();
-
-    public int jogadorId = 0;
     public String s;
-    public ArrayList<Jogador> jogadores = new ArrayList<>();
-    public ArrayList<Admin> admins = new ArrayList<>();
     /**
      * Carregar as perguntas do arquivo TXT na lista perguntas
      */
     ListaPerguntas Perguntas = new ListaPerguntas();
-    Comandos Comandos = new Comandos();
     /**
      * Variaveis para controle do jogo
      */
@@ -41,11 +42,8 @@ public class Discordbot extends ListenerAdapter {
         /* Construtor para o BOT */
         try {
             /* O token da conta para login. Esse token foi criado em https://discord.com/developers/applications*/
-            
-            FileInputStream fis = new FileInputStream("token.txt");
 
-            System.out.println("AAAAAAAAAAAAA");
-            System.out.println(fis);
+            FileInputStream fis = new FileInputStream("token.txt");
 
             BufferedReader ler = new BufferedReader(new InputStreamReader(fis));
             String token = new String(ler.readLine().getBytes(), StandardCharsets.UTF_8);
@@ -267,8 +265,6 @@ public class Discordbot extends ListenerAdapter {
                                         " voc� foi cadastrado com sucesso."
                         ).queue();
                         jogadores.add(jogadorAtual);
-                        jogadorId = jogadores.indexOf(jogadorAtual);
-                        jogadorAtual.setId(jogadorId);
                     }
                 }
                 break;
@@ -440,11 +436,12 @@ public class Discordbot extends ListenerAdapter {
 
             jogadores.sort(comparator);
 
-            s = "Acabaram as perguntas! Segue o ranking atual: \n";
+            StringBuilder s = new StringBuilder("Acabaram as perguntas! Segue o ranking atual: \n");
+
             for (Jogador jogador : jogadores) {
-                s = s + jogador.getNome() + " - Pontos:" + jogador.getPontuacao() + "\n";
+                s.append(jogador.getNome()).append(" - Pontos:").append(jogador.getPontuacao()).append("\n");
             }
-            s = s + "\nPara iniciar o jogo novamente e somar mais pontos, use !start";
+            s.append("\nPara iniciar o jogo novamente e somar mais pontos, use !start");
             gameStatus = false;
             quantidadedeperguntas = 0;
             channel.sendMessage(s).queue();

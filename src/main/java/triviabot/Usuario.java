@@ -1,12 +1,11 @@
-package TriviaBot;
+package triviabot;
 
 import java.util.ArrayList;
 
 public class Usuario {
 
-    protected String nome;
+    protected final String nome;
     boolean logged = false;
-    int id;
 
     /**
      * Construtor usuario.
@@ -34,11 +33,6 @@ public class Usuario {
      */
     public String getNome() {
         return nome;
-    }
-
-
-    public void setId(int id) {
-        this.id = id;
     }
 
 
