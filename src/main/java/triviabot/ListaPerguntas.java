@@ -1,4 +1,4 @@
-package TriviaBot;
+package triviabot;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -10,6 +10,7 @@ public class ListaPerguntas {
     private static ArrayList<Pergunta> perguntas = new ArrayList<>();
 
     public ListaPerguntas() {
+        perguntas.clear();
         perguntas = new ArrayList<>(LeitorDePerguntas());
     }
 
@@ -20,17 +21,14 @@ public class ListaPerguntas {
             fis = new FileInputStream("perguntas.txt");
             ler = new BufferedReader(new InputStreamReader(fis));
         } catch (FileNotFoundException e1) {
-            /** TODO Auto-generated catch block*/
             e1.printStackTrace();
         }
-
 
         int numeroPerguntas = 0;
         try {
             assert ler != null;
             numeroPerguntas = Integer.parseInt(ler.readLine());
         } catch (NumberFormatException | NullPointerException | IOException e1) {
-            /** TODO Auto-generated catch block*/
             e1.printStackTrace();
         }
 
@@ -49,10 +47,9 @@ public class ListaPerguntas {
                 linha4 = new String(ler.readLine().getBytes(), StandardCharsets.UTF_8);
                 linha5 = new String(ler.readLine().getBytes(), StandardCharsets.UTF_8);
             } catch (IOException e) {
-                /** TODO Auto-generated catch block */
                 e.printStackTrace();
             }
-            /** Adiciona as alternativas */
+            /* Adiciona as alternativas */
             ArrayList<String> alternativas = new ArrayList<>();
             alternativas.add(linha1);
             alternativas.add(linha2);
