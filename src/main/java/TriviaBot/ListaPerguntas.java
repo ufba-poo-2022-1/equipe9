@@ -67,7 +67,6 @@ public class ListaPerguntas {
     }
 
     public ArrayList<Pergunta> getPerguntas() {
-        System.out.println(perguntas);
     	return perguntas;
     }
 
