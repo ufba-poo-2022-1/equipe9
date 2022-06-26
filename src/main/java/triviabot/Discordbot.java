@@ -36,7 +36,7 @@ public class Discordbot extends ListenerAdapter {
     private boolean espera = true;
     private int quantidadedeperguntas = 0;
 
-    public static Logger getLogger () {
+    public static Logger getLogger() {
         return LOGGER;
     }
 
