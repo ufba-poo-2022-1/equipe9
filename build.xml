@@ -1,6 +1,0 @@
-<project default="compile">
-    <target name="compile">
-        <javac srcdir="TRIVIA_GAME/src/TRIVIA_GAME" destdir="TRIVIA_GAME" encoding="iso-8859-1"/>
-    </target>
-</project>
-
