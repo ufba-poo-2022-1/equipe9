@@ -385,6 +385,18 @@ public class Discordbot extends ListenerAdapter {
                     }
                 }
                 break;
+
+            case -1: //comando inválido
+                ArrayList<String> respostas = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e", "A", "B", "C", "D", "E"));
+                if (!author.isBot() && !respostas.contains(msg)) {
+                    assert member != null;
+                    channel.sendMessage(member.getEffectiveName() +
+                                    ", n�o consegui compreender este comando. Se estiver" +
+                                    " com duvidas sobre os comandos, digite !regras.\n")
+                            .queue();
+                }
+                break;
+
             default:
                 break;
 
