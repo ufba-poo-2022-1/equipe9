@@ -10,6 +10,7 @@ public class ListaPerguntas {
     private static ArrayList<Pergunta> perguntas = new ArrayList<>();
 
     public ListaPerguntas() {
+    	perguntas.clear();
         perguntas = new ArrayList<>(LeitorDePerguntas());
     }
 
@@ -66,7 +67,8 @@ public class ListaPerguntas {
     }
 
     public ArrayList<Pergunta> getPerguntas() {
-        return perguntas;
+        System.out.println(perguntas);
+    	return perguntas;
     }
 
 }
