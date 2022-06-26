@@ -16,9 +16,9 @@ O principal objetivo do Trivia Bot é despertar o interesse dos competidores nos
 
 2) Crie um arquivo chamado `token.txt` na raiz do projeto e cole nele o token gerado no item anterior.
 
-3) Rode o build do Gradle.
+3) Rode o `build` do Gradle.
 
-    a) Se você usa um sistema operacional baseado em Unix (Linux ou MacOs), você pode rodar o comando `./gradlew build`
+    a) Se você usa um sistema operacional baseado em Unix (Linux ou MacOS), você pode rodar o comando `./gradlew build`.
 
     b) Você também pode fazer isso com as ferramentas do Gradle da sua IDE preferida. Aqui estão links para as principais:
 
@@ -28,12 +28,12 @@ O principal objetivo do Trivia Bot é despertar o interesse dos competidores nos
 
       * [Visual Studio Code](https://code.visualstudio.com/docs/java/java-build#_gradle)
 
-    ** :information_source: Independentemente da IDE, deve-se rodar a task de `build` do Gradle.**
+    **:information_source: Independentemente da IDE, deve-se rodar a task de `build` do Gradle.**
 
-4) Rode o build do Gradle.
+4) Rode o `run` do Gradle.
 
-    a) Se você usa um sistema operacional baseado em Unix (Linux ou MacOs), você pode rodar o comando `./gradlew run --scan`
+    a) Se você usa um sistema operacional baseado em Unix (Linux ou MacOs), você pode rodar o comando `./gradlew run --scan`.
 
     b) Você também pode fazer isso com as ferramentas do Gradle da sua IDE preferida, conforme links do item anterior.
 
-    ** :information_source: Independentemente da IDE, deve-se rodar a task de `run` do Gradle.**
+    **:information_source: Independentemente da IDE, deve-se rodar a task de `run` do Gradle.**
