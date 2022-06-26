@@ -62,6 +62,7 @@ public class Discordbot extends ListenerAdapter {
               a espera pode ser interrompida.
               Essa excecao ocorre nessa situacao. */
             e.printStackTrace();
+            Thread.currentThread().interrupt();
         } catch (IOException e) {
             e.printStackTrace();
         }
