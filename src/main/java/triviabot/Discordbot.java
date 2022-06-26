@@ -8,27 +8,24 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
-
-import static triviabot.Usuario.existe;
-
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Random;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static triviabot.Usuario.existe;
 
 public class Discordbot extends ListenerAdapter {
 
-    public ArrayList<Pergunta> perguntas = new ArrayList<>();
-    public final ArrayList<Jogador> jogadores = new ArrayList<>();
-    public final ArrayList<Admin> admins = new ArrayList<>();
+    public final List<Jogador> jogadores = new ArrayList<>();
+    public final List<Admin> admins = new ArrayList<>();
     final Comandos Comandos = new Comandos();
     private final Comparator<Jogador> comparator = new Rank();
+    public List<Pergunta> perguntas = new ArrayList<>();
     public String s;
     /**
      * Carregar as perguntas do arquivo TXT na lista perguntas
@@ -44,7 +41,7 @@ public class Discordbot extends ListenerAdapter {
     public static void main(String[] args) {
 
         /* Construtor para o BOT */
-        try (BufferedReader ler = new BufferedReader(new InputStreamReader(new FileInputStream("token.txt")))) {
+        try (BufferedReader ler = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get("token.txt"))))) {
             /* O token da conta para login. Esse token foi criado em https://discord.com/developers/applications*/
 
             String token = new String(ler.readLine().getBytes(), StandardCharsets.UTF_8);
@@ -244,7 +241,7 @@ public class Discordbot extends ListenerAdapter {
                     channel.sendMessage(
                             "Por favor responda a seguinte quest�o:\n" +
                                     perguntas.get(quantidadedeperguntas).getPergunta() + "\n" +
-                                    perguntas.get(quantidadedeperguntas).StringAlternativas() + "\n"
+                                    perguntas.get(quantidadedeperguntas).stringAlternativas() + "\n"
                     ).queue();
                 }
                 break;
@@ -387,7 +384,7 @@ public class Discordbot extends ListenerAdapter {
                 break;
 
             case -1: //comando inválido
-                ArrayList<String> respostas = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "e", "A", "B", "C", "D", "E"));
+                ArrayList<String> respostas = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "A", "B", "C", "D"));
                 if (!author.isBot() && !respostas.contains(msg)) {
                     assert member != null;
                     channel.sendMessage(member.getEffectiveName() +
@@ -410,7 +407,7 @@ public class Discordbot extends ListenerAdapter {
         if (gameStatus && quantidadedeperguntas < perguntas.size() && espera) {
             s = "Por favor responda a seguinte quest�o:\n" +
                     perguntas.get(quantidadedeperguntas).getPergunta() + "\n" +
-                    perguntas.get(quantidadedeperguntas).StringAlternativas() + "\n";
+                    perguntas.get(quantidadedeperguntas).stringAlternativas() + "\n";
 
             espera = false;
             channel.sendMessage(s).queue();
