@@ -16,27 +16,25 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static triviabot.Usuario.existe;
 
 public class Discordbot extends ListenerAdapter {
 
-    public final List<Jogador> jogadores = new ArrayList<>();
-    public final List<Admin> admins = new ArrayList<>();
-    final Comandos Comandos = new Comandos();
+    private static final Logger logger = Logger.getLogger(Discordbot.class.getName());
+    private final List<Jogador> jogadores = new ArrayList<>();
+    private final List<Admin> admins = new ArrayList<>();
+    private final Comandos comandos = new Comandos();
     private final Comparator<Jogador> comparator = new Rank();
-    public List<Pergunta> perguntas = new ArrayList<>();
-    public String s;
-    /**
-     * Carregar as perguntas do arquivo TXT na lista perguntas
-     */
-    ListaPerguntas listaDePerguntas = new ListaPerguntas();
+    private List<Pergunta> perguntas = new ArrayList<>();
     /**
      * Variaveis para controle do jogo
      */
-    boolean gameStatus = false;
-    boolean espera = true;
-    int quantidadedeperguntas = 0;
+    private boolean gameStatus = false;
+    private boolean espera = true;
+    private int quantidadedeperguntas = 0;
 
     public static void main(String[] args) {
 
@@ -51,8 +49,8 @@ public class Discordbot extends ListenerAdapter {
                     .addEventListeners(new Discordbot())
                     .build();
             jda.awaitReady(); /* Garante que o JDA tenha carregado completamente*/
-            System.out.println("Finished Building JDA!");
-        } catch (LoginException e) {
+            Discordbot.logger.log(Level.INFO, "Finished Building JDA!");
+        } catch (LoginException | IOException e) {
             /* Excecao em que algo da errado com o login*/
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -61,8 +59,6 @@ public class Discordbot extends ListenerAdapter {
               Essa excecao ocorre nessa situacao. */
             e.printStackTrace();
             Thread.currentThread().interrupt();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -97,11 +93,13 @@ public class Discordbot extends ListenerAdapter {
 
             /*Cria a mensagem no terminal atraves dos dados coletados do discord. Vai exibir o nome do server
              o nome do usuario (efetivo ou exibido, no caso de o servidor permitir trocar o nick internamente)*/
-            System.out.printf("(%s)[%s]<%s>: %s%n", guild.getName(), textChannel.getName(), name, msg);
+            String logMsg = "(" + guild.getName() + ")[" + textChannel.getName() + "]<" + name + ">: " + msg + "\n";
+            Discordbot.logger.log(Level.INFO, logMsg);
         } else if (event.isFromType(ChannelType.PRIVATE)) {
 
             //idem, mas para canal privado
-            System.out.printf("[PRIV]<%s>: %s%n", author.getName(), msg);
+            String logMsg = "[PRIV]<" + author.getName() + ">: " + msg;
+            Discordbot.logger.log(Level.INFO, logMsg);
         }
 
         Member member = event.getMember();
@@ -112,7 +110,7 @@ public class Discordbot extends ListenerAdapter {
         } else {
             comandoExecutar = msg;
         }
-        switch (Comandos.codigoDoComando(comandoExecutar)) {
+        switch (comandos.codigoDoComando(comandoExecutar)) {
 
             case 0: //comando !ping
                 channel.sendMessage("pong!").queue(); //O queue() faz a gestao do rate limit automaticamente
@@ -123,7 +121,7 @@ public class Discordbot extends ListenerAdapter {
                 int roll = rand.nextInt(6) + 1;
                 channel.sendMessage("Your roll: " + roll)
                         .flatMap(
-                                (v) -> roll < 3,
+                                v -> roll < 3,
                                 sentMessage -> channel.sendMessage("The roll for messageId: " + sentMessage.getId() + " wasn't very good... Must be bad luck!\n")
                         )
                         .queue();
@@ -145,7 +143,11 @@ public class Discordbot extends ListenerAdapter {
                 /* Inicio do jogo
                  Comando !Start inicia o jogo caso ainda nao tenha sido iniciado*/
                 if (!gameStatus) {
-                    listaDePerguntas = new ListaPerguntas();
+                    /*
+                      Carregar as perguntas do arquivo TXT na lista perguntas
+                     */
+
+                    ListaPerguntas listaDePerguntas = new ListaPerguntas();
                     perguntas.clear();
                     perguntas = listaDePerguntas.getPerguntas();
                     if (member != null) {
@@ -398,12 +400,13 @@ public class Discordbot extends ListenerAdapter {
                 break;
 
         }
-        Trivia(msg, event);
+        trivia(msg, event);
     }
 
-    private void Trivia(String msg, MessageReceivedEvent event) {
+    private void trivia(String msg, MessageReceivedEvent event) {
         MessageChannel channel = event.getChannel();
         //Lan�a a quest�o armezenada em perguntas
+        String s;
         if (gameStatus && quantidadedeperguntas < perguntas.size() && espera) {
             s = "Por favor responda a seguinte quest�o:\n" +
                     perguntas.get(quantidadedeperguntas).getPergunta() + "\n" +

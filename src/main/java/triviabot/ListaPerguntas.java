@@ -12,14 +12,14 @@ import java.util.List;
 
 public class ListaPerguntas {
 
-    private static ArrayList<Pergunta> perguntas = new ArrayList<>();
+    private ArrayList<Pergunta> perguntas;
 
     public ListaPerguntas() {
-        perguntas.clear();
-        perguntas = new ArrayList<>(LeitorDePerguntas());
+        perguntas = new ArrayList<>();
+        perguntas = leitorDePerguntas();
     }
 
-    public List<Pergunta> LeitorDePerguntas() {
+    private ArrayList<Pergunta> leitorDePerguntas() {
 
         try (BufferedReader ler = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get("perguntas.txt"))))) {
             int numeroPerguntas = Integer.parseInt(ler.readLine());
