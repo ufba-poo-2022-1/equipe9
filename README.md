@@ -32,7 +32,7 @@ O principal objetivo do Trivia Bot é despertar o interesse dos competidores nos
 
 4) Rode o `run` do Gradle.
 
-    a) Se você usa um sistema operacional baseado em Unix (Linux ou MacOs), você pode rodar o comando `./gradlew run --scan`.
+    a) Se você usa um sistema operacional baseado em Unix (Linux ou MacOS), você pode rodar o comando `./gradlew run --scan`.
 
     b) Você também pode fazer isso com as ferramentas do Gradle da sua IDE preferida, conforme links do item anterior.
 
