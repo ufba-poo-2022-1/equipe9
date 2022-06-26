@@ -28,7 +28,7 @@ O principal objetivo do Trivia Bot é despertar o interesse dos competidores nos
 
       * [Visual Studio Code](https://code.visualstudio.com/docs/java/java-build#_gradle)
 
-    ** :info: Independentemente da IDE, deve-se rodar a task de `build` do Gradle.**
+    ** :information_source: Independentemente da IDE, deve-se rodar a task de `build` do Gradle.**
 
 4) Rode o build do Gradle.
 
@@ -36,4 +36,4 @@ O principal objetivo do Trivia Bot é despertar o interesse dos competidores nos
 
     b) Você também pode fazer isso com as ferramentas do Gradle da sua IDE preferida, conforme links do item anterior.
 
-    ** :info: Independentemente da IDE, deve-se rodar a task de `run` do Gradle.**
+    ** :information_source: Independentemente da IDE, deve-se rodar a task de `run` do Gradle.**
