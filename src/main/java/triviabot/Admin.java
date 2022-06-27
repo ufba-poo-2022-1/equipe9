@@ -1,10 +1,10 @@
-package TriviaBot;
+package triviabot;
 
 
 public class Admin extends Usuario {
 
-    private static final String loginPadrao = "admin";
-    private static final String senhaPadrao = "1234";
+    private static final String LOGIN_PADRAO = "admin";
+    private static final String SENHA_PADRAO = "1234";
 
     /**
      * Construtor Admin.
@@ -16,7 +16,7 @@ public class Admin extends Usuario {
     }
 
     public static boolean adminValido(String login, String senha) {
-        return login.equals(loginPadrao) && senha.equals(senhaPadrao);
+        return login.equals(LOGIN_PADRAO) && senha.equals(SENHA_PADRAO);
     }
 
 }

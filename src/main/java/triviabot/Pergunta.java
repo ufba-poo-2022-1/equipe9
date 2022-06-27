@@ -1,16 +1,16 @@
-package TriviaBot;
+package triviabot;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Pergunta {
-    private final String pergunta;
+    private final String enunciado;
     private final String resposta; //indice maior que 1
-    private final ArrayList<String> alternativas;
+    private final List<String> alternativas;
 
     // Construtor
 
-    public Pergunta(String pergunta, ArrayList<String> alternativas, String resposta) {
-        this.pergunta = pergunta;
+    public Pergunta(String enunciado, List<String> alternativas, String resposta) {
+        this.enunciado = enunciado;
         this.alternativas = alternativas;
         this.resposta = resposta;
     }
@@ -18,7 +18,7 @@ public class Pergunta {
     // Metodos
 
     //Retorna string com alternativas separadas por linha
-    public String StringAlternativas() {
+    public String stringAlternativas() {
         StringBuilder s = new StringBuilder();
         for (String alt : getAlternativas()) {
             s.append(alt).append("\n");
@@ -29,7 +29,7 @@ public class Pergunta {
     // Getters
 
     public String getPergunta() {
-        return pergunta;
+        return enunciado;
     }
 
     public String getResposta() {
@@ -37,7 +37,7 @@ public class Pergunta {
     }
 
     // Retorna array com todas as alternativas
-    public ArrayList<String> getAlternativas() {
+    public List<String> getAlternativas() {
         return alternativas;
     }
 

@@ -1,11 +1,11 @@
-package TriviaBot;
+package triviabot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Comandos {
 
-    List<String> listaDeComandos = new ArrayList<>();
+    final List<String> listaDeComandos = new ArrayList<>();
 
     //Ao iniciar o contrustor dessa classe ela carrega todos os comandos v�lidos na lista
     public Comandos() {

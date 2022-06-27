@@ -1,4 +1,4 @@
-package TriviaBot;
+package triviabot;
 
 
 import java.util.Comparator;

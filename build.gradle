@@ -3,7 +3,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
-mainClassName = 'TriviaBot.Discordbot'
+mainClassName = 'triviabot.Discordbot'
 
 version '1.0'
 
