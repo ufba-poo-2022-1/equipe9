@@ -22,9 +22,9 @@ public class Jogador extends Usuario {
     }
 
     /**
-     * Retorna pontua��o do usu�rio.
+     * Retorna pontuacao do usuario.
      *
-     * @return retorna a pontua��o
+     * @return retorna a pontuacao
      */
     public int getPontuacao() {
         return this.pontuacao;

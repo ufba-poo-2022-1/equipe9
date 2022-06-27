@@ -76,8 +76,8 @@ public class Discordbot extends ListenerAdapter {
 
         /*informacoes de eventos especificos*/
         User author = event.getAuthor();                //Usuario que mandou mensagem
-        Message message = event.getMessage();           //A mensagem que foi recebida.
-        MessageChannel channel = event.getChannel();    //O canal no qual a mensagem foi enviada
+        Message message = event.getMessage();           //A mensagem recebida.
+        MessageChannel channel = event.getChannel();    //O canal em que a mensagem foi enviada
 
         String msg = message.getContentDisplay();       //Retorna a mensagem de uma forma que podemos ler.
 
@@ -173,7 +173,7 @@ public class Discordbot extends ListenerAdapter {
                             gameStatus = true;
                         } else {
                             channel.sendMessage(
-                                    member.getEffectiveName() + " voc� n�o est� logado!" +
+                                    member.getEffectiveName() + ", voce nao esta logado!" +
                                             "\ndigite !login para entrar no game"
                             ).queue();
                         }
@@ -181,7 +181,7 @@ public class Discordbot extends ListenerAdapter {
                     } else {
                         //Envia mensagem dizendo que o jogo ja foi iniciado
                         channel.sendMessage(
-                                member.getEffectiveName() + " O jogo j� foi iniciado."
+                                member.getEffectiveName() + " O jogo ja foi iniciado."
                         ).queue();
 
                     }
@@ -200,7 +200,7 @@ public class Discordbot extends ListenerAdapter {
                             channel.sendMessage(
                                     member.getEffectiveName() + " encerrou o jogo!" +
                                             "\nCaso queira reiniciar digite !start" +
-                                            "\nEsperamos voc�s nos pr�ximos jogos  " +
+                                            "\nEsperamos voces nos proximos jogos  " +
                                             "\nObrigado por jogar"
                             ).queue();
                             gameStatus = false;
@@ -209,7 +209,7 @@ public class Discordbot extends ListenerAdapter {
 
                         } else {
                             channel.sendMessage(
-                                    member.getEffectiveName() + " voc� n�o est� logado!" +
+                                    member.getEffectiveName() + ", voce nao esta logado!" +
                                             "\ndigite !login para entrar no game"
                             ).queue();
                         }
@@ -217,7 +217,7 @@ public class Discordbot extends ListenerAdapter {
                     } else {
                         //Caso o jogo ainda nao tenha sido iniciado, envia a mensagem informando
                         channel.sendMessage(
-                                member.getEffectiveName() + " o jogo ainda n�o foi iniciado."
+                                member.getEffectiveName() + " o jogo ainda nao foi iniciado."
                         ).queue();
                     }
                 }
@@ -232,15 +232,15 @@ public class Discordbot extends ListenerAdapter {
                                 "\n\nDigite !cadastrar para se cadastrar no jogo:" +
                                 "\nDigite !login para fazer login no jogo" +
                                 "\nDigite !start para iniciar o jogo" +
-                                "\nDigite !repete para repetir a �ltima pergunta feita no jogo" +
+                                "\nDigite !repete para repetir a ultima pergunta feita no jogo" +
                                 "\nDigite !stop para encerrar o jogo " +
                                 "\nDigite !login-admin <login> <senha> para fazer login como admin " +
-                                "\nDigite !reset-ranking para zerar a pontua��o de todos os jogadores (apenas para admins) " +
+                                "\nDigite !reset-ranking para zerar a pontuacao de todos os jogadores (apenas para admins) " +
                                 "\nDigite !logout-admin para deslogar como admin (apenas para admins) " +
                                 "\n\nO jogo consiste em um quiz de perguntas e respostas." +
-                                " O bot ir� fazer uma pergunta e o primeiro jogador do canal a dar a resosta certa ganha ponto." +
-                                "\nA resposta deve corresponder a uma das op��es apresentadas na quest�o." +
-                                "\nOs jogadores v�o somando pontos e ao final do game ser� exibido o rank."
+                                " O bot ira fazer uma pergunta e o primeiro jogador do canal a dar a resosta certa ganha ponto." +
+                                "\nA resposta deve corresponder a uma das opcoes apresentadas na questao." +
+                                "\nOs jogadores vao somando pontos e ao final do game sera exibido o rank."
                 ).queue();
                 break;
             }
@@ -249,7 +249,7 @@ public class Discordbot extends ListenerAdapter {
             {
                 if (gameStatus) {
                     channel.sendMessage(
-                            "Por favor responda a seguinte quest�o:\n" +
+                            "Por favor responda a seguinte questao:\n" +
                                     perguntas.get(quantidadedeperguntas).getPergunta() + "\n" +
                                     perguntas.get(quantidadedeperguntas).stringAlternativas() + "\n"
                     ).queue();
@@ -267,13 +267,13 @@ public class Discordbot extends ListenerAdapter {
                     if (jogadorSelecionado != null) {
                         channel.sendMessage(
                                 member.getEffectiveName() +
-                                        " voc� j� est� cadastrado. Use o comando !login para entrar"
+                                        ", voce ja esta cadastrado. Use o comando !login para entrar"
                         ).queue();
                     } else {
                         Jogador jogadorAtual = new Jogador(member.getEffectiveName());
                         channel.sendMessage(
                                 member.getEffectiveName() +
-                                        " voc� foi cadastrado com sucesso."
+                                        ", voce foi cadastrado com sucesso."
                         ).queue();
                         jogadores.add(jogadorAtual);
                     }
@@ -291,18 +291,18 @@ public class Discordbot extends ListenerAdapter {
                         jogadorSelecionado.setIsLogged(true);
                         channel.sendMessage(
                                 member.getEffectiveName() +
-                                        " voc� fez login com sucesso!"
+                                        ", voce fez login com sucesso!"
                         ).queue();
                     } else if (jogadorSelecionado != null && jogadorSelecionado.getIsLogged()) {
                         channel.sendMessage(
                                 member.getEffectiveName() +
-                                        " voc� j� est� logado"
+                                        ", voce ja esta logado"
                         ).queue();
                     } else {
                         channel.sendMessage(
                                 member.getEffectiveName() +
-                                        ", n�o conseguimos encontrar seu usu�rio. " +
-                                        "Use o comando !cadastrar para criar um usu�rio."
+                                        ", nao conseguimos encontrar seu usuario. " +
+                                        "Use o comando !cadastrar para criar um usuario."
                         ).queue();
                     }
                 }
@@ -319,12 +319,12 @@ public class Discordbot extends ListenerAdapter {
                         jogadorSelecionado.setIsLogged(false);
                         channel.sendMessage(
                                 member.getEffectiveName() +
-                                        " voc� fez logout com sucesso!"
+                                        ", voce fez logout com sucesso!"
                         ).queue();
                     } else {
                         channel.sendMessage(
                                 member.getEffectiveName() +
-                                        " voc� ainda n�o fez login." +
+                                        ", voce ainda nao fez login." +
                                         " use o comando !login para entrar."
                         ).queue();
                     }
@@ -351,7 +351,7 @@ public class Discordbot extends ListenerAdapter {
                     String nome = member.getEffectiveName();
                     String[] strings = msg.split(" ");
                     if (existe(nome, admins) != null) {
-                        channel.sendMessage("Voc� j� est� logado como admin.\n").queue();
+                        channel.sendMessage("Voce ja esta logado como admin.\n").queue();
                     } else if (strings.length == 3) {
                         String login = strings[1];
                         String senha = strings[2];
@@ -360,10 +360,10 @@ public class Discordbot extends ListenerAdapter {
                             admins.add(new Admin(nome));
                             channel.sendMessage("Login de admin efetuado com sucesso!\n").queue();
                         } else {
-                            channel.sendMessage("Login e/ou senha inv�lidos.\n").queue();
+                            channel.sendMessage("Login e/ou senha invalidos.\n").queue();
                         }
                     } else {
-                        channel.sendMessage("Par�metros inv�lidos.\n").queue();
+                        channel.sendMessage("Parametros invalidos.\n").queue();
                     }
                 }
                 break;
@@ -377,9 +377,9 @@ public class Discordbot extends ListenerAdapter {
 
                     if (admin != null) {
                         admins.remove(admin);
-                        channel.sendMessage(nome + ", voc� fez logout como admin com sucesso!\n").queue();
+                        channel.sendMessage(nome + ", voce fez logout como admin com sucesso!\n").queue();
                     } else {
-                        channel.sendMessage("Voc� n�o est� logado como admin.\n")
+                        channel.sendMessage("Voce nao esta logado como admin.\n")
                                 .queue();
                     }
                 }
@@ -396,7 +396,7 @@ public class Discordbot extends ListenerAdapter {
                         channel.sendMessage("O ranking foi resetado com sucesso!\n").queue();
 
                     } else {
-                        channel.sendMessage("Voc� n�o tem permiss�o para fazer isso.\n" +
+                        channel.sendMessage("Voce nao tem permissao para fazer isso.\n" +
                                         "Use !login-admin <login> <senha> e tente novamente.\n")
                                 .queue();
                     }
@@ -408,7 +408,7 @@ public class Discordbot extends ListenerAdapter {
             {
                 if (member != null && !author.isBot() && msg.startsWith("!")) {
                     channel.sendMessage(member.getEffectiveName() +
-                                    ", n�o consegui compreender este comando. Se estiver" +
+                                    ", nao consegui compreender este comando. Se estiver" +
                                     " com duvidas sobre os comandos, digite !regras.\n")
                             .queue();
                 }
@@ -424,10 +424,10 @@ public class Discordbot extends ListenerAdapter {
 
     private void trivia(String msg, MessageReceivedEvent event) {
         MessageChannel channel = event.getChannel();
-        //Lan�a a quest�o armezenada em perguntas
+        //Lanca a questao armezenada em perguntas
         String s;
         if (gameStatus && quantidadedeperguntas < perguntas.size() && espera) {
-            s = "Por favor responda a seguinte quest�o:\n" +
+            s = "Por favor responda a seguinte questao:\n" +
                     perguntas.get(quantidadedeperguntas).getPergunta() + "\n" +
                     perguntas.get(quantidadedeperguntas).stringAlternativas() + "\n";
 
@@ -435,7 +435,7 @@ public class Discordbot extends ListenerAdapter {
             channel.sendMessage(s).queue();
         }
 
-        //recebe a resposta dos jogadores e avaliar se � certa ou n�o, adicionando pontos
+        //recebe a resposta dos jogadores e avalia se esta certa ou nao, adicionando pontos
         if (gameStatus && quantidadedeperguntas < perguntas.size() && !espera) {
 
             Member member = event.getMember();
@@ -448,7 +448,7 @@ public class Discordbot extends ListenerAdapter {
                         msg.equalsIgnoreCase(perguntas.get(quantidadedeperguntas).getResposta())) {
                     jogadorSelecionado.setPontuacao(jogadorSelecionado.getPontuacao() + 1);
                     s =
-                            "Certo! " + member.getEffectiveName() + ", voc� tem "
+                            "Certo! " + member.getEffectiveName() + ", voce tem "
                                     + jogadorSelecionado.getPontuacao() + " pontos.\n";
                     espera = true;
                     quantidadedeperguntas++;
@@ -456,7 +456,7 @@ public class Discordbot extends ListenerAdapter {
                 } else if ((isLogged && (msg.equalsIgnoreCase("A") || msg.equalsIgnoreCase("B") ||
                         msg.equalsIgnoreCase("C") || msg.equalsIgnoreCase("D")))
                 ) {
-                    s = "Errooou! " + member.getEffectiveName() + ", voc� tem "
+                    s = "Errooou! " + member.getEffectiveName() + ", voce tem "
                             + jogadorSelecionado.getPontuacao() + " pontos.\n";
                     espera = true;
                     quantidadedeperguntas++;

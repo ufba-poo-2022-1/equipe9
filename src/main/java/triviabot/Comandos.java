@@ -7,7 +7,7 @@ public class Comandos {
 
     final List<String> listaDeComandos = new ArrayList<>();
 
-    //Ao iniciar o contrustor dessa classe ela carrega todos os comandos v�lidos na lista
+    //Ao iniciar o contrustor dessa classe ela carrega todos os comandos validos na lista
     public Comandos() {
         listaDeComandos.add("!ping");
         listaDeComandos.add("!roll");
