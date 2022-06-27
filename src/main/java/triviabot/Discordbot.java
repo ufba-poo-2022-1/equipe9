@@ -406,8 +406,7 @@ public class Discordbot extends ListenerAdapter {
 
             case -1: //comando inválido
             {
-                ArrayList<String> respostas = new ArrayList<>(Arrays.asList("a", "b", "c", "d", "A", "B", "C", "D"));
-                if (member != null && !author.isBot() && !respostas.contains(msg)) {
+                if (member != null && !author.isBot() && msg.startsWith("!")) {
                     channel.sendMessage(member.getEffectiveName() +
                                     ", n�o consegui compreender este comando. Se estiver" +
                                     " com duvidas sobre os comandos, digite !regras.\n")
